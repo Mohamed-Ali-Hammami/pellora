@@ -13,7 +13,7 @@ export default function NotFound() {
           Voir la boutique
         </Link>
         <Link href="/" className="btn-secondary">
-          Retour a l’accueil
+          Retour à l’accueil
         </Link>
       </div>
     </div>

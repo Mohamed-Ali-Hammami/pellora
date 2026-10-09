@@ -4,7 +4,7 @@
  * On délègue à Stripe Checkout plutôt que de construire un formulaire de
  * paiement : la page est hébergée par Stripe, donc aucune donnée de carte ne
  * traverse ce code. Cela change la portée PCI-DSS (SAQ A au lieu de SAQ A-EP)
- * et évite d’avoir a gérer soi-même 3-D Secure, Apple Pay et Google Pay.
+ * et évite d’avoir à gérer soi-même 3-D Secure, Apple Pay et Google Pay.
  */
 
 import Stripe from 'stripe';

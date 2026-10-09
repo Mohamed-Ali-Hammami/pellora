@@ -102,7 +102,7 @@ export async function POST(request: Request) {
   } catch (error) {
     if (error instanceof ZodError) {
       return NextResponse.json(
-        { error: 'Panier invalide.', détails: error.issues.map((i) => i.message) },
+        { error: 'Panier invalide.', details: error.issues.map((i) => i.message) },
         { status: 400 },
       );
     }

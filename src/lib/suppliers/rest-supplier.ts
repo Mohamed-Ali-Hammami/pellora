@@ -13,7 +13,7 @@ export interface RestSupplierConfig {
   label: string;
   baseUrl: string;
   apiKey: string;
-  /** En-tete portant la clé. Varie d’un fournisseur a l’autre. */
+  /** En-tête portant la clé. Varie d’un fournisseur à l’autre. */
   authHeader?: string;
   orderPath?: string;
   trackingPath?: string;

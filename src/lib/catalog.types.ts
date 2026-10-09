@@ -1,6 +1,6 @@
 import type { Cents } from './money';
 
-export type ProductCategory = 'kit' | 'extraction' | 'mouture' | 'précision' | 'accessoire';
+export type ProductCategory = 'kit' | 'extraction' | 'mouture' | 'precision' | 'accessoire';
 
 export interface ProductVariant {
   id: string;

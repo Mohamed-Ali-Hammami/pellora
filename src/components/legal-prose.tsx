@@ -12,9 +12,9 @@ import type { ReactNode } from 'react';
 export function TodoBanner() {
   return (
     <div className="not-prose mb-8 rounded-card border-2 border-warn bg-accent-soft p-5">
-      <p className="font-semibold text-warn">Page a compléter avant mise en ligne</p>
+      <p className="font-semibold text-warn">Page à compléter avant mise en ligne</p>
       <p className="mt-1.5 text-sm leading-relaxed text-ink-soft">
-        Les champs notes <code className="font-mono text-warn">[A COMPLETER]</code> doivent recevoir
+        Les champs notes <code className="font-mono text-warn">[À COMPLÉTER]</code> doivent recevoir
         les informations réelles de votre société (dénomination, forme juridique, SIREN, adresse,
         hébergeur, médiateur de la consommation). Ce texte est une base de travail, pas un avis
         juridique : faites-le relire avant d’encaisser votre première commande.
@@ -26,7 +26,7 @@ export function TodoBanner() {
 export function Todo({ children }: { children: ReactNode }) {
   return (
     <mark className="rounded bg-accent-soft px-1 font-mono text-sm text-warn">
-      [A COMPLETER : {children}]
+      [À COMPLÉTER : {children}]
     </mark>
   );
 }

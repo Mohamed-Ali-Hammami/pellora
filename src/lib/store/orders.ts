@@ -2,8 +2,8 @@
  * Cycle de vie des commandes : création, transitions, journal.
  *
  * Toutes les mutations passent par ces fonctions afin que `updatedAt` et le
- * journal d’événements restent systématiquement a jour — un journal partiel
- * ne sert a rien le jour où un client réclame.
+ * journal d’événements restent systématiquement à jour — un journal partiel
+ * ne sert à rien le jour où un client réclame.
  */
 
 import { randomBytes } from 'node:crypto';
@@ -103,7 +103,7 @@ export function withTracking(
 
 /**
  * Vrai si CE fournisseur a déjà reçu la commande.
- * Garde-fou contre la double expédition, evalue fournisseur par fournisseur.
+ * Garde-fou contre la double expédition, évalué fournisseur par fournisseur.
  */
 export function isSupplierDone(order: Order, supplier: string): boolean {
   return order.supplierOrders.some((s) => s.supplier === supplier && s.status === 'ok');

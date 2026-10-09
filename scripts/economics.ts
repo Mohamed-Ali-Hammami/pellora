@@ -1,7 +1,7 @@
 /**
  * Simulateur en ligne de commande : `npm run economics`
  *
- * Répond a la question « que faut-il pour dégager X € de bénéfice par mois ? »
+ * Répond à la question « que faut-il pour dégager X € de bénéfice par mois ? »
  * et montre lesquels des paramètres comptent vraiment.
  *
  * Options :
@@ -51,7 +51,7 @@ console.log(`\n${'='.repeat(54)}`);
 console.log('  MODELE ECONOMIQUE — objectif ' + eur(target) + ' / mois');
 console.log('='.repeat(54));
 
-rule('HYPOTHÈSES (a remplacer par vos mesures)');
+rule('HYPOTHÈSES (à remplacer par vos mesures)');
 line('Panier moyen TTC', eur(inputs.aov));
 line('Coût d’achat par commande', eur(inputs.cogsPerOrder));
 line('Port paye au fournisseur', eur(inputs.supplierShippingPerOrder));
@@ -85,11 +85,11 @@ if (!verdict.reachable) {
   console.log(`  ${verdict.reason}\n`);
   const neededCr = requiredConversionRate(inputs, target, 400);
   console.log('  Pistes de correction :');
-  console.log(`    - panier moyen minimal a 400 commandes/mois : ${eur(requiredAov(inputs, target, 400))}`);
+  console.log(`    - panier moyen minimal à 400 commandes/mois : ${eur(requiredAov(inputs, target, 400))}`);
   if (neededCr !== null) {
-    console.log(`    - conversion requise a 400 commandes/mois  : ${pct(neededCr * 100)}`);
+    console.log(`    - conversion requise à 400 commandes/mois  : ${pct(neededCr * 100)}`);
   }
-  console.log(`    - CPC maximal a conversion constante       : ${eur(u.breakEvenCac * inputs.conversionRate)}`);
+  console.log(`    - CPC maximal à conversion constante       : ${eur(u.breakEvenCac * inputs.conversionRate)}`);
 } else {
   const p = verdict.plan;
   line('Commandes / mois', p.ordersPerMonth.toFixed(0));
@@ -106,7 +106,7 @@ if (!verdict.reachable) {
   console.log('  (environ 14 jours de dépenses, coefficient de sécurité 1,5)');
 }
 
-rule('SENSIBILITE — bénéfice mensuel a 400 commandes');
+rule('SENSIBILITE — bénéfice mensuel à 400 commandes');
 const show = (label: string, rows: { value: number; profit: number }[], fmt: (n: number) => string) => {
   console.log(`\n  ${label}`);
   for (const r of rows) {

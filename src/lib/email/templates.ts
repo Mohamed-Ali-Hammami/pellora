@@ -3,7 +3,7 @@
  *
  * HTML volontairement archaïque — tables et styles en ligne. Les clients mail
  * (Outlook en tête) ignorent flexbox, grid et les feuilles de style externes :
- * un gabarit moderne s’affiche correctement a l’écran et casse en boite de
+ * un gabarit moderne s’affiche correctement à l’écran et casse en boite de
  * réception. Chaque message a aussi une version texte, que certains clients
  * privilégient et que les filtres anti-spam attendent.
  */
@@ -87,8 +87,8 @@ Référence <strong style="color:${C.ink};">${escapeHtml(order.ref)}</strong>.
 <a href="${trackUrl}" style="display:inline-block;background:${C.ink};color:#ffffff;text-decoration:none;padding:11px 20px;border-radius:7px;font-size:14px;font-weight:600;">Suivre ma commande</a>
 </td></tr>
 <tr><td style="padding:18px 28px 22px;font-size:13px;color:${C.muted};line-height:1.6;">
-Vous recevrez un numéro de suivi dès que le colis quittera l’entrepôt, généralement sous 1 a 2 jours ouvrés.
-Vous disposez de 30 jours pour changer d’avis — il suffit de répondre a ce message.
+Vous recevrez un numéro de suivi dès que le colis quittera l’entrepôt, généralement sous 1 à 2 jours ouvrés.
+Vous disposez de 30 jours pour changer d’avis — il suffit de répondre à ce message.
 </td></tr>`;
 
   const text = [
@@ -102,7 +102,7 @@ Vous disposez de 30 jours pour changer d’avis — il suffit de répondre a ce 
     '',
     `Suivi : ${trackUrl}`,
     '',
-    `Une question ? Répondez a ce message ou écrivez a ${brand.email.support}.`,
+    `Une question ? Répondez à ce message ou écrivez à ${brand.email.support}.`,
   ].join('\n');
 
   return {
@@ -135,7 +135,7 @@ ${
 <a href="${trackUrl}" style="display:inline-block;background:${C.ink};color:#ffffff;text-decoration:none;padding:11px 20px;border-radius:7px;font-size:14px;font-weight:600;">Suivre le colis</a>
 </td></tr>
 <tr><td style="padding:18px 28px 22px;font-size:13px;color:${C.muted};line-height:1.6;">
-Le suivi peut mettre quelques heures a s’activer chez le transporteur. Si rien ne bouge après 48 h, répondez a ce message : on s’en occupe.
+Le suivi peut mettre quelques heures à s’activer chez le transporteur. Si rien ne bouge après 48 h, répondez à ce message : on s’en occupe.
 </td></tr>`;
 
   const text = [
@@ -147,7 +147,7 @@ Le suivi peut mettre quelques heures a s’activer chez le transporteur. Si rien
     '',
     `Suivi : ${trackUrl}`,
     '',
-    "Le suivi peut mettre quelques heures a s’activer. Sans mouvement après 48 h, répondez a ce message.",
+    "Le suivi peut mettre quelques heures à s’activer. Sans mouvement après 48 h, répondez à ce message.",
   ].join('\n');
 
   return { subject: `Commande ${order.ref} expédiée`, html: layout('Colis expédié', inner), text };

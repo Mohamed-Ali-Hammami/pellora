@@ -89,6 +89,6 @@ export interface OrderStore {
    * et une commande transmise deux fois est expédiée deux fois.
    */
   acquireLock(key: string, ttlSeconds: number): Promise<boolean>;
-  /** Commandes a réessayer (transmission en échec). */
+  /** Commandes à réessayer (transmission en échec). */
   listFailed(limit: number): Promise<Order[]>;
 }

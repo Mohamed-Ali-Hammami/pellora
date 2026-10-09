@@ -14,7 +14,7 @@ import { multiply, splitVatInclusive, type Cents } from './money';
 import { defaultRate, findRate, zoneForCountry, type ShippingRate } from './shipping';
 import type { Product, ProductVariant } from './catalog.types';
 
-/** Quantité maximale par ligne — limite les tests de fraude a la carte. */
+/** Quantité maximale par ligne — limite les tests de fraude à la carte. */
 export const MAX_QUANTITY_PER_LINE = 10;
 export const MAX_LINES = 20;
 
@@ -141,7 +141,7 @@ export function priceCart(input: CartInput): PricedCart {
   };
 }
 
-/** Fenêtre de livraison annoncée, a partir d’une date d’expédition. */
+/** Fenêtre de livraison annoncée, à partir d’une date d’expédition. */
 export function deliveryWindow(
   rate: ShippingRate,
   from: Date = new Date(),

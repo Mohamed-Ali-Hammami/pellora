@@ -97,7 +97,7 @@ export function CartView() {
     return (
       <div className="container-page py-20 text-center">
         <h1 className="text-3xl">Votre panier est vide</h1>
-        <p className="mt-3 text-ink-soft">Il n’y a rien de mieux a faire qu’aller voir le matériel.</p>
+        <p className="mt-3 text-ink-soft">Il n’y a rien de mieux à faire qu’aller voir le matériel.</p>
         <Link href="/produits" className="btn-primary mt-7">
           Voir la boutique
         </Link>
@@ -142,7 +142,7 @@ export function CartView() {
                       <p className="text-sm text-muted">{item.variant.label}</p>
                     )}
                     <p className="mt-0.5 text-sm text-muted">
-                      {formatPrice(item.unitPrice)} a l’unité
+                      {formatPrice(item.unitPrice)} à l’unité
                     </p>
                   </div>
                   <p className="shrink-0 font-semibold">{formatPrice(item.lineTotal)}</p>

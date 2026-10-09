@@ -17,7 +17,7 @@ export const metadata: Metadata = {
  * Page d’accueil.
  *
  * Choix de merchandising dicte par le modèle économique (cf. docs/ECONOMICS.md) :
- * le lot a 149 € est mis en avant AVANT le kit a 89 €. A coût d’acquisition
+ * le lot à 149 € est mis en avant AVANT le kit à 89 €. À coût d’acquisition
  * égal, c’est le panier moyen qui décide de la rentabilité — le produit
  * d’appel reste accessible, mais il n’est pas le chemin par défaut.
  */
@@ -50,8 +50,8 @@ export default function HomePage() {
             fait correctement.
           </h1>
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-soft">
-            Quatre objets suffisent a transformer une tasse : un cône qui garde la chaleur, une
-            verseuse graduée, une balance au décigramme, un moulin a meules. Nous ne vendons que
+            Quatre objets suffisent à transformer une tasse : un cône qui garde la chaleur, une
+            verseuse graduée, une balance au décigramme, un moulin à meules. Nous ne vendons que
             ceux-la — et nous expliquons comment les utiliser.
           </p>
 
@@ -65,7 +65,7 @@ export default function HomePage() {
           </div>
 
           <p className="mt-5 text-sm text-muted">
-            Expédié depuis les Pays-Bas en 2 a 4 jours ouvrés. Livraison offerte dès{' '}
+            Expédié depuis les Pays-Bas en 2 à 4 jours ouvrés. Livraison offerte dès{' '}
             {formatPrice(FREE_SHIPPING_THRESHOLD)}.
           </p>
         </div>
@@ -116,15 +116,15 @@ export default function HomePage() {
             {[
               {
                 title: 'Pèse, pas devine',
-                body: 'Une cuillère a soupe de grains pèse entre 5 et 9 g selon la torréfaction. C’est assez pour rendre une recette irréproductible. Nos kits intègrent donc une balance au décigramme.',
+                body: 'Une cuillère à soupe de grains pèse entre 5 et 9 g selon la torréfaction. C’est assez pour rendre une recette irréproductible. Nos kits intègrent donc une balance au décigramme.',
               },
               {
-                title: 'Moulu a la minute',
+                title: 'Moulu à la minute',
                 body: 'Les arômes du café sont volatils : ils s’échappent dans les minutes qui suivent la mouture. Moudre juste avant l’infusion est le changement le plus audible sur une tasse.',
               },
               {
                 title: 'Expédié d’Europe',
-                body: 'Notre entrepôt est aux Pays-Bas, pas en Asie. Deux a quatre jours ouvrés, pas trois semaines — et un interlocuteur joignable en cas de problème.',
+                body: 'Notre entrepôt est aux Pays-Bas, pas en Asie. Deux à quatre jours ouvrés, pas trois semaines — et un interlocuteur joignable en cas de problème.',
               },
             ].map((item) => (
               <div key={item.title}>
@@ -193,7 +193,7 @@ export default function HomePage() {
 
       <section className="container-page py-16">
         <p className="eyebrow">Compléter son matériel</p>
-        <h2 className="mt-1.5 text-3xl">A l’unité</h2>
+        <h2 className="mt-1.5 text-3xl">À l’unité</h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {rest.map((product) => (
             <ProductCard key={product.id} product={product} />

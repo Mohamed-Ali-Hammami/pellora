@@ -1,9 +1,9 @@
 /**
- * Contrat commun a tous les fournisseurs.
+ * Contrat commun à tous les fournisseurs.
  *
  * L’intérêt de l’abstraction : changer de grossiste ne doit toucher qu’un
  * fichier. En dropshipping, le fournisseur est la pièce qu’on change le plus
- * souvent (rupture, délai qui derape, qualité qui baisse) — le code ne doit
+ * souvent (rupture, délai qui dérape, qualité qui baisse) — le code ne doit
  * pas le supposer stable.
  */
 

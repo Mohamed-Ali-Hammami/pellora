@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/produits' },
 };
 
-const ORDER: ProductCategory[] = ['kit', 'mouture', 'extraction', 'précision', 'accessoire'];
+const ORDER: ProductCategory[] = ['kit', 'mouture', 'extraction', 'precision', 'accessoire'];
 
 export default function ProductsPage() {
   return (

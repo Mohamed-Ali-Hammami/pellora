@@ -13,7 +13,7 @@ export default function Page() {
       <h2>Responsable du traitement</h2>
       <p>
         <Todo>dénomination sociale</Todo>, <Todo>adresse complète</Todo>. Pour toute question
-        relative a vos données : {brand.email.support}.
+        relative à vos données : {brand.email.support}.
       </p>
 
       <h2>Données collectées et finalités</h2>
@@ -30,7 +30,7 @@ export default function Page() {
         </li>
         <li>
           <strong>Obligations comptables</strong> — factures et justificatifs, conserves dix ans
-          conformément a l’article L. 123-22 du code de commerce. Base légale : obligation légale.
+          conformément à l’article L. 123-22 du code de commerce. Base légale : obligation légale.
         </li>
         <li>
           <strong>Mesure d’audience</strong> — <Todo>outil employé, ou « aucun »</Todo>. Si l’outil
@@ -49,7 +49,7 @@ export default function Page() {
 
       <h2>Durées de conservation</h2>
       <ul>
-        <li>Données de commande : 3 ans a compter du dernier contact, hors obligations comptables.</li>
+        <li>Données de commande : 3 ans à compter du dernier contact, hors obligations comptables.</li>
         <li>Pièces comptables : 10 ans.</li>
         <li>Traceurs : 13 mois au maximum.</li>
       </ul>
@@ -57,7 +57,7 @@ export default function Page() {
       <h2>Vos droits</h2>
       <p>
         Vous disposez d’un droit d’accès, de rectification, d’effacement, de limitation,
-        d’opposition et de portabilité. Vous pouvez les exercer a {brand.email.support}. Nous
+        d’opposition et de portabilité. Vous pouvez les exercer à {brand.email.support}. Nous
         répondons dans un délai d’un mois.
       </p>
       <p>
@@ -70,7 +70,7 @@ export default function Page() {
         Ce site dépose un unique stockage local, nommé <code>verseuse.cart.v1</code>, qui conserve
         le contenu de votre panier. Il est strictement nécessaire au fonctionnement du service et
         ne requiert donc pas de consentement. Il ne contient aucune donnée d’identification et
-        n’est jamais transmis a un tiers.
+        n’est jamais transmis à un tiers.
       </p>
       <p>
         Si vous ajoutez un outil de mesure d’audience ou un pixel publicitaire, un bandeau de

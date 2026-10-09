@@ -1,13 +1,13 @@
 /**
  * Fournisseur sans API : la commande part par e-mail, en texte structure.
  *
- * Ce cas n’est pas un repli degrade, c’est le mode de fonctionnement réel de
+ * Ce cas n’est pas un repli dégradé, c’est le mode de fonctionnement réel de
  * beaucoup de grossistes européens de taille moyenne — ceux qui ont justement
  * les meilleurs délais et acceptent de ne pas mettre leur marque sur le colis.
  *
  * Limite assumée : aucun numéro de suivi en retour immédiat. Il arrive
  * ensuite par le webhook `/api/webhooks/supplier`, que le fournisseur appelle
- * ou que vous alimentez depuis un e-mail transfere.
+ * ou que vous alimentez depuis un e-mail transféré.
  */
 
 import type { Supplier, SupplierOrderRequest, SupplierOrderResult } from './types';
@@ -66,7 +66,7 @@ export function createEmailSupplier(config: EmailSupplierConfig): Supplier {
         return { ok: false, error: `envoi du bon de commande échoué : ${result.error}`, retryable: true };
       }
 
-      // Pas d’identifiant fournisseur a ce stade : on réutilise notre
+      // Pas d’identifiant fournisseur à ce stade : on réutilise notre
       // référence, que le webhook de suivi rapprochera.
       return { ok: true, supplierOrderId: order.orderRef, trackingNumber: null, carrier: null };
     },

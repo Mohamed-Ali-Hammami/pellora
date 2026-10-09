@@ -1,7 +1,7 @@
 /**
  * Orchestrateur de traitement — SERVEUR UNIQUEMENT.
  *
- * C’est la pièce qui rend la boutique « automatisée de A a Z » : une fois le
+ * C’est la pièce qui rend la boutique « automatisée de A à Z » : une fois le
  * paiement confirme, elle éclate la commande en lignes fournisseur, les
  * regroupe par grossiste, transmet, enregistre et notifie — sans intervention.
  *
@@ -120,14 +120,14 @@ export async function fulfillOrder(ref: string): Promise<FulfillmentOutcome> {
   }
 
   // Capture après la garde : `current` est réassigné plusieurs fois ensuite,
-  // ce qui ferait perdre le narrowing de `address` a TypeScript.
+  // ce qui ferait perdre le narrowing de `address` à TypeScript.
   const address = order.address;
   let current = order;
 
   // (3) Confirmation client avant le fournisseur : un client sans
   // confirmation croit avoir perdu son argent et conteste le paiement, alors
   // qu’un fournisseur servi dix minutes plus tard ne change rien.
-  // `hasSentEmail` évite de renvoyer la confirmation a chaque rattrapage.
+  // `hasSentEmail` évite de renvoyer la confirmation à chaque rattrapage.
   if (!hasSentEmail(current, 'confirmation')) {
     const confirmation = orderConfirmation(current);
     const mail = await sendRawEmail({
@@ -156,7 +156,7 @@ export async function fulfillOrder(ref: string): Promise<FulfillmentOutcome> {
     if (isSupplierDone(current, supplierId)) continue;
 
     const supplier = getSupplier(supplierId);
-    // Référence stable d’une tentative a l’autre : c’est la clé
+    // Référence stable d’une tentative à l’autre : c’est la clé
     // d’idempotence cote grossiste.
     const orderRef = suppliers.length > 1 ? `${current.ref}-${supplierId}` : current.ref;
     const at = new Date().toISOString();

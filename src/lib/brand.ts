@@ -1,5 +1,5 @@
 /**
- * Configuration de la marque. Tout ce qui est spécifique a l’enseigne est ici :
+ * Configuration de la marque. Tout ce qui est spécifique à l’enseigne est ici :
  * changer de niche = éditer ce fichier + `catalog.ts` + `sourcing.ts`,
  * sans toucher au reste du code.
  */
@@ -9,7 +9,7 @@ export const brand = {
   legalName: 'VERSEUSE',
   tagline: 'Le café filtre, fait correctement.',
   pitch:
-    "Des outils d’infusion manuelle choisis un par un, expédiés depuis l’Union européenne en 2 a 4 jours.",
+    "Des outils d’infusion manuelle choisis un par un, expédiés depuis l’Union européenne en 2 à 4 jours.",
   domain: 'verseuse.fr',
   // Mettre à jour avant la mise en production (variable NEXT_PUBLIC_SITE_URL en priorité).
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://verseuse.fr',
@@ -27,7 +27,7 @@ export const brand = {
   },
   /** Promesses affichées en bandeau : elles doivent rester littéralement vraies. */
   promises: [
-    { title: 'Expédié depuis l’UE', detail: 'Entrepôt Pays-Bas — 2 a 4 jours ouvrés' },
+    { title: 'Expédié depuis l’UE', detail: 'Entrepôt Pays-Bas — 2 à 4 jours ouvrés' },
     { title: 'Retour sous 30 jours', detail: 'Au-delà des 14 jours légaux' },
     { title: 'Paiement sécurisé', detail: 'Stripe — CB, Apple Pay, Google Pay' },
     { title: 'Conseil humain', detail: 'Réponse sous 24 h ouvrées' },

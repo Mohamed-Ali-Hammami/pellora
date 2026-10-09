@@ -67,7 +67,7 @@ function build(): Map<string, Supplier> {
       'pod-eu',
       createEmailSupplier({
         id: 'pod-eu',
-        label: 'Impression a la demande UE',
+        label: 'Impression à la demande UE',
         to: process.env.POD_ORDER_EMAIL,
         ...(process.env.SUPPLIER_ORDER_BCC ? { bcc: process.env.SUPPLIER_ORDER_BCC } : {}),
       }),

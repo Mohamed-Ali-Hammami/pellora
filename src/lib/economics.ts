@@ -2,7 +2,7 @@
  * Modèle économique de la boutique.
  *
  * Ce module existe pour une seule raison : répondre par le calcul, et non par
- * une promesse, a la question « est-ce que ca peut rapporter X par mois ? ».
+ * une promesse, à la question « est-ce que ca peut rapporter X par mois ? ».
  *
  * L’identité qui décide de tout :
  *
@@ -13,8 +13,8 @@
  * on agit soit sur le CPC (ciblage, créas), soit sur la conversion (fiche
  * produit, prix, réassurance), soit sur la marge par commande (panier moyen).
  *
- * Tous les montants sont en euros (nombres réels) : ce module sert a
- * simuler, pas a facturer. La facturation, elle, est en centimes entiers
+ * Tous les montants sont en euros (nombres réels) : ce module sert à
+ * simuler, pas à facturer. La facturation, elle, est en centimes entiers
  * (cf. `money.ts`).
  */
 
@@ -49,9 +49,9 @@ export interface EconomicsInputs {
  * Jeu d’hypothèses de départ pour la niche café filtre.
  *
  * ATTENTION — ce sont des HYPOTHÈSES, pas des mesures. Je n’ai pas de source
- * vérifiée pour le CPC ni pour le taux de conversion de cette niche a la date
+ * vérifiée pour le CPC ni pour le taux de conversion de cette niche à la date
  * d’aujourd’hui : ces deux nombres doivent être remplaces par vos propres
- * données dès que vous avez dépensé vos premiers 300 a 500 € de publicité.
+ * données dès que vous avez dépensé vos premiers 300 à 500 € de publicité.
  * Ce sont aussi les deux variables qui pèsent le plus sur le résultat.
  */
 export const baselineInputs: EconomicsInputs = {
@@ -86,7 +86,7 @@ export interface UnitEconomics {
   contributionAfterAds: number;
   /** Marge brute en % du CA HT. */
   grossMarginPct: number;
-  /** CAC maximal avant de travailler a perte. */
+  /** CAC maximal avant de travailler à perte. */
   breakEvenCac: number;
 }
 
@@ -176,7 +176,7 @@ export function ordersNeededFor(i: EconomicsInputs, profitTarget: number): Targe
       reachable: false,
       reason:
         `Chaque commande laisse ${u.contributionBeforeAds.toFixed(2)} € de marge mais coûte ` +
-        `${u.cac.toFixed(2)} € a acquérir : le modèle perd ${Math.abs(u.contributionAfterAds).toFixed(2)} € ` +
+        `${u.cac.toFixed(2)} € à acquérir : le modèle perd ${Math.abs(u.contributionAfterAds).toFixed(2)} € ` +
         `par vente. Augmenter le volume aggrave la perte. Il faut agir sur le panier moyen, ` +
         `le coût d’achat, le CPC ou la conversion — pas sur le budget publicitaire.`,
       breakEvenCac: u.breakEvenCac,
@@ -202,7 +202,7 @@ export function requiredConversionRate(
   return (ordersPerMonth * i.cpc) / adBudgetAvailable;
 }
 
-/** Panier moyen minimal pour atteindre l’objectif a volume et conversion donnes. */
+/** Panier moyen minimal pour atteindre l’objectif à volume et conversion donnes. */
 export function requiredAov(
   i: EconomicsInputs,
   profitTarget: number,
@@ -229,7 +229,7 @@ export function customerLifetimeValue(i: EconomicsInputs): number {
 
 /**
  * Analyse de sensibilité : fait varier un paramètre et renvoie le bénéfice
- * mensuel correspondant, a volume de commandes constant.
+ * mensuel correspondant, à volume de commandes constant.
  */
 export function sensitivity<K extends keyof EconomicsInputs>(
   i: EconomicsInputs,

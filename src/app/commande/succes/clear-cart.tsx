@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useCart } from '@/components/cart-provider';
 
 /**
- * Vide le panier a l’arrivée sur la page de confirmation.
+ * Vide le panier à l’arrivée sur la page de confirmation.
  *
  * C’est ici et nulle part ailleurs : si on vidait le panier au moment du
  * départ vers Stripe, un client qui abandonne la page de paiement reviendrait

@@ -5,8 +5,8 @@
  * dix minutes ne doit pas se traduire par une commande payée jamais expédiée :
  * cette tache reprend les commandes en échec.
  *
- * A planifier toutes les 15 minutes (cf. `vercel.json`). Protégée par
- * `CRON_SECRET` : sans cela, l’URL est publique et déclenchable a volonté.
+ * À planifier toutes les 15 minutes (cf. `vercel.json`). Protégée par
+ * `CRON_SECRET` : sans cela, l’URL est publique et déclenchable à volonté.
  */
 
 import { NextResponse } from 'next/server';
@@ -16,7 +16,7 @@ import { alertOps } from '@/lib/email/send';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
-/** Marge confortable : le rattrapage appelle plusieurs fournisseurs a la suite. */
+/** Marge confortable : le rattrapage appelle plusieurs fournisseurs à la suite. */
 export const maxDuration = 60;
 
 function authorized(request: Request): boolean {
@@ -25,10 +25,10 @@ function authorized(request: Request): boolean {
 
   const header = request.headers.get('authorization') ?? '';
   const provided = header.replace(/^Bearer\s+/i, '');
-  const a = Buffer.from(provided);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
+  const given = Buffer.from(provided);
+  const wanted = Buffer.from(expected);
+  if (given.length !== wanted.length) return false;
+  return timingSafeEqual(given, wanted);
 }
 
 export async function GET(request: Request) {
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
 
   const result = await retryFailedOrders(25);
 
-  // Les commandes a bout de tentatives exigent une action humaine :
+  // Les commandes à bout de tentatives exigent une action humaine :
   // elles ne doivent jamais rester uniquement dans les journaux.
   if (result.exhausted.length > 0) {
     await alertOps(

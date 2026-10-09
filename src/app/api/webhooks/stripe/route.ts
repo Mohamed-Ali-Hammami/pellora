@@ -30,20 +30,21 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 function extractAddress(session: Stripe.Checkout.Session): ShippingAddress | null {
-  const collected = session.collected_information?.shipping_details;
-  const détails = collected ?? null;
-  if (!détails?.address) return null;
+  const shipping = session.collected_information?.shipping_details ?? null;
+  if (!shipping?.address) return null;
 
-  const a = détails.address;
-  if (!a.line1 || !a.postal_code || !a.city || !a.country) return null;
+  const address = shipping.address;
+  if (!address.line1 || !address.postal_code || !address.city || !address.country) {
+    return null;
+  }
 
   return {
-    name: détails.name ?? session.customer_details?.name ?? '',
-    line1: a.line1,
-    line2: a.line2 ?? null,
-    postalCode: a.postal_code,
-    city: a.city,
-    country: a.country,
+    name: shipping.name ?? session.customer_details?.name ?? '',
+    line1: address.line1,
+    line2: address.line2 ?? null,
+    postalCode: address.postal_code,
+    city: address.city,
+    country: address.country,
     phone: session.customer_details?.phone ?? null,
   };
 }
@@ -161,7 +162,7 @@ export async function POST(request: Request) {
         await alertOps(
           'Contestation de paiement ouverte',
           `Litige ${dispute.id} sur ${dispute.amount / 100} € — motif « ${dispute.reason} ». ` +
-            `Répondez dans Stripe avant la date limite, preuves de livraison a l’appui.`,
+            `Répondez dans Stripe avant la date limite, preuves de livraison à l’appui.`,
         );
         break;
       }

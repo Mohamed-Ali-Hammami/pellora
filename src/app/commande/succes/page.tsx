@@ -72,7 +72,7 @@ export default async function SuccessPage({
         ) : (
           <p className="mt-6 text-sm text-muted">
             Votre référence de commande vous parvient par e-mail. Si rien n’arrive d’ici une heure,
-            ecrivez-nous a{' '}
+            écrivez-nous à{' '}
             <a href={`mailto:${brand.email.support}`} className="text-accent underline">
               {brand.email.support}
             </a>

@@ -9,7 +9,7 @@ import { formatPrice, savingsPercent } from '@/lib/money';
 import { brand } from '@/lib/brand';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/shipping';
 
-/** Toutes les fiches sont pre-generees : pages statiques, donc rapides et indexables. */
+/** Toutes les fiches sont pré-générées : pages statiques, donc rapides et indexables. */
 export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
 }
@@ -145,7 +145,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </div>
 
           <p className="mt-4 text-sm leading-relaxed text-muted">
-            Expédié depuis les Pays-Bas en 2 a 4 jours ouvrés. Retour accepte sous 30 jours, au-delà
+            Expédié depuis les Pays-Bas en 2 à 4 jours ouvrés. Retour accepté sous 30 jours, au-delà
             des 14 jours légaux.
           </p>
 
@@ -173,7 +173,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     <Link href={`/produits/${item.slug}`} className="hover:text-accent">
                       {item.name}
                     </Link>
-                    <span className="shrink-0 text-muted">{formatPrice(item.price)} a l’unité</span>
+                    <span className="shrink-0 text-muted">{formatPrice(item.price)} à l’unité</span>
                   </li>
                 ))}
               </ul>
@@ -196,7 +196,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
 
       {crossSell.length > 0 && (
         <section className="mt-20 border-t border-line pt-12">
-          <h2 className="text-2xl">A compléter avec</h2>
+          <h2 className="text-2xl">À compléter avec</h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {crossSell.map((item) => (
               <ProductCard key={item.id} product={item} />

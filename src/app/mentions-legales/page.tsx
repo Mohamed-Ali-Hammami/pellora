@@ -25,7 +25,7 @@ export default function Page() {
         <li>Courriel : {brand.email.support}</li>
       </ul>
       <p>
-        Si votre activité est soumise a immatriculation particulière ou a une autorisation, la
+        Si votre activité est soumise à immatriculation particulière ou à une autorisation, la
         mention correspondante doit figurer ici : <Todo>le cas échéant</Todo>.
       </p>
 
@@ -44,13 +44,13 @@ export default function Page() {
 
       <h2>Médiation de la consommation</h2>
       <p>
-        Conformément a l’article L. 612-1 du code de la consommation, tout consommateur a le droit
-        de recourir gratuitement a un médiateur de la consommation en vue de la résolution amiable
+        Conformément à l’article L. 612-1 du code de la consommation, tout consommateur a le droit
+        de recourir gratuitement à un médiateur de la consommation en vue de la résolution amiable
         d’un litige. Notre médiateur est <Todo>nom et coordonnées du médiateur</Todo>.
       </p>
       <p>
-        L’adhésion a un dispositif de médiation est une obligation légale pour tout vendeur en
-        ligne a destination de consommateurs français : elle doit être souscrite avant la première
+        L’adhésion à un dispositif de médiation est une obligation légale pour tout vendeur en
+        ligne à destination de consommateurs français : elle doit être souscrite avant la première
         vente.
       </p>
     </LegalPage>

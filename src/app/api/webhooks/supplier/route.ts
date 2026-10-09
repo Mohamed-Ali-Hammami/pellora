@@ -5,8 +5,8 @@
  * le numéro et on notifie le client. C’est le dernier maillon manuel supprime.
  *
  * Authentification par secret partage, compare en temps constant. Le format
- * des champs varie d’un grossiste a l’autre : plusieurs noms sont acceptes
- * pour éviter d’avoir a reecrire la route a chaque changement de fournisseur.
+ * des champs varie d’un grossiste à l’autre : plusieurs noms sont acceptes
+ * pour éviter d’avoir à reecrire la route à chaque changement de fournisseur.
  */
 
 import { NextResponse } from 'next/server';
@@ -24,10 +24,10 @@ export const dynamic = 'force-dynamic';
  * préfixe commun et permet de deviner le secret caractère par caractère.
  */
 function secretMatches(provided: string, expected: string): boolean {
-  const a = Buffer.from(provided);
-  const b = Buffer.from(expected);
-  if (a.length !== b.length) return false;
-  return timingSafeEqual(a, b);
+  const given = Buffer.from(provided);
+  const wanted = Buffer.from(expected);
+  if (given.length !== wanted.length) return false;
+  return timingSafeEqual(given, wanted);
 }
 
 const payloadSchema = z

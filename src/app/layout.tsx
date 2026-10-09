@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: { card: 'summary_large_image' },
   robots: {
     // Le site ne doit pas être indexe avant d’avoir ses vraies mentions
-    // légales et ses vrais visuels : passez NEXT_PUBLIC_ALLOW_INDEXING a
+    // légales et ses vrais visuels : passez NEXT_PUBLIC_ALLOW_INDEXING à
     // « true » le jour du lancement.
     index: process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true',
     follow: process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true',

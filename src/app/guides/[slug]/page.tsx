@@ -61,7 +61,7 @@ export default async function GuidePage({ params }: { params: Promise<{ slug: st
 
         <h1 className="mt-5 text-3xl sm:text-4xl">{guide.title}</h1>
         <p className="mt-3 text-sm text-muted">
-          {guide.readingMinutes} min de lecture — mis a jour le {guide.updated}
+          {guide.readingMinutes} min de lecture — mis à jour le {guide.updated}
         </p>
 
         <p className="mt-7 text-lg leading-relaxed text-ink-soft">{guide.intro}</p>

@@ -25,14 +25,14 @@ export const products: readonly Product[] = [
       "Le kit rassemble les quatre objets qui changent vraiment le résultat dans la tasse : le dripper conique en céramique, la verseuse graduée, la balance au décigramme et le filtre inox permanent. Nous l’avons compose en retirant tout ce qui ne sert qu’une fois. Si vous démarrez l’infusion manuelle, c’est le point d’entrée le plus direct ; si vous infusez déjà, c’est le remplacement complet d’un matériel dépareillé.",
     bullets: [
       'Dripper conique céramique — extraction régulière, nettoyage immédiat',
-      'Verseuse borosilicate 600 ml graduée a 200 / 400 / 600',
+      'Verseuse borosilicate 600 ml graduée à 200 / 400 / 600',
       'Balance 0,1 g avec minuteur intégré',
-      'Filtre inox permanent — plus de filtres papier a racheter',
+      'Filtre inox permanent — plus de filtres papier à racheter',
       'Livret de 6 recettes imprimées, dosages en grammes',
     ],
     specs: [
       { label: 'Contenu', value: '4 pièces + livret' },
-      { label: 'Capacité', value: '600 ml (2 a 4 tasses)' },
+      { label: 'Capacité', value: '600 ml (2 à 4 tasses)' },
       { label: 'Matières', value: 'Céramique, verre borosilicate, inox 304' },
       { label: 'Lave-vaisselle', value: 'Oui, sauf balance' },
       { label: 'Garantie', value: '2 ans (garantie légale de conformité)' },
@@ -57,10 +57,10 @@ export const products: readonly Product[] = [
     compareAtPrice: euros(168),
     tagline: 'Le kit complet, plus la seule pièce qui compte autant que l’eau.',
     description:
-      "Moudre juste avant l’infusion est le changement le plus audible sur une tasse — davantage que le choix du dripper. Ce lot ajoute donc le moulin manuel a meules coniques au Kit Rituel. C’est la configuration que nous utilisons nous-memes au quotidien, et celle que nous recommandons si vous ne voulez acheter qu’une fois.",
+      "Moudre juste avant l’infusion est le changement le plus audible sur une tasse — davantage que le choix du dripper. Ce lot ajoute donc le moulin manuel à meules coniques au Kit Rituel. C’est la configuration que nous utilisons nous-mêmes au quotidien, et celle que nous recommandons si vous ne voulez acheter qu’une fois.",
     bullets: [
       'Le Kit Rituel Complet dans son intégralité',
-      'Moulin manuel a meules coniques inox, 38 crans de réglage',
+      'Moulin manuel à meules coniques inox, 38 crans de réglage',
       'Du filtre au cold brew sans changer de matériel',
       '19 € d’économie par rapport aux deux achetés séparément',
     ],
@@ -89,7 +89,7 @@ export const products: readonly Product[] = [
     compareAtPrice: null,
     tagline: 'Des meules coniques, pas des lames.',
     description:
-      "Un moulin a lames hache le grain en morceaux de tailles inégales : les fines sur-extraient et amérisent pendant que les grosses restent acides. Des meules coniques découpent a dimension constante. C’est toute la différence entre une tasse confuse et une tasse lisible. 38 crans couvrent l’espresso comme la French press.",
+      "Un moulin à lames hache le grain en morceaux de tailles inégales : les fines sur-extraient et amérisent pendant que les grosses restent acides. Des meules coniques découpent à dimension constante. C’est toute la différence entre une tasse confuse et une tasse lisible. 38 crans couvrent l’espresso comme la French press.",
     bullets: [
       'Meules coniques en inox — granulométrie régulière',
       '38 crans, de l’espresso au cold brew',
@@ -126,11 +126,11 @@ export const products: readonly Product[] = [
     compareAtPrice: null,
     tagline: 'Un filet d’eau que vous dirigez au millimètre.',
     description:
-      "Le bec effile transforme le versement en geste contrôlable : vous mouillez la mouture par cercles réguliers au lieu de la creuser. Modèle a poser sur plaque ou gaz, sans électronique — donc rien a brancher, rien à réparer. Le manche reste froid grâce a l’entretoise creuse.",
+      "Le bec effile transforme le versement en geste contrôlable : vous mouillez la mouture par cercles réguliers au lieu de la creuser. Modèle à poser sur plaque ou gaz, sans électronique — donc rien à brancher, rien à réparer. Le manche reste froid grâce à l’entretoise creuse.",
     bullets: [
       'Bec col de cygne — débit lent et dirigeable',
       'Inox 304 brosse, compatible induction, gaz et vitrocéramique',
-      'Manche a entretoise creuse : reste manipulable a chaud',
+      'Manche à entretoise creuse : reste manipulable à chaud',
       'Capacité utile 900 ml',
       'Non électrique : pas de carte, pas de panne',
     ],
@@ -141,7 +141,7 @@ export const products: readonly Product[] = [
       { label: 'Garantie', value: '2 ans (garantie légale de conformité)' },
     ],
     images: [
-      { src: '/img/bouilloire-1.svg', alt: 'Bouilloire en inox a bec col de cygne' },
+      { src: '/img/bouilloire-1.svg', alt: 'Bouilloire en inox à bec col de cygne' },
     ],
     variants: [],
     crossSell: ['kit-rituel', 'dripper-ceramique'],
@@ -159,15 +159,15 @@ export const products: readonly Product[] = [
     compareAtPrice: null,
     tagline: 'La céramique garde la chaleur, le verre la perd.',
     description:
-      "Cône a 60 degrés et rainures hélicoïdales : l’eau descend par le centre au lieu de longer la paroi, ce qui évite les chemins préférentiels. La céramique emmagasine la chaleur du préchauffage et limite la chute de température pendant l’infusion — c’est la raison principale de la préférer au plastique.",
+      "Cône à 60 degrés et rainures hélicoïdales : l’eau descend par le centre au lieu de longer la paroi, ce qui évite les chemins préférentiels. La céramique emmagasine la chaleur du préchauffage et limite la chute de température pendant l’infusion — c’est la raison principale de la préférer au plastique.",
     bullets: [
-      'Cône 60° a rainures hélicoïdales',
+      'Cône 60° à rainures hélicoïdales',
       'Céramique émaillée — inertie thermique élevée',
       'Compatible filtres papier n°02 et filtre inox permanent',
       'Se pose sur la plupart des mugs et carafes',
     ],
     specs: [
-      { label: 'Taille', value: 'n°02 (1 a 4 tasses)' },
+      { label: 'Taille', value: 'n°02 (1 à 4 tasses)' },
       { label: 'Matière', value: 'Céramique émaillée' },
       { label: 'Lave-vaisselle', value: 'Oui' },
       { label: 'Garantie', value: '2 ans (garantie légale de conformité)' },
@@ -192,7 +192,7 @@ export const products: readonly Product[] = [
     compareAtPrice: null,
     tagline: 'Graduée là où vous regardez vraiment.',
     description:
-      "Verre borosilicate soufflé, gradué à 200, 400 et 600 ml — les trois volumes qui correspondent a une, deux et quatre tasses. Les repères sont sérigraphies et résistent au lave-vaisselle. Le col large accepte tous nos drippers.",
+      "Verre borosilicate soufflé, gradué à 200, 400 et 600 ml — les trois volumes qui correspondent à une, deux et quatre tasses. Les repères sont sérigraphies et résistent au lave-vaisselle. Le col large accepte tous nos drippers.",
     bullets: [
       'Borosilicate — résiste au choc thermique',
       'Graduations 200 / 400 / 600 ml sérigraphiées',
@@ -217,12 +217,12 @@ export const products: readonly Product[] = [
     id: 'balance-precision',
     slug: 'balance-precision',
     name: 'Balance Précision 0,1 g',
-    category: 'précision',
+    category: 'precision',
     price: euros(39),
     compareAtPrice: null,
     tagline: 'Le café se dose en grammes, pas en cuillères.',
     description:
-      "Une cuillère a soupe de grains pèse entre 5 et 9 g selon la torréfaction : c’est assez pour rendre une recette irréproductible. La balance affiche le décigramme et intégré un minuteur, les deux informations dont vous avez besoin en même temps. Surface plane, nettoyage d’un coup d’éponge.",
+      "Une cuillère à soupe de grains pèse entre 5 et 9 g selon la torréfaction : c’est assez pour rendre une recette irréproductible. La balance affiche le décigramme et intégré un minuteur, les deux informations dont vous avez besoin en même temps. Surface plane, nettoyage d’un coup d’éponge.",
     bullets: [
       'Précision 0,1 g jusqu’a 3 kg',
       'Minuteur intégré, affichage simultané poids + temps',
@@ -251,9 +251,9 @@ export const products: readonly Product[] = [
     category: 'extraction',
     price: euros(32),
     compareAtPrice: null,
-    tagline: 'Une tasse pleine, sans filtre a jeter.',
+    tagline: 'Une tasse pleine, sans filtre à jeter.',
     description:
-      "L’infusion par immersion donne un corps plus épais que le filtre : moins de clarté aromatique, plus de matière. Le format 350 ml correspond a une grande tasse — le bon volume quand on infuse pour soi. Le piston a double tamis limite nettement les fines dans la tasse.",
+      "L’infusion par immersion donne un corps plus épais que le filtre : moins de clarté aromatique, plus de matière. Le format 350 ml correspond à une grande tasse — le bon volume quand on infuse pour soi. Le piston à double tamis limite nettement les fines dans la tasse.",
     bullets: [
       'Double tamis inox — moins de dépôt dans la tasse',
       'Verre borosilicate remplaçable séparément',
@@ -285,9 +285,9 @@ export const products: readonly Product[] = [
     description:
       "Dripper pliable en inox, mug double paroi 350 ml et pochette en toile cotonnière. Plie, l’ensemble tient dans la poche latérale d’un sac cabine. Pas de pièce fragile, pas de verre : c’est le seul critère qui compte quand on déplace son matériel.",
     bullets: [
-      'Dripper inox pliable — 8 mm a plat',
+      'Dripper inox pliable — 8 mm à plat',
       'Mug double paroi 350 ml, garde chaud environ 2 h',
-      'Pochette toile avec rabat a pression',
+      'Pochette toile avec rabat à pression',
       'Aucune pièce en verre',
     ],
     specs: [
@@ -313,7 +313,7 @@ export const products: readonly Product[] = [
     compareAtPrice: null,
     tagline: 'Le dernier filtre que vous achetez.',
     description:
-      "Maille inox électroformée a 150 microns. Le papier retient une partie des huiles ; l’inox les laisse passer, ce qui donne une tasse plus ronde et un peu plus trouble. A rincer après usage, a passer au lave-vaisselle une fois par semaine.",
+      "Maille inox électroformée à 150 microns. Le papier retient une partie des huiles ; l’inox les laisse passer, ce qui donne une tasse plus ronde et un peu plus trouble. À rincer après usage, à passer au lave-vaisselle une fois par semaine.",
     bullets: [
       'Maille électroformée 150 microns',
       'Compatible dripper conique n°02',
@@ -326,7 +326,7 @@ export const products: readonly Product[] = [
       { label: 'Matière', value: 'Inox 304' },
       { label: 'Garantie', value: '2 ans (garantie légale de conformité)' },
     ],
-    images: [{ src: '/img/filtre-1.svg', alt: 'Filtre a café permanent en maille inox' }],
+    images: [{ src: '/img/filtre-1.svg', alt: 'Filtre à café permanent en maille inox' }],
     variants: [],
     crossSell: ['dripper-ceramique', 'verseuse-600'],
     hero: false,
@@ -343,11 +343,11 @@ export const products: readonly Product[] = [
     compareAtPrice: null,
     tagline: 'Parce qu’on oublie toujours le réglage qui marchait.',
     description:
-      "60 fiches pre-imprimees : origine, torréfaction, dose, mouture, température, temps, puis trois lignes pour ce que vous avez senti. En trois semaines vous saurez quel réglage donne votre tasse, au lieu de recommencer a chaque paquet. Papier 120 g, reliure cousue qui tient ouvert a plat.",
+      "60 fiches pré-imprimées : origine, torréfaction, dose, mouture, température, temps, puis trois lignes pour ce que vous avez senti. En trois semaines vous saurez quel réglage donne votre tasse, au lieu de recommencer à chaque paquet. Papier 120 g, reliure cousue qui tient ouvert à plat.",
     bullets: [
-      '60 fiches de dégustation pre-imprimees',
+      '60 fiches de dégustation pré-imprimées',
       'Roue des arômes en rabat intérieur',
-      'Papier 120 g, reliure cousue a plat',
+      'Papier 120 g, reliure cousue à plat',
       'Format 14 x 19 cm',
     ],
     specs: [
@@ -387,8 +387,8 @@ export function getVariant(product: Product, variantId: string | null) {
 
 /**
  * Prix unitaire effectif TTC pour un couple produit/variante.
- * C’est la SEULE fonction autorisée a déterminer un prix : le serveur la
- * rappelle a la validation du panier pour ne jamais faire confiance au client.
+ * C’est la SEULE fonction autorisée à déterminer un prix : le serveur la
+ * rappelle à la validation du panier pour ne jamais faire confiance au client.
  */
 export function unitPrice(product: Product, variantId: string | null): number {
   const variant = getVariant(product, variantId);
@@ -399,6 +399,6 @@ export const categoryLabels: Record<string, string> = {
   kit: 'Kits',
   extraction: 'Extraction',
   mouture: 'Mouture',
-  précision: 'Précision',
+  precision: 'Précision',
   accessoire: 'Accessoires',
 };

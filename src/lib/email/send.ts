@@ -3,7 +3,7 @@
  *
  * Resend si configure, sinon journalisation en console. Le repli n’est pas une
  * commodité : il permet de dérouler tout le tunnel d’achat en développement
- * sans envoyer de vrais messages a de vraies adresses.
+ * sans envoyer de vrais messages à de vraies adresses.
  */
 
 import { Resend } from 'resend';
@@ -63,11 +63,11 @@ export async function sendRawEmail(email: RawEmail): Promise<SendResult> {
 }
 
 /** Alerte interne : échec de transmission, anomalie de paiement. */
-export async function alertOps(subject: string, détail: string): Promise<void> {
+export async function alertOps(subject: string, detail: string): Promise<void> {
   const to = process.env.OPS_ALERT_EMAIL;
   if (!to) {
-    console.error(`[alerte] ${subject}\n${détail}`);
+    console.error(`[alerte] ${subject}\n${detail}`);
     return;
   }
-  await sendRawEmail({ to, subject: `[${brand.name}] ${subject}`, text: détail });
+  await sendRawEmail({ to, subject: `[${brand.name}] ${subject}`, text: detail });
 }

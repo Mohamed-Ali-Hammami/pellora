@@ -24,7 +24,7 @@ import { products, getProductById } from './catalog';
 import type { Cents } from './money';
 
 export interface SourcingLine {
-  /** Référence du produit chez le fournisseur, transmise telle quelle a sa commande. */
+  /** Référence du produit chez le fournisseur, transmise telle quelle à sa commande. */
   supplierSku: string;
   /** Prix d’achat unitaire HT, port exclu. */
   costNet: Cents;

@@ -4,7 +4,7 @@
  * Suivi en libre-service.
  *
  * C’est ce qui absorbe l’essentiel du support en dropshipping : sans cette
- * page, chaque commande génère un a deux e-mails « où est mon colis ? ».
+ * page, chaque commande génère un à deux e-mails « où est mon colis ? ».
  * La référence ET l’e-mail sont exiges, sinon n’importe qui pourrait consulter
  * une commande en devinant une référence.
  */
@@ -27,7 +27,7 @@ const STATUS_LABELS: Record<string, { label: string; detail: string; tone: strin
   },
   forwarded: {
     label: 'En préparation',
-    detail: 'L’entrepôt prépare votre colis. Le numéro de suivi arrive sous 1 a 2 jours ouvrés.',
+    detail: 'L’entrepôt prépare votre colis. Le numéro de suivi arrive sous 1 à 2 jours ouvrés.',
     tone: 'text-success',
   },
   shipped: {
@@ -164,7 +164,7 @@ export function TrackingForm() {
               month: 'long',
               year: 'numeric',
             })}
-            {order.city ? ` — livraison a ${order.city}` : ''}.
+            {order.city ? ` — livraison à ${order.city}` : ''}.
           </p>
         </div>
       )}

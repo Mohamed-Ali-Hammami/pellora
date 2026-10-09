@@ -2,7 +2,7 @@
  * Magasin en mémoire — développement et tests uniquement.
  *
  * Les données disparaissent au redémarrage du processus, et chaque instance
- * serverless a la sienne. En production, configurez Redis (cf. `redis.ts`) :
+ * serverless à la sienne. En production, configurez Redis (cf. `redis.ts`) :
  * `getStore()` émet un avertissement si ce n’est pas le cas.
  */
 

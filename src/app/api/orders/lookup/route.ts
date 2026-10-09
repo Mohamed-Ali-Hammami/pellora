@@ -5,7 +5,7 @@
  * e-mails « où est mon colis ? », qui représentent le gros du support en
  * dropshipping.
  *
- * La référence seule ne suffit PAS a autoriser la consultation : elle est
+ * La référence seule ne suffit PAS à autoriser la consultation : elle est
  * courte et apparaît dans des e-mails transférés. On exige donc la référence
  * ET l’adresse e-mail, et on ne renvoie que des données déjà connues du
  * client (cf. `toPublicOrder`).
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
   // d’énumérer les références valides.
   if (!order || order.email.toLowerCase() !== email) {
     return NextResponse.json(
-      { error: 'Aucune commande ne correspond a ces informations.' },
+      { error: 'Aucune commande ne correspond à ces informations.' },
       { status: 404 },
     );
   }

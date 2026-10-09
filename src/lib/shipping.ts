@@ -19,7 +19,7 @@ export interface ShippingRate {
   maxDays: number;
 }
 
-/** Seuil de livraison offerte, TTC. Lève le panier moyen : a ajuster en même temps que le mix produits. */
+/** Seuil de livraison offerte, TTC. Lève le panier moyen : à ajuster en même temps que le mix produits. */
 export const FREE_SHIPPING_THRESHOLD = euros(60);
 
 /** Pays desservis. Hors de cette liste, la commande est refusée avant paiement. */
@@ -79,7 +79,7 @@ export function defaultRate(subtotal: Cents, zone: ShippingZone): ShippingRate {
   return cheapest;
 }
 
-/** Reste a ajouter pour déclencher la livraison offerte. 0 si déjà atteint. */
+/** Reste à ajouter pour déclencher la livraison offerte. 0 si déjà atteint. */
 export function amountToFreeShipping(subtotal: Cents): Cents {
   return Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
 }
