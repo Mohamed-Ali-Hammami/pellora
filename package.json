@@ -1,0 +1,39 @@
+{
+  "name": "verseuse-store",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Boutique e-commerce dropshipping automatisee - niche cafe filtre / slow coffee",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "economics": "tsx scripts/economics.ts",
+    "verify": "npm run typecheck && npm run test && npm run build"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.39.0",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "resend": "6.32.1",
+    "stripe": "23.0.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "4.3.3",
+    "@types/node": "24.10.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tailwindcss": "4.3.3",
+    "tsx": "4.21.1",
+    "typescript": "5.9.3",
+    "vitest": "5.0.3"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}
