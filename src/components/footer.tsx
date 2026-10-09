@@ -62,7 +62,7 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} {brand.legalName}. Tous droits réserves.
+            &copy; {new Date().getFullYear()} {brand.legalName}. Tous droits réservés.
           </p>
           <p>Paiement sécurisé par Stripe — CB, Apple Pay, Google Pay.</p>
         </div>

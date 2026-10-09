@@ -52,7 +52,7 @@ export default function HomePage() {
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-ink-soft">
             Quatre objets suffisent à transformer une tasse : un cône qui garde la chaleur, une
             verseuse graduée, une balance au décigramme, un moulin à meules. Nous ne vendons que
-            ceux-la — et nous expliquons comment les utiliser.
+            ceux-là — et nous expliquons comment les utiliser.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">

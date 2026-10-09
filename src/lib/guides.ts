@@ -131,7 +131,7 @@ export const guides: readonly Guide[] = [
         heading: 'Manuel ou électrique',
         paragraphs: [
           "À budget égal, un moulin manuel offre de meilleures meules qu’un électrique : il n’y a ni moteur ni électronique à financer. Comptez environ 60 secondes pour 20 g — c’est le temps de la pré-infusion.",
-          "L’électrique se justifie si vous moulez de grandes quantités ou plusieurs fois par jour. En dessous, le manuel est le meilleur rapport qualite-prix, et il n’a rien qui puisse tomber en panne.",
+          "L’électrique se justifie si vous moulez de grandes quantités ou plusieurs fois par jour. En dessous, le manuel est le meilleur rapport qualité-prix, et il n’a rien qui puisse tomber en panne.",
         ],
       },
       {
