@@ -1,0 +1,5 @@
+# Harness de recherche TrendBasket
+#
+# Versions testees dans cette session : pandas 3.0.5, numpy 2.5.3
+pandas>=2.0
+numpy>=1.24
