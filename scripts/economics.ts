@@ -83,11 +83,16 @@ const verdict = ordersNeededFor(inputs, target);
 if (!verdict.reachable) {
   console.log('\n  >>> INATTEIGNABLE AVEC CES HYPOTHÈSES <<<\n');
   console.log(`  ${verdict.reason}\n`);
-  const neededCr = requiredConversionRate(inputs, target, 400);
+  const REFERENCE_ORDERS = 90;
+  const neededCr = requiredConversionRate(inputs, target, REFERENCE_ORDERS);
   console.log('  Pistes de correction :');
-  console.log(`    - panier moyen minimal à 400 commandes/mois : ${eur(requiredAov(inputs, target, 400))}`);
+  console.log(
+      `    - panier moyen minimal à ${REFERENCE_ORDERS} commandes/mois : ${eur(requiredAov(inputs, target, REFERENCE_ORDERS))}`,
+    );
   if (neededCr !== null) {
-    console.log(`    - conversion requise à 400 commandes/mois  : ${pct(neededCr * 100)}`);
+    console.log(
+        `    - conversion requise à ${REFERENCE_ORDERS} commandes/mois : ${pct(neededCr * 100)}`,
+      );
   }
   console.log(`    - CPC maximal à conversion constante       : ${eur(u.breakEvenCac * inputs.conversionRate)}`);
 } else {
@@ -106,7 +111,10 @@ if (!verdict.reachable) {
   console.log('  (environ 14 jours de dépenses, coefficient de sécurité 1,5)');
 }
 
-rule('SENSIBILITE — bénéfice mensuel à 400 commandes');
+/** Volume de référence : l'ordre de grandeur réaliste sur un panier à quatre chiffres. */
+const REFERENCE_VOLUME = 90;
+
+rule(`SENSIBILITE — bénéfice mensuel à ${REFERENCE_VOLUME} commandes`);
 const show = (label: string, rows: { value: number; profit: number }[], fmt: (n: number) => string) => {
   console.log(`\n  ${label}`);
   for (const r of rows) {
@@ -114,10 +122,10 @@ const show = (label: string, rows: { value: number; profit: number }[], fmt: (n:
     console.log(`    ${fmt(r.value).padStart(9)}  ->  ${eur(r.profit).padStart(12)}${flag}`);
   }
 };
-show('Taux de conversion', sensitivity(inputs, 'conversionRate', [0.012, 0.016, 0.02, 0.025, 0.03, 0.04], 400), (n) => pct(n * 100));
-show('Coût par clic', sensitivity(inputs, 'cpc', [0.4, 0.55, 0.7, 0.9, 1.2], 400), eur);
-show('Panier moyen', sensitivity(inputs, 'aov', [70, 80, 92, 110, 130], 400), eur);
-show('Coût d’achat', sensitivity(inputs, 'cogsPerOrder', [22, 26, 29, 34, 40], 400), eur);
+show('Taux de conversion', sensitivity(inputs, 'conversionRate', [0.004, 0.006, 0.008, 0.012, 0.016], REFERENCE_VOLUME), (n) => pct(n * 100));
+show('Coût par clic', sensitivity(inputs, 'cpc', [0.8, 1.1, 1.4, 1.8, 2.4], REFERENCE_VOLUME), eur);
+show('Panier moyen', sensitivity(inputs, 'aov', [1500, 1700, 1900, 2200, 2600], REFERENCE_VOLUME), eur);
+show('Coût d’achat', sensitivity(inputs, 'cogsPerOrder', [1000, 1090, 1180, 1280, 1400], REFERENCE_VOLUME), eur);
 
 rule();
 console.log(

@@ -17,7 +17,7 @@ sanction ou à une perte d'argent s'ils sont ignorés.
       légale pour tout vendeur en ligne à destination de consommateurs français
       (art. L. 612-1 du code de la consommation), à souscrire **avant** la
       première vente. Comptez 30 à 80 € par an.
-- [ ] **Vérifier le nom.** « Verseuse » n'a été vérifié ni en nom de domaine,
+- [ ] **Vérifier le nom.** « Pellora » n'a été vérifié ni en nom de domaine,
       ni à l'INPI. Faites les deux avant d'imprimer quoi que ce soit.
 - [ ] **TVA.** En franchise en base, pas de TVA facturée : il faut alors
       retirer les mentions « TVA incluse » et passer `DEFAULT_VAT_RATE` à `0`

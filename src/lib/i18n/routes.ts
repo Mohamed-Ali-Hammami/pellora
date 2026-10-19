@@ -8,7 +8,7 @@
  *
  * Comment : l'arborescence physique de `src/app/[locale]/…` garde des noms
  * canoniques en anglais (un seul dossier par page, pas quatre), et le
- * middleware réécrit l'URL localisée vers cette route canonique. La fonction
+ * proxy de Next réécrit l'URL localisée vers cette route canonique. La fonction
  * de correspondance est pure et testée dans `tests/routes.test.ts` : c'est la
  * pièce qui casserait silencieusement tout le maillage interne.
  */
@@ -165,8 +165,8 @@ export function guideHref(slug: string, locale: Locale): string {
 
 /**
  * Traduit un chemin public en chemin canonique, pour la réécriture faite par
- * le middleware. Renvoie `null` quand aucune traduction n'est nécessaire,
- * afin que le middleware laisse passer la requête sans la réécrire.
+ * le proxy. Renvoie `null` quand aucune traduction n'est nécessaire, afin que
+ * le proxy laisse passer la requête sans la réécrire.
  *
  * On compare les préfixes du plus long au plus court : « poeles/hydro » doit
  * gagner contre « poeles », sinon la page catégorie avalerait ses enfants.
@@ -187,6 +187,46 @@ export function toCanonicalPath(locale: Locale, publicPath: string): string | nu
 
   const dynamicEntries = Object.values(dynamicPrefixes)
     .map((entry) => ({ from: entry.localized[locale], to: entry.canonical }))
+    .sort((a, b) => b.from.length - a.from.length);
+
+  for (const entry of dynamicEntries) {
+    if (normalized.startsWith(`${entry.from}/`)) {
+      const rest = normalized.slice(entry.from.length + 1);
+      if (rest.length === 0 || rest.includes('/')) continue;
+      if (entry.to === entry.from) return null;
+      return `/${locale}/${entry.to}/${rest}`;
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Traduit un chemin CANONIQUE en chemin public localisé, ou renvoie `null`
+ * quand les deux coïncident.
+ *
+ * Sert à rediriger : sans cela, « /fr/shop/hydro » et « /fr/poeles/hydro »
+ * servent tous deux la même page. La balise `canonical` limite les dégâts,
+ * mais deux URL pour une page gaspillent le budget de crawl et diluent les
+ * liens entrants. Mieux vaut une redirection permanente.
+ */
+export function toLocalizedPath(locale: Locale, canonicalPath: string): string | null {
+  const normalized = canonicalPath.replace(/^\/+|\/+$/g, '');
+  if (normalized.length === 0) return null;
+
+  const staticEntries = routeNames
+    .map((name) => ({ from: canonicalPaths[name], to: localizedPaths[name][locale] }))
+    .filter((entry) => entry.from.length > 0)
+    .sort((a, b) => b.from.length - a.from.length);
+
+  for (const entry of staticEntries) {
+    if (normalized === entry.from) {
+      return entry.to === entry.from ? null : `/${locale}/${entry.to}`;
+    }
+  }
+
+  const dynamicEntries = Object.values(dynamicPrefixes)
+    .map((entry) => ({ from: entry.canonical, to: entry.localized[locale] }))
     .sort((a, b) => b.from.length - a.from.length);
 
   for (const entry of dynamicEntries) {

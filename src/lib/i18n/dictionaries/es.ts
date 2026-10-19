@@ -578,6 +578,17 @@ const es: Dictionary = {
     footerNote: 'Recibe este mensaje porque ha realizado un pedido en {domain}.',
   },
 
+  api: {
+    notConfigured: 'El pago aún no está configurado en esta tienda.',
+    unreadableBody: 'Solicitud ilegible.',
+    invalidCart: 'Carrito no válido.',
+    unknownCountry: 'Todavía no entregamos en «{country}».',
+    noCheckoutUrl: 'El proveedor de pago no ha devuelto una dirección de pago.',
+    checkoutFailed: 'No se ha podido abrir el pago. Inténtelo de nuevo en un momento.',
+    lookupMissingFields: 'Indique la referencia del pedido y el correo utilizado.',
+    lookupNotFound: 'Ningún pedido coincide con estos datos.',
+  },
+
 };
 
 export default es;

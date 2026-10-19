@@ -584,6 +584,17 @@ const fr = {
     footerNote: 'Vous recevez ce message parce que vous avez passé commande sur {domain}.',
   },
 
+  api: {
+    notConfigured: 'Le paiement n’est pas encore configuré sur cette boutique.',
+    unreadableBody: 'Requête illisible.',
+    invalidCart: 'Panier invalide.',
+    unknownCountry: 'Nous ne livrons pas encore en « {country} ».',
+    noCheckoutUrl: 'Le prestataire de paiement n’a pas renvoyé d’adresse de paiement.',
+    checkoutFailed: 'Impossible d’ouvrir le paiement. Réessayez dans un instant.',
+    lookupMissingFields: 'Indiquez la référence de commande et l’adresse e-mail utilisée.',
+    lookupNotFound: 'Aucune commande ne correspond à ces informations.',
+  },
+
 };
 
 export type Dictionary = typeof fr;

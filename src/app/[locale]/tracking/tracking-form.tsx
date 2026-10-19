@@ -50,7 +50,7 @@ export function TrackingForm({ locale, labels }: Props) {
     setOrder(null);
 
     try {
-      const query = new URLSearchParams({ ref: reference.trim(), email: email.trim() });
+      const query = new URLSearchParams({ ref: reference.trim(), email: email.trim(), locale });
       const response = await fetch(`/api/orders/lookup?${query.toString()}`);
       const payload: unknown = await response.json();
 

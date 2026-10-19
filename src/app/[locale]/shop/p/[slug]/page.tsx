@@ -6,7 +6,7 @@ import { ProductGallery } from '@/components/product-gallery';
 import { Notice } from '@/components/section';
 import { brand } from '@/lib/brand';
 import { getCrossSell, getProductBySlug, products, unitPrice } from '@/lib/catalog';
-import { priceShort } from '@/lib/format';
+import { decimal, integer, priceShort } from '@/lib/format';
 import { savingsPercent } from '@/lib/money';
 import { absoluteImageUrl, hasOnlyPlaceholders, primaryImage, resolveImages } from '@/lib/product-media';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -92,7 +92,7 @@ export default async function ProductPage({
     ...(tech
       ? {
           additionalProperty: [
-            { '@type': 'PropertyValue', name: dict.product.powerRange, value: `${tech.powerMinKw}–${tech.powerMaxKw} kW` },
+            { '@type': 'PropertyValue', name: dict.product.powerRange, value: `${tech.powerMinKw}-${tech.powerMaxKw} kW` },
             { '@type': 'PropertyValue', name: dict.product.efficiency, value: `${tech.efficiencyPercent} %` },
             { '@type': 'PropertyValue', name: dict.product.energyClass, value: tech.energyClass },
           ],
@@ -158,14 +158,26 @@ export default async function ProductPage({
 
           {tech ? (
             <dl className="mt-6 grid grid-cols-2 gap-x-5 gap-y-4 rounded-xl border border-line bg-cream p-5 text-sm sm:grid-cols-3">
-              <Fact label={dict.product.powerRange} value={`${tech.powerMinKw} – ${tech.powerMaxKw} kW`} />
-              <Fact label={dict.product.heatedArea} value={`${tech.heatedAreaMinM2}–${tech.heatedAreaMaxM2} m²`} />
-              <Fact label={dict.product.efficiency} value={`${tech.efficiencyPercent} %`} />
+              {/* Les nombres passent par `Intl` : le français écrit « 2,1 kW »,
+                  l'anglais « 2.1 kW ». Interpoler le nombre brut afficherait
+                  le point décimal dans les quatre langues. */}
+              <Fact
+                label={dict.product.powerRange}
+                value={`${decimal(tech.powerMinKw, locale)} – ${decimal(tech.powerMaxKw, locale)} kW`}
+              />
+              <Fact
+                label={dict.product.heatedArea}
+                value={`${integer(tech.heatedAreaMinM2, locale)} – ${integer(tech.heatedAreaMaxM2, locale)} m²`}
+              />
+              <Fact label={dict.product.efficiency} value={`${decimal(tech.efficiencyPercent, locale)} %`} />
               {tech.waterPowerKw !== null ? (
-                <Fact label={dict.product.waterPower} value={`${tech.waterPowerKw} kW`} />
+                <Fact
+                  label={dict.product.waterPower}
+                  value={`${decimal(tech.waterPowerKw, locale)} kW`}
+                />
               ) : null}
               {tech.ductedOutlets ? (
-                <Fact label={dict.product.ductedOutlets} value={String(tech.ductedOutlets)} />
+                <Fact label={dict.product.ductedOutlets} value={integer(tech.ductedOutlets, locale)} />
               ) : null}
               <Fact label={dict.product.energyClass} value={tech.energyClass} />
             </dl>

@@ -124,10 +124,10 @@ function Hero({ locale, dict }: { locale: Locale; dict: ReturnType<typeof getDic
             </a>
           </div>
 
-          <dl className="mt-12 grid max-w-xl grid-cols-3 gap-6 border-t border-night-line pt-7">
+          <dl className="mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-night-line pt-7 sm:gap-6">
             {stats.map((stat) => (
               <div key={stat.label}>
-                <dt className="tabular font-display text-xl font-semibold text-white md:text-2xl">
+                <dt className="tabular font-display text-base font-semibold text-white sm:text-xl md:text-2xl">
                   {stat.value}
                 </dt>
                 <dd className="mt-1 text-xs leading-snug text-white/50">{stat.label}</dd>

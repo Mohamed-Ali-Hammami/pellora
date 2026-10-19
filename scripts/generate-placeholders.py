@@ -59,13 +59,23 @@ def defs(uid: str, glass_cx: str = "50%", glass_cy: str = "58%") -> str:
 
 
 def flame(cx: float, cy: float, scale: float, uid: str) -> str:
-    """Flamme stylisée, posée sur le brasier."""
+    """
+    Flamme stylisée, posée sur le brasier.
+
+    Le contour est volontairement ASYMÉTRIQUE, avec un décroché sur la droite.
+    Une larme symétrique — le réflexe quand on dessine une flamme — se lit
+    comme une goutte d'eau, ce qui est exactement le contresens à éviter sur
+    une boutique de chauffage.
+    """
     s = scale
     return f"""  <g transform="translate({cx} {cy}) scale({s})">
-    <path d="M0 -30 C 13 -14 19 -4 19 6 C 19 17 10 25 0 25 C -10 25 -19 17 -19 6 C -19 -5 -11 -13 0 -30 Z"
-          fill="{GLOW}" opacity="0.92"/>
-    <path d="M0 -17 C 7 -7 11 -1 11 5 C 11 13 6 18 0 18 C -6 18 -11 13 -11 5 C -11 -2 -6 -8 0 -17 Z"
-          fill="#fff3d6" opacity="0.85"/>
+    <path d="M0 26 C -14 26 -19 17 -19 7 C -19 -4 -11 -12 -6 -32
+             C -2 -24 3 -21 5 -14 C 9 -20 16 -14 17 -2
+             C 18 14 11 26 0 26 Z"
+          fill="{GLOW}" opacity="0.94"/>
+    <path d="M0 19 C -8 19 -11 13 -11 6 C -11 -2 -5 -8 -1 -18
+             C 2 -10 10 -4 10 5 C 10 13 6 19 0 19 Z"
+          fill="#fff6e0" opacity="0.88"/>
   </g>
 """
 

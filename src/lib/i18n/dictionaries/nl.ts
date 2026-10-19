@@ -578,6 +578,17 @@ const nl: Dictionary = {
     footerNote: 'U ontvangt dit bericht omdat u een bestelling hebt geplaatst op {domain}.',
   },
 
+  api: {
+    notConfigured: 'Betalen is op deze winkel nog niet geconfigureerd.',
+    unreadableBody: 'Onleesbaar verzoek.',
+    invalidCart: 'Ongeldige winkelwagen.',
+    unknownCountry: 'Wij leveren nog niet in "{country}".',
+    noCheckoutUrl: 'De betaaldienst heeft geen betaaladres teruggegeven.',
+    checkoutFailed: 'De betaling kon niet worden geopend. Probeer het straks opnieuw.',
+    lookupMissingFields: 'Geef de bestelreferentie en het gebruikte e-mailadres op.',
+    lookupNotFound: 'Geen bestelling past bij deze gegevens.',
+  },
+
 };
 
 export default nl;

@@ -35,7 +35,7 @@ const staticIndex: Record<Locale, { path: string; route: RouteName }[]> = Object
   ]),
 ) as Record<Locale, { path: string; route: RouteName }[]>;
 
-/** Index canonique : utile quand l'URL a déjà été réécrite par le middleware. */
+/** Index canonique : utile quand l'URL a déjà été réécrite par le proxy. */
 const canonicalIndex = routeNames
   .map((route) => ({ path: canonicalPaths[route], route }))
   .filter((entry) => entry.path.length > 0)

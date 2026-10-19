@@ -94,16 +94,16 @@ export default async function ShopPage({
   }
 
   visible.sort((a, b) => {
-    switch (sort) {
-      case 'power-desc':
-        return (b.tech?.powerMaxKw ?? 0) - (a.tech?.powerMaxKw ?? 0);
-      case 'price-asc':
-        return a.price - b.price;
-      case 'price-desc':
-        return b.price - a.price;
-      default:
-        return (a.tech?.powerMaxKw ?? 0) - (b.tech?.powerMaxKw ?? 0);
+    // Un accessoire n'a pas de puissance. Trier sur `?? 0` le placerait en
+    // tête d'un tri croissant : la page « Tous les poêles » s'ouvrirait sur
+    // un aspirateur à cendres. Les sans-puissance vont donc toujours à la
+    // fin des tris par puissance, quel que soit le sens.
+    if (sort === 'power-asc' || sort === 'power-desc') {
+      if ((a.tech === null) !== (b.tech === null)) return a.tech === null ? 1 : -1;
+      const delta = (a.tech?.powerMaxKw ?? 0) - (b.tech?.powerMaxKw ?? 0);
+      return sort === 'power-asc' ? delta : -delta;
     }
+    return sort === 'price-asc' ? a.price - b.price : b.price - a.price;
   });
 
   const powerLabels: Record<PowerBandId, string> = {

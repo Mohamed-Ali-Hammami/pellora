@@ -18,6 +18,7 @@ import {
   productHref,
   routeNames,
   toCanonicalPath,
+  toLocalizedPath,
 } from '@/lib/i18n/routes';
 import { allEquivalents, equivalentPath, splitLocalePath } from '@/lib/i18n/equivalent';
 import { products } from '@/lib/catalog';
@@ -154,7 +155,7 @@ describe('table des routes', () => {
 
   it('ne réécrit pas quand le chemin public est déjà le chemin canonique', () => {
     // L'anglais partage ses segments avec le canonique : réécrire relancerait
-    // le middleware sur la même URL.
+    // le proxy sur la même URL.
     expect(toCanonicalPath('en', 'guides')).toBeNull();
     expect(toCanonicalPath('fr', 'contact')).toBeNull();
   });
@@ -197,7 +198,7 @@ describe('équivalences entre langues', () => {
     expect(equivalentPath(`/fr/guides/${guide.slug.fr}`, 'nl')).toBe(`/nl/gidsen/${guide.slug.nl}`);
   });
 
-  it('reconnaît aussi une URL déjà réécrite par le middleware', () => {
+  it('reconnaît aussi une URL déjà réécrite par le proxy', () => {
     expect(equivalentPath('/fr/shop/hydro', 'es')).toBe('/es/estufas/hidro');
   });
 
@@ -212,5 +213,58 @@ describe('équivalences entre langues', () => {
       expect(all[locale].startsWith(`/${locale}`), locale).toBe(true);
     }
     expect(all.fr).toBe('/fr/poeles/air-ventile');
+  });
+});
+
+describe('redirection du chemin canonique vers le chemin public', () => {
+  it('redirige un chemin canonique atteint directement', () => {
+    // Sans cela, « /fr/shop/hydro » et « /fr/poeles/hydro » servent la même
+    // page : deux URL qui se concurrencent sur les mêmes mots-clés.
+    expect(toLocalizedPath('fr', 'shop/hydro')).toBe('/fr/poeles/hydro');
+    expect(toLocalizedPath('es', 'shop')).toBe('/es/estufas');
+    expect(toLocalizedPath('nl', 'guides')).toBe('/nl/gidsen');
+  });
+
+  it('redirige aussi le préfixe d’une fiche produit, slug conservé', () => {
+    expect(toLocalizedPath('fr', 'shop/p/aria-6-poele-air-ventile')).toBe(
+      '/fr/poeles/p/aria-6-poele-air-ventile',
+    );
+  });
+
+  it('redirige aussi l’anglais, dont les segments publics ne sont pas les canoniques', () => {
+    // « shop » est le nom du dossier, « stoves » le segment public anglais :
+    // les deux diffèrent, donc l'anglais a besoin de la redirection comme
+    // les autres langues.
+    expect(toLocalizedPath('en', 'shop/hydro')).toBe('/en/stoves/hydro');
+  });
+
+  it('ne redirige pas quand le canonique est déjà le chemin public', () => {
+    // Pour ces routes, le dossier et le segment public portent le même nom :
+    // rediriger ferait boucler le proxy.
+    expect(toLocalizedPath('en', 'guides')).toBeNull();
+    expect(toLocalizedPath('fr', 'contact')).toBeNull();
+    expect(toLocalizedPath('en', 'returns')).toBeNull();
+  });
+
+  it('laisse passer l’accueil et les chemins inconnus', () => {
+    expect(toLocalizedPath('fr', '')).toBeNull();
+    expect(toLocalizedPath('fr', 'inconnu')).toBeNull();
+  });
+
+  it('n’entre jamais en conflit avec la réécriture inverse', () => {
+    /*
+     * Invariant qui protège d'une boucle de redirection : pour une même
+     * langue et un même chemin, les deux fonctions ne peuvent pas répondre
+     * toutes les deux. L'une traduit public -> canonique, l'autre
+     * canonique -> public ; si les deux s'appliquaient, le proxy
+     * redirigerait puis réécrirait indéfiniment.
+     */
+    const samples = ['', 'shop', 'shop/hydro', 'poeles', 'poeles/hydro', 'guides', 'gidsen', 'estufas/hidro'];
+    for (const locale of locales) {
+      for (const path of samples) {
+        const both = toCanonicalPath(locale, path) !== null && toLocalizedPath(locale, path) !== null;
+        expect(both, `${locale} / « ${path} » : les deux sens répondent`).toBe(false);
+      }
+    }
   });
 });

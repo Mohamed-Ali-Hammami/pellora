@@ -578,6 +578,17 @@ const en: Dictionary = {
     footerNote: 'You are receiving this message because you placed an order on {domain}.',
   },
 
+  api: {
+    notConfigured: 'Payment is not configured on this shop yet.',
+    unreadableBody: 'Unreadable request.',
+    invalidCart: 'Invalid cart.',
+    unknownCountry: 'We do not deliver to "{country}" yet.',
+    noCheckoutUrl: 'The payment provider returned no checkout address.',
+    checkoutFailed: 'Payment could not be opened. Please try again in a moment.',
+    lookupMissingFields: 'Enter the order reference and the email address used.',
+    lookupNotFound: 'No order matches these details.',
+  },
+
 };
 
 export default en;
