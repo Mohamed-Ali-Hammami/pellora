@@ -1,81 +1,139 @@
 'use client';
 
 /**
- * Bouton d’ajout au panier, avec choix de variante.
+ * Choix de la finition, de la quantité, et ajout au panier.
  *
- * Le retour visuel après clic est volontairement explicite : sans confirmation
- * immédiate, les visiteurs cliquent deux fois puis s’étonnent de la quantité.
+ * Les textes arrivent en propriétés : ce composant est client, il ne doit pas
+ * importer le dictionnaire, sinon les quatre langues partiraient dans le
+ * bundle du navigateur.
  */
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useCart } from './cart-provider';
-import { formatPrice } from '@/lib/money';
-import { unitPrice } from '@/lib/catalog';
 import type { Product } from '@/lib/catalog.types';
+import type { Locale } from '@/lib/i18n/config';
 
-export function AddToCart({ product }: { product: Product }) {
+interface Props {
+  product: Product;
+  locale: Locale;
+  cartHref: string;
+  labels: {
+    variant: string;
+    quantity: string;
+    add: string;
+    added: string;
+    viewCart: string;
+  };
+  /** Prix unitaires déjà formatés par le serveur, indexés par id de variante. */
+  variantPrices: Record<string, string>;
+}
+
+export function AddToCart({ product, locale, cartHref, labels, variantPrices }: Props) {
   const { add } = useCart();
-  const [variantId, setVariantId] = useState<string | null>(
-    product.variants.length > 0 ? product.variants[0]!.id : null,
-  );
-  const [added, setAdded] = useState(false);
+  const [variantId, setVariantId] = useState<string | null>(product.variants[0]?.id ?? null);
+  const [quantity, setQuantity] = useState(1);
+  const [justAdded, setJustAdded] = useState(false);
 
-  const price = unitPrice(product, variantId);
-
-  function handleAdd() {
-    add(product.id, variantId, 1);
-    setAdded(true);
-    window.setTimeout(() => setAdded(false), 2600);
+  function onAdd() {
+    add(product.id, variantId, quantity);
+    setJustAdded(true);
+    // Le retour visuel s'efface de lui-même : un bouton qui reste « Ajouté »
+    // empêche de comprendre qu'on peut ajouter à nouveau.
+    window.setTimeout(() => setJustAdded(false), 2600);
   }
 
   return (
-    <div>
-      {product.variants.length > 0 && (
-        <fieldset className="mb-5">
-          <legend className="mb-2 text-sm font-semibold">Finition</legend>
+    <div className="space-y-5">
+      {product.variants.length > 0 ? (
+        <fieldset>
+          <legend className="mb-2 text-sm font-semibold text-ink">{labels.variant}</legend>
           <div className="flex flex-wrap gap-2">
             {product.variants.map((variant) => {
               const selected = variant.id === variantId;
               return (
-                <button
+                <label
                   key={variant.id}
-                  type="button"
-                  onClick={() => setVariantId(variant.id)}
-                  aria-pressed={selected}
-                  className={`rounded-lg border px-3.5 py-2 text-sm transition-colors ${
+                  className={`cursor-pointer rounded-lg border px-3.5 py-2 text-sm transition-colors ${
                     selected
-                      ? 'border-ink bg-ink font-semibold text-white'
-                      : 'border-line hover:border-ink'
+                      ? 'border-ink bg-ink text-white'
+                      : 'border-line bg-paper text-ink-soft hover:border-ink'
                   }`}
                 >
-                  {variant.label}
-                  {variant.priceDelta !== 0 && (
-                    <span className={selected ? 'text-white/70' : 'text-muted'}>
-                      {' '}
-                      +{formatPrice(variant.priceDelta)}
+                  <input
+                    type="radio"
+                    name={`variant-${product.id}`}
+                    value={variant.id}
+                    checked={selected}
+                    onChange={() => setVariantId(variant.id)}
+                    className="sr-only"
+                  />
+                  <span className="font-medium">{variant.label[locale]}</span>
+                  {variant.priceDelta !== 0 ? (
+                    <span className={`ml-1.5 tabular text-xs ${selected ? 'opacity-80' : 'text-muted'}`}>
+                      +{(variant.priceDelta / 100).toLocaleString(locale)} €
                     </span>
-                  )}
-                </button>
+                  ) : null}
+                </label>
               );
             })}
           </div>
+          {variantId && variantPrices[variantId] ? (
+            <p className="mt-3 tabular text-2xl font-semibold text-ink">{variantPrices[variantId]}</p>
+          ) : null}
         </fieldset>
-      )}
+      ) : null}
 
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <button type="button" onClick={handleAdd} className="btn-primary flex-1">
-          Ajouter au panier — {formatPrice(price)}
+      <div className="flex flex-wrap items-end gap-3">
+        <div>
+          <label htmlFor={`qty-${product.id}`} className="mb-2 block text-sm font-semibold text-ink">
+            {labels.quantity}
+          </label>
+          <div className="flex items-center rounded-lg border border-line">
+            <button
+              type="button"
+              onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+              disabled={quantity <= 1}
+              aria-label="−"
+              className="px-3 py-2.5 text-lg leading-none text-ink-soft transition-colors hover:text-ink disabled:opacity-35"
+            >
+              −
+            </button>
+            <input
+              id={`qty-${product.id}`}
+              type="number"
+              min={1}
+              max={5}
+              value={quantity}
+              onChange={(event) => {
+                const next = Number.parseInt(event.target.value, 10);
+                setQuantity(Number.isNaN(next) ? 1 : Math.min(5, Math.max(1, next)));
+              }}
+              className="tabular w-12 border-x border-line py-2.5 text-center text-sm font-semibold focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => setQuantity((value) => Math.min(5, value + 1))}
+              disabled={quantity >= 5}
+              aria-label="+"
+              className="px-3 py-2.5 text-lg leading-none text-ink-soft transition-colors hover:text-ink disabled:opacity-35"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <button type="button" onClick={onAdd} className="btn-ember flex-1 min-w-[12rem]">
+          {justAdded ? labels.added : labels.add}
         </button>
-        <Link href="/panier" className="btn-secondary sm:w-auto">
-          Voir le panier
-        </Link>
       </div>
 
-      {/* `aria-live` : la confirmation est annoncée aux lecteurs d’écran. */}
-      <p aria-live="polite" className="mt-3 min-h-5 text-sm font-medium text-success">
-        {added ? 'Ajoute au panier.' : ''}
-      </p>
+      {justAdded ? (
+        <p role="status" className="text-sm">
+          <a href={cartHref} className="font-semibold text-ember underline underline-offset-4">
+            {labels.viewCart}
+          </a>
+        </p>
+      ) : null}
     </div>
   );
 }

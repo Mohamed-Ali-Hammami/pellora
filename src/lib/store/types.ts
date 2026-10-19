@@ -1,4 +1,5 @@
 import type { Cents } from '../money';
+import type { Locale } from '../i18n/config';
 import type { ShippingAddress } from '../suppliers/types';
 
 /**
@@ -40,11 +41,21 @@ export interface SupplierOrderRecord {
 }
 
 export interface Order {
-  /** Référence publique, communiquée au client (ex. VRS-7F2K9A). */
+  /** Référence publique, communiquée au client (ex. PEL-7F2K9A). */
   ref: string;
   status: OrderStatus;
   createdAt: string;
   updatedAt: string;
+
+  /**
+   * Langue du parcours d'achat.
+   *
+   * Stockée avec la commande et non recalculée : les e-mails de suivi sont
+   * envoyés des jours plus tard, parfois depuis une tâche planifiée qui n'a
+   * aucun contexte de requête. Un client qui a commandé en néerlandais doit
+   * recevoir son numéro de suivi en néerlandais.
+   */
+  locale: Locale;
 
   email: string;
   lines: OrderLine[];

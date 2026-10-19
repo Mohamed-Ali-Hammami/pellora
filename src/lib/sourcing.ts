@@ -1,14 +1,14 @@
 /**
- * Données d’approvisionnement — SERVEUR UNIQUEMENT.
+ * Données d'approvisionnement — SERVEUR UNIQUEMENT.
  *
- * Contient les prix d’achat et les références fournisseur. Ces informations
+ * Contient les prix d'achat et les références fournisseur. Ces informations
  * ne doivent jamais arriver dans le bundle navigateur : un concurrent qui lit
- * vos coûts d’achat connaît votre marge et votre fournisseur.
+ * vos coûts d'achat connaît votre marge et votre fournisseur.
  *
  * Trois protections se cumulent :
- *   1. la garde d’exécution ci-dessous (échec immédiat et bruyant) ;
+ *   1. la garde d'exécution ci-dessous (échec immédiat et bruyant) ;
  *   2. `tests/leakage.test.ts`, qui refuse tout import depuis un composant client ;
- *   3. la revue de code — ce fichier ne s’importe que depuis `src/app/api/**`
+ *   3. la revue de code — ce fichier ne s'importe que depuis `src/app/api/**`
  *      ou un module lui-même serveur.
  */
 
@@ -19,91 +19,98 @@ if (typeof window !== 'undefined') {
   );
 }
 
-import { euros } from './money';
+import { euros, type Cents } from './money';
 import { products, getProductById } from './catalog';
-import type { Cents } from './money';
 
 export interface SourcingLine {
   /** Référence du produit chez le fournisseur, transmise telle quelle à sa commande. */
   supplierSku: string;
-  /** Prix d’achat unitaire HT, port exclu. */
+  /** Prix d'achat unitaire HT, port exclu. */
   costNet: Cents;
   /** Identifiant du fournisseur (cf. `suppliers/`). */
   supplier: string;
-  /** Délai de préparation annonce par le fournisseur, en jours ouvrés. */
+  /** Délai de préparation annoncé par le fournisseur, en jours ouvrés. */
   leadTimeDays: number;
+  /** Coût du transport amont payé au fournisseur, par unité. */
+  inboundShipping: Cents;
 }
 
 /**
- * ATTENTION — les coûts ci-dessous sont des HYPOTHÈSES de travail, pas des
- * tarifs négociés. Ils donnent un ordre de grandeur réaliste pour un
- * grossiste européen, mais ils doivent être remplaces par vos vrais tarifs
- * avant toute décision : toute la rentabilité du site dépend de ces nombres.
+ * ATTENTION — ces coûts sont des HYPOTHÈSES DE TRAVAIL, pas des tarifs
+ * négociés. Ils donnent un ordre de grandeur plausible pour un grossiste
+ * européen de poêles à granulés (marge brute visée : 28 à 35 % sur les
+ * appareils, 45 à 55 % sur les accessoires), mais ils doivent être remplacés
+ * par vos vrais tarifs avant toute décision : toute la rentabilité du site
+ * dépend de ces nombres, et une erreur de 100 € sur un coût d'achat suffit à
+ * transformer une commande rentable en commande à perte.
+ *
+ * Le transport amont est séparé du coût marchandise : sur un appareil de
+ * 200 kg il représente 40 à 90 € et il est trop lourd pour être noyé dans un
+ * prix d'achat moyen.
  */
 export const sourcing: Record<string, SourcingLine> = {
-  'dripper-ceramique': { supplierSku: 'EU-DRP-C02', costNet: euros(7.8), supplier: 'eu-primary', leadTimeDays: 1 },
-  'verseuse-600': { supplierSku: 'EU-CRF-600', costNet: euros(9.5), supplier: 'eu-primary', leadTimeDays: 1 },
-  'balance-precision': { supplierSku: 'EU-SCL-01T', costNet: euros(12.0), supplier: 'eu-primary', leadTimeDays: 1 },
-  'filtre-inox': { supplierSku: 'EU-FLT-INX', costNet: euros(3.2), supplier: 'eu-primary', leadTimeDays: 1 },
-  'moulin-precision': { supplierSku: 'EU-GRD-38C', costNet: euros(26.0), supplier: 'eu-primary', leadTimeDays: 2 },
-  'bouilloire-col-cygne': { supplierSku: 'EU-KTL-900', costNet: euros(16.0), supplier: 'eu-primary', leadTimeDays: 2 },
-  'french-press': { supplierSku: 'EU-FRP-350', costNet: euros(9.0), supplier: 'eu-primary', leadTimeDays: 1 },
-  'kit-voyage': { supplierSku: 'EU-TRV-SET', costNet: euros(17.0), supplier: 'eu-primary', leadTimeDays: 2 },
-  'carnet-degustation': { supplierSku: 'POD-NTB-60', costNet: euros(4.5), supplier: 'pod-eu', leadTimeDays: 3 },
+  'aria-6': { supplierSku: 'IT-ARIA-06N', costNet: euros(742), supplier: 'eu-stoves', leadTimeDays: 2, inboundShipping: euros(48) },
+  'aria-9-canal': { supplierSku: 'IT-ARIA-09C', costNet: euros(1118), supplier: 'eu-stoves', leadTimeDays: 2, inboundShipping: euros(56) },
+  'vela-8-slim': { supplierSku: 'IT-VELA-08S', costNet: euros(1205), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(52) },
+  'aria-12-duo': { supplierSku: 'IT-ARIA-12D', costNet: euros(1376), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(64) },
+  'idro-12-compact': { supplierSku: 'IT-IDRO-12C', costNet: euros(1592), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(72) },
+  'idro-15': { supplierSku: 'IT-IDRO-15', costNet: euros(1854), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(78) },
+  'idro-20-ecs': { supplierSku: 'IT-IDRO-20S', costNet: euros(2310), supplier: 'eu-stoves', leadTimeDays: 4, inboundShipping: euros(88) },
+  'idro-24-plus': { supplierSku: 'IT-IDRO-24P', costNet: euros(2584), supplier: 'eu-stoves', leadTimeDays: 5, inboundShipping: euros(96) },
+  'kit-conduit-80': { supplierSku: 'PL-FLUE-80K4', costNet: euros(152), supplier: 'eu-flues', leadTimeDays: 2, inboundShipping: euros(18) },
+  'thermostat-wifi': { supplierSku: 'CN-THW-210', costNet: euros(52), supplier: 'eu-flues', leadTimeDays: 1, inboundShipping: euros(4) },
+  'aspirateur-cendres': { supplierSku: 'PL-ASH-20L', costNet: euros(34), supplier: 'eu-flues', leadTimeDays: 1, inboundShipping: euros(7) },
+  'granules-palette': { supplierSku: 'FR-PEL-DIN1T', costNet: euros(286), supplier: 'eu-pellets', leadTimeDays: 3, inboundShipping: euros(42) },
 };
 
-/**
- * Coût d’achat d’un produit. Pour un lot, c’est la somme des composants :
- * un lot n’a pas de référence propre chez le fournisseur, il est expédié
- * comme autant de lignes distinctes.
- */
+/** Coût d'achat marchandise d'un produit, HT, transport amont exclu. */
 export function costOf(productId: string): Cents {
-  const direct = sourcing[productId];
-  if (direct) return direct.costNet;
-
-  const product = getProductById(productId);
-  if (!product) throw new Error(`produit inconnu : ${productId}`);
-  if (product.bundleOf.length === 0) {
-    throw new Error(`aucun coût d’achat défini pour « ${productId} » et ce n’est pas un lot`);
+  const line = sourcing[productId];
+  if (!line) {
+    if (!getProductById(productId)) throw new Error(`produit inconnu : ${productId}`);
+    throw new Error(`aucun coût d’achat défini pour « ${productId} »`);
   }
-  return product.bundleOf.reduce<Cents>((acc, id) => acc + costOf(id), 0);
+  return line.costNet;
+}
+
+/** Coût de revient complet d'une unité : marchandise + transport amont. */
+export function landedCostOf(productId: string): Cents {
+  const line = sourcing[productId];
+  if (!line) throw new Error(`aucun coût d’achat défini pour « ${productId} »`);
+  return line.costNet + line.inboundShipping;
 }
 
 /**
- * Développe un produit en lignes fournisseur expédiables.
- * Un lot est aplati récursivement en ses composants.
+ * Marge brute en centimes sur une unité vendue au prix catalogue.
+ * Le prix catalogue est TTC : on en retire la TVA avant de comparer à un
+ * coût HT, sinon la marge affichée est fausse de 20 %.
  */
+export function grossMarginOf(productId: string, vatRate = 0.2): Cents {
+  const product = getProductById(productId);
+  if (!product) throw new Error(`produit inconnu : ${productId}`);
+  const netRevenue = Math.round(product.price / (1 + vatRate));
+  return netRevenue - landedCostOf(productId);
+}
+
+/** Lignes à transmettre au fournisseur pour une quantité donnée. */
 export function explodeToSupplierLines(
   productId: string,
   quantity: number,
 ): { supplierSku: string; supplier: string; quantity: number; productId: string }[] {
-  const direct = sourcing[productId];
-  if (direct) {
-    return [{ supplierSku: direct.supplierSku, supplier: direct.supplier, quantity, productId }];
-  }
-  const product = getProductById(productId);
-  if (!product) throw new Error(`produit inconnu : ${productId}`);
-  return product.bundleOf.flatMap((id) => explodeToSupplierLines(id, quantity));
+  const line = sourcing[productId];
+  if (!line) throw new Error(`aucun coût d’achat défini pour « ${productId} »`);
+  return [{ supplierSku: line.supplierSku, supplier: line.supplier, quantity, productId }];
 }
 
-/** Délai de préparation le plus long de la commande — base de la date de livraison annoncée. */
+/** Délai de préparation le plus long de la commande — base de la date annoncée. */
 export function maxLeadTimeDays(productIds: readonly string[]): number {
-  const leadTimes = productIds.flatMap((id) =>
-    explodeToSupplierLines(id, 1).map((l) => sourcing[l.productId]?.leadTimeDays ?? 2),
-  );
-  return leadTimes.length === 0 ? 2 : Math.max(...leadTimes);
+  const leadTimes = productIds.map((id) => sourcing[id]?.leadTimeDays ?? 3);
+  return leadTimes.length === 0 ? 3 : Math.max(...leadTimes);
 }
 
-/** Vérifié au démarrage que chaque produit du catalogue a un coût calculable. */
+/** Vérifie que chaque produit du catalogue a un coût calculable. */
 export function assertSourcingComplete(): void {
-  const missing: string[] = [];
-  for (const product of products) {
-    try {
-      costOf(product.id);
-    } catch {
-      missing.push(product.id);
-    }
-  }
+  const missing = products.filter((product) => !sourcing[product.id]).map((p) => p.id);
   if (missing.length > 0) {
     throw new Error(`coût d’achat manquant pour : ${missing.join(', ')}`);
   }

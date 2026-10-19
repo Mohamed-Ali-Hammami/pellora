@@ -34,17 +34,37 @@ function createDryRunSupplier(id: string): Supplier {
 
 let registry: Map<string, Supplier> | null = null;
 
+/**
+ * Identifiants attendus par `sourcing.ts`.
+ *
+ * Trois fournisseurs distincts parce qu'ils le sont réellement dans cette
+ * niche : le grossiste qui livre les appareils sur palette n'est jamais celui
+ * qui fournit les conduits, et le granulé se commande chez un négoce local
+ * pour éviter de payer le transport d'une tonne sur 1 500 km.
+ */
+const SUPPLIER_IDS = {
+  stoves: 'eu-stoves',
+  flues: 'eu-flues',
+  pellets: 'eu-pellets',
+} as const;
+
+const bcc = (): { bcc?: string } =>
+  process.env.SUPPLIER_ORDER_BCC ? { bcc: process.env.SUPPLIER_ORDER_BCC } : {};
+
 function build(): Map<string, Supplier> {
   const map = new Map<string, Supplier>();
 
+  // Grossiste appareils : API REST si disponible, bon de commande par e-mail
+  // sinon. Beaucoup de grossistes européens n'ont que l'e-mail, et ce sont
+  // souvent les plus réactifs.
   const restUrl = process.env.SUPPLIER_API_URL;
   const restKey = process.env.SUPPLIER_API_KEY;
   if (restUrl && restKey) {
     map.set(
-      'eu-primary',
+      SUPPLIER_IDS.stoves,
       createRestSupplier({
-        id: 'eu-primary',
-        label: 'Grossiste principal UE',
+        id: SUPPLIER_IDS.stoves,
+        label: 'Grossiste appareils UE',
         baseUrl: restUrl,
         apiKey: restKey,
         ...(process.env.SUPPLIER_AUTH_HEADER ? { authHeader: process.env.SUPPLIER_AUTH_HEADER } : {}),
@@ -52,24 +72,39 @@ function build(): Map<string, Supplier> {
     );
   } else if (process.env.SUPPLIER_ORDER_EMAIL) {
     map.set(
-      'eu-primary',
+      SUPPLIER_IDS.stoves,
       createEmailSupplier({
-        id: 'eu-primary',
-        label: 'Grossiste principal UE (e-mail)',
+        id: SUPPLIER_IDS.stoves,
+        label: 'Grossiste appareils UE (e-mail)',
         to: process.env.SUPPLIER_ORDER_EMAIL,
-        ...(process.env.SUPPLIER_ORDER_BCC ? { bcc: process.env.SUPPLIER_ORDER_BCC } : {}),
+        ...bcc(),
       }),
     );
   }
 
-  if (process.env.POD_ORDER_EMAIL) {
+  // Conduits et accessoires. À défaut d'adresse dédiée, on retombe sur le
+  // grossiste appareils : certains distribuent les deux.
+  const fluesEmail = process.env.FLUES_ORDER_EMAIL ?? process.env.SUPPLIER_ORDER_EMAIL;
+  if (fluesEmail) {
     map.set(
-      'pod-eu',
+      SUPPLIER_IDS.flues,
       createEmailSupplier({
-        id: 'pod-eu',
-        label: 'Impression à la demande UE',
-        to: process.env.POD_ORDER_EMAIL,
-        ...(process.env.SUPPLIER_ORDER_BCC ? { bcc: process.env.SUPPLIER_ORDER_BCC } : {}),
+        id: SUPPLIER_IDS.flues,
+        label: 'Grossiste conduits et accessoires',
+        to: fluesEmail,
+        ...bcc(),
+      }),
+    );
+  }
+
+  if (process.env.PELLETS_ORDER_EMAIL) {
+    map.set(
+      SUPPLIER_IDS.pellets,
+      createEmailSupplier({
+        id: SUPPLIER_IDS.pellets,
+        label: 'Négoce granulés',
+        to: process.env.PELLETS_ORDER_EMAIL,
+        ...bcc(),
       }),
     );
   }

@@ -24,10 +24,11 @@ const ADDRESS: ShippingAddress = {
   phone: null,
 };
 
-async function seedPaidOrder(productId = 'kit-rituel'): Promise<Order> {
+async function seedPaidOrder(productId = 'aria-6'): Promise<Order> {
   const cart = priceCart({
-    lines: [{ productId, variantId: null, quantity: 1 }],
+    lines: [{ productId, variantId: 'noir', quantity: 1 }],
     shippingCountry: 'FR',
+    locale: 'fr',
   });
   let order = createOrder({ cart, email: 'client@exemple.fr', stripeSessionId: 'cs_test_1' });
   order = withStatus(order, 'paid');
@@ -77,21 +78,21 @@ describe('traitement des commandes', () => {
     expect(sentTotal).toHaveLength(1);
   });
 
-  it('éclate un lot en lignes fournisseur expediables', async () => {
-    const order = await seedPaidOrder('kit-rituel');
+  it('transmet un appareil à son seul grossiste', async () => {
+    const order = await seedPaidOrder('aria-6');
     const outcome = await fulfillOrder(order.ref);
-    // Le kit regroupe 4 articles chez le même grossiste : une seule commande.
     expect(outcome.order.supplierOrders).toHaveLength(1);
-    expect(outcome.order.supplierOrders[0]!.supplier).toBe('eu-primary');
+    expect(outcome.order.supplierOrders[0]!.supplier).toBe('eu-stoves');
   });
 
   it('répartit une commande entre plusieurs fournisseurs', async () => {
     const cart = priceCart({
       lines: [
-        { productId: 'kit-rituel', variantId: null, quantity: 1 },
-        { productId: 'carnet-degustation', variantId: null, quantity: 1 },
+        { productId: 'aria-6', variantId: 'noir', quantity: 1 },
+        { productId: 'aspirateur-cendres', variantId: null, quantity: 1 },
       ],
       shippingCountry: 'FR',
+      locale: 'fr',
     });
     let order = createOrder({ cart, email: 'client@exemple.fr', stripeSessionId: 'cs_test_2' });
     order = withAddress(withStatus(order, 'paid'), ADDRESS);
@@ -99,7 +100,7 @@ describe('traitement des commandes', () => {
 
     const outcome = await fulfillOrder(order.ref);
     const suppliers = outcome.order.supplierOrders.map((s) => s.supplier).sort();
-    expect(suppliers).toEqual(['eu-primary', 'pod-eu']);
+    expect(suppliers).toEqual(['eu-flues', 'eu-stoves']);
     // Chaque fournisseur recoit une référence distincte, clé d’idempotence
     // de son cote.
     const refs = new Set(outcome.order.supplierOrders.map((s) => s.orderRef));
@@ -108,8 +109,9 @@ describe('traitement des commandes', () => {
 
   it('bascule en échec quand l’adresse manque', async () => {
     const cart = priceCart({
-      lines: [{ productId: 'kit-rituel', variantId: null, quantity: 1 }],
+      lines: [{ productId: 'aria-6', variantId: 'noir', quantity: 1 }],
       shippingCountry: 'FR',
+      locale: 'fr',
     });
     let order = createOrder({ cart, email: 'client@exemple.fr', stripeSessionId: 'cs_test_3' });
     order = withStatus(order, 'paid');
@@ -121,7 +123,7 @@ describe('traitement des commandes', () => {
   });
 
   it('leve une erreur explicite si la commande n’existe pas', async () => {
-    await expect(fulfillOrder('VRS-INCONNU')).rejects.toThrow(/introuvable/);
+    await expect(fulfillOrder('PEL-INCONNU')).rejects.toThrow(/introuvable/);
   });
 
   it('empeche deux traitements concurrents', async () => {
@@ -136,7 +138,7 @@ describe('traitement des commandes', () => {
 
 describe('état par fournisseur', () => {
   const base = (): Order => ({
-    ref: 'VRS-TEST01', status: 'paid', createdAt: '', updatedAt: '',
+    ref: 'PEL-TEST01', status: 'paid', createdAt: '', updatedAt: '', locale: 'fr',
     email: 'a@b.fr', lines: [], subtotal: 0, shippingPrice: 0, total: 0, vat: 0,
     currency: 'EUR', shippingLabel: 'x', address: ADDRESS, stripeSessionId: null,
     stripePaymentIntentId: null, supplierOrders: [], trackingNumber: null, carrier: null,
@@ -159,7 +161,7 @@ describe('état par fournisseur', () => {
 
     expect(isSupplierDone(order, 'eu-primary')).toBe(true);
     expect(isSupplierDone(order, 'pod-eu')).toBe(false);
-    expect(isFullyForwarded(order, ['eu-primary', 'pod-eu'])).toBe(false);
+    expect(isFullyForwarded(order, ['eu-flues', 'eu-stoves'])).toBe(false);
     expect(isFullyForwarded(order, ['eu-primary'])).toBe(true);
   });
 
@@ -196,7 +198,7 @@ describe('références et vue publique', () => {
     // Pas de collision sur 400 tirages.
     expect(refs.size).toBe(400);
     for (const ref of refs) {
-      expect(ref).toMatch(/^VRS-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/);
+      expect(ref).toMatch(/^PEL-[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$/);
       // Ni I, ni O, ni 0, ni 1 : pas d’ambiguite a la dictee.
       expect(ref.slice(4)).not.toMatch(/[IO01]/);
     }
@@ -204,8 +206,9 @@ describe('références et vue publique', () => {
 
   it('masque les données personnelles dans la vue publique', () => {
     const cart = priceCart({
-      lines: [{ productId: 'kit-rituel', variantId: null, quantity: 1 }],
+      lines: [{ productId: 'aria-6', variantId: 'noir', quantity: 1 }],
       shippingCountry: 'FR',
+      locale: 'fr',
     });
     let order = createOrder({ cart, email: 'secret@exemple.fr', stripeSessionId: 'cs_x' });
     order = withAddress(order, ADDRESS);

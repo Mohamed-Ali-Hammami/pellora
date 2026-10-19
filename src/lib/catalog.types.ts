@@ -1,45 +1,115 @@
 import type { Cents } from './money';
+import type { Localized } from './i18n/config';
 
-export type ProductCategory = 'kit' | 'extraction' | 'mouture' | 'precision' | 'accessoire';
+/**
+ * Familles de produits.
+ *
+ * Deux familles de poêles, qui ne répondent pas au même besoin :
+ *  - `air`   : poêle à air ventilé — chauffe la ou les pièces où l'air est
+ *              soufflé, éventuellement canalisé vers des pièces voisines ;
+ *  - `hydro` : poêle hydro — raccordé au circuit de chauffage central
+ *              (radiateurs, plancher chauffant) et parfois à l'eau chaude
+ *              sanitaire. Il remplace ou seconde une chaudière.
+ * `accessoire` regroupe ce qui se vend avec : conduit, thermostat, entretien.
+ */
+export type ProductCategory = 'air' | 'hydro' | 'accessoire';
+
+export const productCategories = ['air', 'hydro', 'accessoire'] as const;
 
 export interface ProductVariant {
   id: string;
-  label: string;
-  /** Surcout TTC par rapport au prix de base du produit. Peut être 0. */
+  label: Localized<string>;
+  /** Surcoût TTC par rapport au prix de base. Peut être 0. */
   priceDelta: Cents;
 }
 
 export interface ProductImage {
-  /** Chemin local (`/img/...`) ou URL absolue d’un domaine déclaré dans next.config.ts. */
+  /** Chemin local (`/img/...`) ou URL absolue d'un domaine déclaré dans next.config.ts. */
   src: string;
-  alt: string;
+  alt: Localized<string>;
+  /**
+   * `true` pour un rendu de substitution (illustration vectorielle) et non une
+   * photographie du produit réel. Sert à afficher la mention correspondante :
+   * présenter un dessin comme une photo de produit serait une pratique
+   * commerciale trompeuse.
+   */
+  placeholder: boolean;
+}
+
+export interface SpecRow {
+  label: Localized<string>;
+  value: Localized<string>;
+}
+
+/**
+ * Caractéristiques techniques exploitées par le code (filtres, calculateur de
+ * puissance, données structurées). Elles sont séparées du tableau `specs`
+ * affiché, qui peut contenir n'importe quelle ligne libre.
+ *
+ * ATTENTION : ces valeurs ont une portée réglementaire. La puissance, le
+ * rendement et la classe énergétique doivent reprendre À L'IDENTIQUE la fiche
+ * technique et l'étiquette énergétique du fabricant (règlement UE 2015/1185
+ * pour l'écoconception, 2015/1186 pour l'étiquetage). Les annoncer à
+ * l'estime engage la responsabilité du vendeur.
+ */
+export interface StoveTech {
+  /** Puissance nominale minimale et maximale, en kW. */
+  powerMinKw: number;
+  powerMaxKw: number;
+  /** Fourchette de surface chauffée annoncée, en m², pour une hauteur de 2,5 m. */
+  heatedAreaMinM2: number;
+  heatedAreaMaxM2: number;
+  /** Capacité du réservoir à granulés, en kg. */
+  hopperKg: number;
+  /** Rendement à puissance nominale, en %. */
+  efficiencyPercent: number;
+  /** Classe de l'étiquette énergétique (règlement UE 2015/1186). */
+  energyClass: string;
+  /** Diamètre de sortie des fumées, en mm. */
+  flueDiameterMm: number;
+  /** Niveau sonore annoncé en fonctionnement, en dB(A). */
+  noiseDbA: number | null;
+  /** Puissance cédée à l'eau, en kW — poêles hydro uniquement. */
+  waterPowerKw: number | null;
+  /** Production d'eau chaude sanitaire — poêles hydro uniquement. */
+  domesticHotWater: boolean;
+  /** Nombre de sorties canalisables — poêles à air uniquement. */
+  ductedOutlets: number | null;
+  dimensionsMm: { height: number; width: number; depth: number };
+  weightKg: number;
 }
 
 export interface Product {
   id: string;
-  slug: string;
+  /** Slug localisé : l'URL espagnole ne doit pas être un mot français. */
+  slug: Localized<string>;
+  /** Nom commercial — identique dans les quatre langues (c'est une référence). */
   name: string;
   category: ProductCategory;
   /** Prix de vente TTC. */
   price: Cents;
-  /** Prix barre TTC, pour les lots. `null` si pas de référence barrée honnête. */
+  /** Prix barré TTC. `null` s'il n'existe pas de référence barrée honnête. */
   compareAtPrice: Cents | null;
   /** Une phrase : le bénéfice, pas la caractéristique. */
-  tagline: string;
-  description: string;
-  bullets: readonly string[];
-  specs: readonly { label: string; value: string }[];
+  tagline: Localized<string>;
+  description: Localized<string>;
+  bullets: Localized<readonly string[]>;
+  specs: readonly SpecRow[];
+  tech: StoveTech | null;
   images: readonly ProductImage[];
   variants: readonly ProductVariant[];
   /** Produits proposés en complément sur la fiche et au panier. */
   crossSell: readonly string[];
-  /** Mis en avant en page d’accueil. */
+  /** Mis en avant en page d'accueil. */
   hero: boolean;
-  /** Poids en grammes, emballage inclus — sert au calcul des frais de port. */
+  /** Poids expédié en grammes, emballage inclus — sert au calcul du port. */
   weightGrams: number;
-  /** Ids des produits inclus, si c’est un lot. */
-  bundleOf: readonly string[];
-  badge: string | null;
+  /** `true` si l'article part en messagerie palettisée et non en colis. */
+  freight: boolean;
+  badge: Localized<string> | null;
+  /** Délai d'expédition annoncé par le fournisseur, en jours ouvrés. */
+  dispatchDaysMin: number;
+  dispatchDaysMax: number;
 }
 
 export interface CatalogEntryRef {

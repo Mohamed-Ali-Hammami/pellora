@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bodystoveairlarge" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#302825"/>
+      <stop offset="1" stop-color="#1b1512"/>
+    </linearGradient>
+    <linearGradient id="sheenstoveairlarge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="0.35" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glassstoveairlarge" cx="50%" cy="58%" r="68%">
+      <stop offset="0" stop-color="#ffc879"/>
+      <stop offset="0.34" stop-color="#e9762a"/>
+      <stop offset="0.68" stop-color="#bc4213"/>
+      <stop offset="1" stop-color="#3a1d0d"/>
+    </radialGradient>
+    <radialGradient id="halostoveairlarge" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#e9762a" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#e9762a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="200.0" cy="454" rx="195" ry="26" fill="url(#halostoveairlarge)"/>
+  <rect x="187" y="18" width="26" height="56" rx="5" fill="#4a403b"/><rect x="187" y="18" width="9" height="56" fill="url(#sheenstoveairlarge)"/>
+  <rect x="75" y="70" width="250" height="360" rx="18" fill="url(#bodystoveairlarge)"/><rect x="75" y="70" width="250" height="360" rx="18" fill="url(#sheenstoveairlarge)"/>
+  <rect x="83" y="76" width="234" height="12" rx="6" fill="#4a403b" opacity="0.75"/>
+  <rect x="102" y="164" width="195" height="151" rx="10" fill="url(#glassstoveairlarge)"/><rect x="102" y="164" width="195" height="151" rx="10" fill="none" stroke="#17120f" stroke-width="3" opacity="0.55"/>
+  <g transform="translate(200.0 263.39200000000005) scale(1.3745454545454545)">
+    <path d="M0 -30 C 13 -14 19 -4 19 6 C 19 17 10 25 0 25 C -10 25 -19 17 -19 6 C -19 -5 -11 -13 0 -30 Z"
+          fill="#ffc879" opacity="0.92"/>
+    <path d="M0 -17 C 7 -7 11 -1 11 5 C 11 13 6 18 0 18 C -6 18 -11 13 -11 5 C -11 -2 -6 -8 0 -17 Z"
+          fill="#fff3d6" opacity="0.85"/>
+  </g>
+
+  <rect x="116" y="299" width="167" height="11" rx="4" fill="#17120f" opacity="0.65"/>
+  <rect x="156" y="335" width="88" height="22" rx="7" fill="#17120f" opacity="0.55"/>
+  <circle cx="174" cy="346" r="4" fill="#fbf8f4" opacity="0.45"/>
+  <circle cx="200" cy="346" r="4" fill="#a9844f" opacity="0.9"/>
+  <circle cx="226" cy="346" r="4" fill="#fbf8f4" opacity="0.45"/>
+  <rect x="89" y="400" width="222" height="2" rx="1" fill="#a9844f" opacity="0.5"/>
+  <rect x="100" y="428" width="18" height="26" rx="6" fill="#4a403b"/>
+  <rect x="282" y="428" width="18" height="26" rx="6" fill="#4a403b"/>
+</svg>

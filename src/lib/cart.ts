@@ -2,20 +2,28 @@
  * Logique de panier — fonctions pures, sans dépendance au navigateur ni au
  * réseau, donc testables directement.
  *
- * REGLE DE SECURITE CENTRALE : un panier qui arrive du client ne contient que
+ * RÈGLE DE SÉCURITÉ CENTRALE : un panier qui arrive du client ne contient que
  * des identifiants et des quantités. Les prix sont TOUJOURS relus dans le
- * catalogue côté serveur par `priceCart`. Sans cela, n’importe qui peut
- * modifier le prix dans la requête et payer 1 centime.
+ * catalogue côté serveur par `priceCart`. Sans cela, n'importe qui peut
+ * modifier le prix dans la requête et payer un centime.
  */
 
 import { z } from 'zod';
 import { getProductById, unitPrice, getVariant } from './catalog';
 import { multiply, splitVatInclusive, type Cents } from './money';
-import { defaultRate, findRate, zoneForCountry, type ShippingRate } from './shipping';
+import {
+  defaultRate,
+  findRate,
+  zoneForCountry,
+  type ShippingProfile,
+  type ShippingRate,
+} from './shipping';
+import { locales } from './i18n/config';
+import type { Locale } from './i18n/config';
 import type { Product, ProductVariant } from './catalog.types';
 
 /** Quantité maximale par ligne — limite les tests de fraude à la carte. */
-export const MAX_QUANTITY_PER_LINE = 10;
+export const MAX_QUANTITY_PER_LINE = 5;
 export const MAX_LINES = 20;
 
 /** Ce que le client est autorisé à envoyer : des ids et des quantités, rien de plus. */
@@ -32,6 +40,8 @@ export const cartInputSchema = z.object({
     .max(MAX_LINES),
   shippingCountry: z.string().length(2).toUpperCase().default('FR'),
   shippingRateId: z.string().min(1).max(64).optional(),
+  /** Langue du parcours : détermine la langue de la page de paiement et des e-mails. */
+  locale: z.enum(locales).default('fr'),
 });
 
 export type CartInput = z.infer<typeof cartInputSchema>;
@@ -51,8 +61,12 @@ export interface PricedCart {
   total: Cents;
   vat: Cents;
   netTotal: Cents;
-  totalWeightGrams: number;
+  profile: ShippingProfile;
   itemCount: number;
+  locale: Locale;
+  /** Délai d'expédition le plus long du panier : c'est lui qui s'applique. */
+  dispatchDaysMin: number;
+  dispatchDaysMax: number;
 }
 
 export class CartError extends Error {
@@ -65,9 +79,19 @@ export class CartError extends Error {
   }
 }
 
+/** Contraintes de transport imposées par un ensemble de lignes. */
+export function profileFor(
+  lines: readonly { product: Product; quantity: number }[],
+): ShippingProfile {
+  return {
+    freight: lines.some((l) => l.product.freight),
+    weightGrams: lines.reduce((acc, l) => acc + l.product.weightGrams * l.quantity, 0),
+  };
+}
+
 /**
- * Transforme un panier client en panier chiffre, en relisant chaque prix
- * dans le catalogue. C’est le seul point où un total est calculé.
+ * Transforme un panier client en panier chiffré, en relisant chaque prix dans
+ * le catalogue. C'est le seul endroit où un total est calculé.
  */
 export function priceCart(input: CartInput): PricedCart {
   if (input.lines.length === 0) {
@@ -79,10 +103,7 @@ export function priceCart(input: CartInput): PricedCart {
   for (const line of input.lines) {
     const key = `${line.productId}::${line.variantId ?? ''}`;
     const existing = merged.get(key);
-    const quantity = Math.min(
-      MAX_QUANTITY_PER_LINE,
-      (existing?.quantity ?? 0) + line.quantity,
-    );
+    const quantity = Math.min(MAX_QUANTITY_PER_LINE, (existing?.quantity ?? 0) + line.quantity);
     merged.set(key, { productId: line.productId, variantId: line.variantId, quantity });
   }
 
@@ -100,8 +121,8 @@ export function priceCart(input: CartInput): PricedCart {
         'UNKNOWN_VARIANT',
       );
     }
-    // Un produit a variantes exige un choix explicite : sinon le prix affiche
-    // et le prix facture peuvent différer.
+    // Un produit à variantes exige un choix explicite : sinon le prix affiché
+    // et le prix facturé peuvent différer.
     if (product.variants.length > 0 && variant === null) {
       throw new CartError(`variante requise pour ${product.id}`, 'UNKNOWN_VARIANT');
     }
@@ -118,10 +139,11 @@ export function priceCart(input: CartInput): PricedCart {
 
   const subtotal = lines.reduce<Cents>((acc, l) => acc + l.lineTotal, 0);
   const zone = zoneForCountry(input.shippingCountry);
+  const profile = profileFor(lines);
 
   const shipping = input.shippingRateId
-    ? findRate(subtotal, zone, input.shippingRateId)
-    : defaultRate(subtotal, zone);
+    ? findRate(subtotal, zone, profile, input.shippingRateId)
+    : defaultRate(subtotal, zone, profile);
   if (!shipping) {
     throw new CartError(`mode de livraison inconnu : ${input.shippingRateId}`, 'UNKNOWN_RATE');
   }
@@ -136,19 +158,24 @@ export function priceCart(input: CartInput): PricedCart {
     total,
     vat,
     netTotal: net,
-    totalWeightGrams: lines.reduce((acc, l) => acc + l.product.weightGrams * l.quantity, 0),
+    profile,
     itemCount: lines.reduce((acc, l) => acc + l.quantity, 0),
+    locale: input.locale,
+    // Le panier part en une seule expédition : c'est donc la ligne la plus
+    // lente qui fixe la date, pas la plus rapide.
+    dispatchDaysMin: Math.max(...lines.map((l) => l.product.dispatchDaysMin)),
+    dispatchDaysMax: Math.max(...lines.map((l) => l.product.dispatchDaysMax)),
   };
 }
 
-/** Fenêtre de livraison annoncée, à partir d’une date d’expédition. */
+/** Fenêtre de livraison annoncée, expédition comprise. */
 export function deliveryWindow(
-  rate: ShippingRate,
+  cart: Pick<PricedCart, 'shipping' | 'dispatchDaysMin' | 'dispatchDaysMax'>,
   from: Date = new Date(),
 ): { earliest: Date; latest: Date } {
   return {
-    earliest: addBusinessDays(from, rate.minDays),
-    latest: addBusinessDays(from, rate.maxDays),
+    earliest: addBusinessDays(from, cart.dispatchDaysMin + cart.shipping.minDays),
+    latest: addBusinessDays(from, cart.dispatchDaysMax + cart.shipping.maxDays),
   };
 }
 

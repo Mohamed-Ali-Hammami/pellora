@@ -20,6 +20,7 @@ import {
   cartToLineItems,
   cartToShippingOptions,
   allowedShippingCountries,
+  checkoutLocale,
   successUrl,
   cancelUrl,
 } from '@/lib/stripe';
@@ -73,9 +74,9 @@ export async function POST(request: Request) {
       phone_number_collection: { enabled: true },
       billing_address_collection: 'auto',
       customer_creation: 'always',
-      locale: 'fr',
-      success_url: successUrl(),
-      cancel_url: cancelUrl(),
+      locale: checkoutLocale(cart.locale),
+      success_url: successUrl(cart.locale, order.ref),
+      cancel_url: cancelUrl(cart.locale),
       expires_at: Math.floor(Date.now() / 1000) + SESSION_TTL_SECONDS,
       client_reference_id: order.ref,
       // La référence voyage dans les deux sens : le webhook retrouve la

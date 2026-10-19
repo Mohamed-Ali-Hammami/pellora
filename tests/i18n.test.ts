@@ -1,0 +1,216 @@
+import { describe, it, expect } from 'vitest';
+import { dictionaries } from '@/lib/i18n/dictionaries';
+import {
+  isLocale,
+  locales,
+  negotiateLocale,
+  intlLocales,
+  htmlLangs,
+  ogLocales,
+  localeNames,
+  stripeLocales,
+  defaultLocale,
+} from '@/lib/i18n/config';
+import {
+  canonicalPaths,
+  href,
+  localizedPaths,
+  productHref,
+  routeNames,
+  toCanonicalPath,
+} from '@/lib/i18n/routes';
+import { allEquivalents, equivalentPath, splitLocalePath } from '@/lib/i18n/equivalent';
+import { products } from '@/lib/catalog';
+import { guides } from '@/lib/guides';
+
+/** Chemins de toutes les feuilles d'un objet, pour comparer deux dictionnaires. */
+function leafPaths(value: unknown, prefix = ''): string[] {
+  if (Array.isArray(value)) {
+    // Les tableaux du dictionnaire sont des listes de contenu : on compare
+    // leur longueur, pas chaque entrée (le nombre d'arguments d'une liste doit
+    // rester identique d'une langue à l'autre, pas le texte).
+    return [`${prefix}[]:${value.length}`, ...value.flatMap((item, i) => leafPaths(item, `${prefix}[${i}]`))];
+  }
+  if (typeof value === 'object' && value !== null) {
+    return Object.entries(value).flatMap(([key, child]) =>
+      leafPaths(child, prefix ? `${prefix}.${key}` : key),
+    );
+  }
+  return [prefix];
+}
+
+describe('complétude des dictionnaires', () => {
+  const reference = leafPaths(dictionaries[defaultLocale]).sort();
+
+  it('a un dictionnaire par langue déclarée', () => {
+    expect(Object.keys(dictionaries).sort()).toEqual([...locales].sort());
+  });
+
+  for (const locale of locales) {
+    it(`a exactement les mêmes clés en ${locale} qu’en ${defaultLocale}`, () => {
+      // Le typage garantit déjà les clés d'objet ; ce test ajoute la longueur
+      // des listes, qu'aucun type ne contraint — une langue avec trois
+      // promesses au lieu de quatre afficherait une grille trouée.
+      expect(leafPaths(dictionaries[locale]).sort()).toEqual(reference);
+    });
+
+    it(`n’a aucun texte vide en ${locale}`, () => {
+      const empty: string[] = [];
+      const walk = (value: unknown, path: string): void => {
+        if (typeof value === 'string') {
+          if (value.trim().length === 0) empty.push(path);
+          return;
+        }
+        if (Array.isArray(value)) {
+          value.forEach((item, i) => walk(item, `${path}[${i}]`));
+          return;
+        }
+        if (typeof value === 'object' && value !== null) {
+          for (const [key, child] of Object.entries(value)) walk(child, `${path}.${key}`);
+        }
+      };
+      walk(dictionaries[locale], locale);
+      expect(empty, empty.join(', ')).toEqual([]);
+    });
+  }
+
+  it('déclare les métadonnées de chaque langue', () => {
+    for (const locale of locales) {
+      expect(intlLocales[locale]).toMatch(/^[a-z]{2}-[A-Z]{2}$/);
+      expect(htmlLangs[locale]).toBe(locale);
+      expect(ogLocales[locale]).toMatch(/^[a-z]{2}_[A-Z]{2}$/);
+      expect(localeNames[locale].length).toBeGreaterThan(2);
+      expect(stripeLocales[locale]).toBe(locale);
+    }
+  });
+
+  it('n’utilise pas en-US pour l’anglais : la boutique facture en euros', () => {
+    expect(intlLocales.en).not.toBe('en-US');
+  });
+});
+
+describe('négociation de langue', () => {
+  it('reconnaît les langues du site', () => {
+    expect(isLocale('fr')).toBe(true);
+    expect(isLocale('de')).toBe(false);
+  });
+
+  it('retient la langue préférée, région ignorée', () => {
+    expect(negotiateLocale('nl-BE,nl;q=0.9,en;q=0.8')).toBe('nl');
+    expect(negotiateLocale('es-419,es;q=0.9')).toBe('es');
+  });
+
+  it('respecte l’ordre de qualité plutôt que l’ordre d’écriture', () => {
+    expect(negotiateLocale('de;q=0.9,es;q=0.95')).toBe('es');
+  });
+
+  it('ignore une langue non servie et les qualités nulles', () => {
+    expect(negotiateLocale('de-DE,de;q=0.9')).toBe(defaultLocale);
+    expect(negotiateLocale('en;q=0')).toBe(defaultLocale);
+  });
+
+  it('retombe sur la langue par défaut sans en-tête', () => {
+    expect(negotiateLocale(null)).toBe(defaultLocale);
+    expect(negotiateLocale('')).toBe(defaultLocale);
+  });
+});
+
+describe('table des routes', () => {
+  it('déclare un chemin canonique et quatre chemins publics par route', () => {
+    for (const route of routeNames) {
+      expect(canonicalPaths[route], route).toBeDefined();
+      for (const locale of locales) {
+        expect(localizedPaths[route][locale], `${route}/${locale}`).toBeDefined();
+      }
+    }
+  });
+
+  it('n’a pas deux routes sur le même chemin public dans une langue', () => {
+    for (const locale of locales) {
+      const paths = routeNames.map((route) => localizedPaths[route][locale]);
+      expect(new Set(paths).size, `collision de route en ${locale}`).toBe(paths.length);
+    }
+  });
+
+  it('préfixe chaque URL de la langue', () => {
+    for (const locale of locales) {
+      expect(href('home', locale)).toBe(`/${locale}`);
+      expect(href('shop', locale).startsWith(`/${locale}/`)).toBe(true);
+    }
+  });
+
+  it('réécrit un chemin localisé vers sa route canonique', () => {
+    expect(toCanonicalPath('es', 'estufas/hidro')).toBe('/es/shop/hydro');
+    expect(toCanonicalPath('nl', 'kachels/ventilatie')).toBe('/nl/shop/air');
+    expect(toCanonicalPath('fr', 'poeles/accessoires')).toBe('/fr/shop/accessories');
+  });
+
+  it('fait gagner le préfixe le plus long : une catégorie n’avale pas ses enfants', () => {
+    // Sans tri décroissant, « poeles » capturerait « poeles/hydro » et la page
+    // catégorie répondrait à la place de la sous-catégorie.
+    expect(toCanonicalPath('fr', 'poeles')).toBe('/fr/shop');
+    expect(toCanonicalPath('fr', 'poeles/hydro')).toBe('/fr/shop/hydro');
+  });
+
+  it('ne réécrit pas quand le chemin public est déjà le chemin canonique', () => {
+    // L'anglais partage ses segments avec le canonique : réécrire relancerait
+    // le middleware sur la même URL.
+    expect(toCanonicalPath('en', 'guides')).toBeNull();
+    expect(toCanonicalPath('fr', 'contact')).toBeNull();
+  });
+
+  it('réécrit le préfixe d’une fiche produit en gardant le slug', () => {
+    expect(toCanonicalPath('es', 'estufas/p/idro-15-hidro-radiadores')).toBe(
+      '/es/shop/p/idro-15-hidro-radiadores',
+    );
+  });
+
+  it('laisse passer une URL inconnue', () => {
+    expect(toCanonicalPath('fr', 'inconnu/quelque-chose')).toBeNull();
+  });
+});
+
+describe('équivalences entre langues', () => {
+  it('découpe une URL en langue et reste', () => {
+    expect(splitLocalePath('/nl/kachels/hydro')).toEqual({ locale: 'nl', rest: 'kachels/hydro' });
+    expect(splitLocalePath('/unknown/page')).toBeNull();
+  });
+
+  it('mène à la même page statique dans l’autre langue', () => {
+    expect(equivalentPath('/fr/poeles/hydro', 'es')).toBe('/es/estufas/hidro');
+    expect(equivalentPath('/es/calculo-potencia', 'nl')).toBe('/nl/vermogen-berekenen');
+  });
+
+  it('mène à la même fiche produit dans l’autre langue', () => {
+    const product = products[0];
+    expect(product).toBeDefined();
+    if (!product) return;
+    expect(equivalentPath(productHref(product.slug.fr, 'fr'), 'es')).toBe(
+      productHref(product.slug.es, 'es'),
+    );
+  });
+
+  it('mène au même guide dans l’autre langue', () => {
+    const guide = guides[0];
+    expect(guide).toBeDefined();
+    if (!guide) return;
+    expect(equivalentPath(`/fr/guides/${guide.slug.fr}`, 'nl')).toBe(`/nl/gidsen/${guide.slug.nl}`);
+  });
+
+  it('reconnaît aussi une URL déjà réécrite par le middleware', () => {
+    expect(equivalentPath('/fr/shop/hydro', 'es')).toBe('/es/estufas/hidro');
+  });
+
+  it('retombe sur l’accueil plutôt que sur un 404', () => {
+    expect(equivalentPath('/fr/page-qui-nexiste-pas', 'en')).toBe('/en');
+    expect(equivalentPath('/', 'en')).toBe('/en');
+  });
+
+  it('donne les quatre équivalences, toutes préfixées de leur langue', () => {
+    const all = allEquivalents('/fr/poeles/air-ventile');
+    for (const locale of locales) {
+      expect(all[locale].startsWith(`/${locale}`), locale).toBe(true);
+    }
+    expect(all.fr).toBe('/fr/poeles/air-ventile');
+  });
+});

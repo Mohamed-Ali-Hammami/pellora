@@ -16,7 +16,7 @@ import type { PublicOrder } from '../order-view';
 /** Alphabet sans I, O, 0, 1 : une référence se lit au téléphone sans ambiguïté. */
 const REF_ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 
-export function generateOrderRef(prefix = 'VRS'): string {
+export function generateOrderRef(prefix = 'PEL'): string {
   const bytes = randomBytes(6);
   let suffix = '';
   for (const byte of bytes) {
@@ -25,11 +25,21 @@ export function generateOrderRef(prefix = 'VRS'): string {
   return `${prefix}-${suffix}`;
 }
 
+/**
+ * Lignes de commande figées.
+ *
+ * Le nom est résolu dans la langue du panier et RECOPIÉ : la commande doit
+ * rester lisible telle qu'elle a été passée, même si le catalogue change de
+ * libellé ou si le produit est retiré. Une commande qui irait relire le
+ * catalogue afficherait un autre texte un an plus tard.
+ */
 export function cartToOrderLines(cart: PricedCart): OrderLine[] {
   return cart.lines.map((l) => ({
     productId: l.product.id,
     variantId: l.variant?.id ?? null,
-    name: l.variant ? `${l.product.name} — ${l.variant.label}` : l.product.name,
+    name: l.variant
+      ? `${l.product.name} — ${l.variant.label[cart.locale]}`
+      : l.product.name,
     quantity: l.quantity,
     unitPrice: l.unitPrice,
     lineTotal: l.lineTotal,
@@ -47,6 +57,7 @@ export function createOrder(params: {
     status: 'pending',
     createdAt: now,
     updatedAt: now,
+    locale: params.cart.locale,
     email: params.email,
     lines: cartToOrderLines(params.cart),
     subtotal: params.cart.subtotal,
@@ -54,7 +65,7 @@ export function createOrder(params: {
     total: params.cart.total,
     vat: params.cart.vat,
     currency: CURRENCY,
-    shippingLabel: params.cart.shipping.label,
+    shippingLabel: params.cart.shipping.label[params.cart.locale],
     address: null,
     stripeSessionId: params.stripeSessionId,
     stripePaymentIntentId: null,

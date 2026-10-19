@@ -12,6 +12,8 @@ import { brand } from './brand';
 import { CURRENCY } from './money';
 import type { PricedCart } from './cart';
 import { SHIPPING_COUNTRIES } from './shipping';
+import { stripeLocales, type Locale } from './i18n/config';
+import { href } from './i18n/routes';
 
 let client: Stripe | null = null;
 
@@ -41,6 +43,8 @@ export function isStripeConfigured(): boolean {
  * ajouterait la TVA par-dessus et le client paierait 20 % de trop.
  */
 export function cartToLineItems(cart: PricedCart): Stripe.Checkout.SessionCreateParams.LineItem[] {
+  const locale = cart.locale;
+
   return cart.lines.map((line) => ({
     quantity: line.quantity,
     price_data: {
@@ -48,8 +52,13 @@ export function cartToLineItems(cart: PricedCart): Stripe.Checkout.SessionCreate
       unit_amount: line.unitPrice,
       tax_behavior: 'inclusive',
       product_data: {
-        name: line.variant ? `${line.product.name} — ${line.variant.label}` : line.product.name,
-        description: line.product.tagline,
+        // Le libellé est pris dans la langue du parcours : le client doit
+        // retrouver sur la page Stripe, puis sur son relevé bancaire, les
+        // mêmes mots que sur la fiche produit.
+        name: line.variant
+          ? `${line.product.name} — ${line.variant.label[locale]}`
+          : line.product.name,
+        description: line.product.tagline[locale],
         metadata: {
           product_id: line.product.id,
           variant_id: line.variant?.id ?? '',
@@ -66,7 +75,7 @@ export function cartToShippingOptions(
     {
       shipping_rate_data: {
         type: 'fixed_amount',
-        display_name: cart.shipping.label,
+        display_name: cart.shipping.label[cart.locale],
         fixed_amount: { amount: cart.shipping.price, currency: CURRENCY.toLowerCase() },
         tax_behavior: 'inclusive',
         delivery_estimate: {
@@ -81,12 +90,23 @@ export function cartToShippingOptions(
 export const allowedShippingCountries =
   SHIPPING_COUNTRIES as unknown as Stripe.Checkout.SessionCreateParams.ShippingAddressCollection.AllowedCountry[];
 
-export function successUrl(): string {
-  return `${brand.url}/commande/succes?session_id={CHECKOUT_SESSION_ID}`;
+/** Langue de la page de paiement hébergée par Stripe. */
+export function checkoutLocale(locale: Locale): Stripe.Checkout.SessionCreateParams.Locale {
+  return stripeLocales[locale];
 }
 
-export function cancelUrl(): string {
-  return `${brand.url}/panier?annule=1`;
+/**
+ * Le retour se fait dans la langue du parcours : renvoyer un client
+ * néerlandais sur une page de confirmation française serait le meilleur moyen
+ * de lui faire croire que le paiement a échoué.
+ */
+export function successUrl(locale: Locale, orderRef: string): string {
+  const path = href('checkoutSuccess', locale);
+  return `${brand.url}${path}?session_id={CHECKOUT_SESSION_ID}&ref=${encodeURIComponent(orderRef)}`;
+}
+
+export function cancelUrl(locale: Locale): string {
+  return `${brand.url}${href('cart', locale)}?canceled=1`;
 }
 
 export type { Stripe };

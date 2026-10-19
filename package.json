@@ -1,8 +1,8 @@
 {
-  "name": "verseuse-store",
+  "name": "pellora-store",
   "version": "1.0.0",
   "private": true,
-  "description": "Boutique e-commerce dropshipping automatisee - niche cafe filtre / slow coffee",
+  "description": "Boutique e-commerce dropshipping multilingue (fr/en/nl/es) - poeles a granules hydro et air ventile",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -12,7 +12,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "economics": "tsx scripts/economics.ts",
-    "verify": "npm run typecheck && npm run test && npm run build"
+    "verify": "npm run typecheck && npm run test && npm run build",
+    "media:scan": "tsx scripts/scan-media.ts",
+    "placeholders": "python3 scripts/generate-placeholders.py"
   },
   "dependencies": {
     "@upstash/redis": "^1.39.0",

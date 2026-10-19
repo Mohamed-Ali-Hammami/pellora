@@ -1,72 +1,104 @@
-import Link from 'next/link';
+/** Pied de page. Composant serveur. */
+
 import { brand } from '@/lib/brand';
+import { href } from '@/lib/i18n/routes';
+import type { Locale } from '@/lib/i18n/config';
+import type { Dictionary } from '@/lib/i18n/dictionaries';
+import { FooterLanguages } from './footer-languages';
 
-const COLUMNS = [
-  {
-    title: 'Boutique',
-    links: [
-      { href: '/produits', label: 'Tous les produits' },
-      { href: '/produits/kit-rituel-complet', label: 'Kit Rituel Complet' },
-      { href: '/produits/moulin-manuel-precision', label: 'Moulin Précision' },
-      { href: '/guides/reussir-son-cafe-filtre', label: 'Guides d’infusion' },
-    ],
-  },
-  {
-    title: 'Aide',
-    links: [
-      { href: '/suivi', label: 'Suivre ma commande' },
-      { href: '/retours', label: 'Retours et remboursements' },
-      { href: '/livraison', label: 'Livraison' },
-      { href: `mailto:${brand.email.support}`, label: 'Nous écrire' },
-    ],
-  },
-  {
-    title: 'Informations',
-    links: [
-      { href: '/le-rituel', label: 'Notre démarche' },
-      { href: '/cgv', label: 'Conditions générâles de vente' },
-      { href: '/mentions-legales', label: 'Mentions légales' },
-      { href: '/confidentialite', label: 'Données personnelles' },
-    ],
-  },
-];
+interface Props {
+  locale: Locale;
+  dict: Dictionary;
+}
 
-export function Footer() {
+export function Footer({ locale, dict }: Props) {
+  const year = new Date().getFullYear();
+
+  const columns = [
+    {
+      title: dict.footer.shopTitle,
+      links: [
+        { href: href('air', locale), label: dict.categories.air },
+        { href: href('hydro', locale), label: dict.categories.hydro },
+        { href: href('accessories', locale), label: dict.categories.accessoire },
+        { href: href('shop', locale), label: dict.shop.title },
+        { href: href('sizing', locale), label: dict.sizing.title },
+      ],
+    },
+    {
+      title: dict.footer.helpTitle,
+      links: [
+        { href: href('faq', locale), label: dict.faq.title },
+        { href: href('shipping', locale), label: dict.shippingPage.title },
+        { href: href('returns', locale), label: dict.returns.title },
+        { href: href('tracking', locale), label: dict.tracking.title },
+        { href: href('contact', locale), label: dict.contact.title },
+      ],
+    },
+    {
+      title: dict.footer.legalTitle,
+      links: [
+        { href: href('terms', locale), label: dict.terms.title },
+        { href: href('privacy', locale), label: dict.privacy.title },
+        { href: href('legal', locale), label: dict.legalPage.title },
+        { href: href('about', locale), label: dict.about.title },
+        { href: href('guides', locale), label: dict.guides.title },
+      ],
+    },
+  ];
+
   return (
-    <footer className="mt-24 border-t border-line bg-cream">
+    <footer className="mt-20 border-t border-line bg-cream">
       <div className="container-page py-14">
-        <div className="grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)_auto]">
           <div>
-            <div className="font-display text-lg font-semibold">{brand.name}</div>
-            <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted">{brand.pitch}</p>
+            <p className="font-display text-xl font-semibold text-ink">Pellora</p>
+            <p className="mt-2 max-w-xs text-sm leading-relaxed text-muted">{dict.footer.tagline}</p>
+            <p className="mt-4 text-sm text-ink-soft">
+              <a href={`mailto:${brand.email.support}`} className="underline decoration-line underline-offset-4 hover:decoration-ink">
+                {brand.email.support}
+              </a>
+            </p>
           </div>
 
-          {COLUMNS.map((column) => (
-            <div key={column.title}>
-              <h3 className="eyebrow font-sans">{column.title}</h3>
-              <ul className="mt-3 space-y-2">
+          {columns.map((column) => (
+            <nav key={column.title} aria-label={column.title}>
+              <p className="eyebrow mb-3">{column.title}</p>
+              <ul className="space-y-2">
                 {column.links.map((link) => (
                   <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="text-sm text-ink-soft transition-colors hover:text-accent"
-                    >
+                    <a href={link.href} className="text-sm text-ink-soft transition-colors hover:text-ember">
                       {link.label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
+
+          <FooterLanguages current={locale} title={dict.footer.languageTitle} />
         </div>
 
         <div className="mt-12 flex flex-col gap-3 border-t border-line pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
           <p>
-            &copy; {new Date().getFullYear()} {brand.legalName}. Tous droits réservés.
+            © {year} Pellora. {dict.footer.rights}
           </p>
-          <p>Paiement sécurisé par Stripe — CB, Apple Pay, Google Pay.</p>
+          <p>{dict.footer.vatNote}</p>
+          <p className="flex items-center gap-1.5">
+            <LockIcon />
+            {dict.footer.paymentNote}
+          </p>
         </div>
       </div>
     </footer>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.4">
+      <rect x="2.6" y="6.2" width="8.8" height="6.2" rx="1.2" />
+      <path d="M4.6 6.2V4.4a2.4 2.4 0 014.8 0v1.8" />
+    </svg>
   );
 }

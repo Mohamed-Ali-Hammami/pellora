@@ -3,41 +3,58 @@
 /*
  * Jetons de design.
  *
- * Palette chaude et sourde plutot que les contrastes satures habituels du
- * dropshipping : la perception de qualite fait partie du prix. Le brun profond
- * sert d'accent unique — un seul accent rend l'appel a l'action evident sans
- * avoir a le crier.
+ * Direction : la chaleur, pas le feu. Le réflexe de la niche est l'orange
+ * saturé sur fond noir, qui fait « promotion de chauffage d'appoint ». On
+ * prend le contrepied : une base papier chaud, un ink brun-noir, et l'ember
+ * en accent unique et rare. Un seul accent rend l'appel à l'action évident
+ * sans avoir à le crier.
+ *
+ * Aucune police distante n'est chargée : `next/font/google` télécharge les
+ * fichiers pendant le build, ce qui casse toute compilation en réseau
+ * restreint. Les piles système couvrent les quatre langues du site et
+ * suppriment le décalage de rendu au premier affichage.
  */
 @theme {
-  --color-ink: #1c1917;
-  --color-ink-soft: #44403c;
-  --color-muted: #78716c;
-  --color-line: #e7e5e4;
-  --color-line-soft: #f1efed;
+  --color-ink: #17120f;
+  --color-ink-soft: #413630;
+  --color-muted: #776a62;
+  --color-line: #e4dad0;
+  --color-line-soft: #f1eae2;
   --color-paper: #ffffff;
-  --color-cream: #faf8f5;
-  --color-sand: #f3efe9;
-  --color-accent: #7c2d12;
-  --color-accent-hover: #65240e;
-  --color-accent-soft: #fdf6f0;
-  --color-success: #15803d;
-  --color-warn: #b45309;
+  --color-cream: #fbf8f4;
+  --color-sand: #f2ebe2;
 
-  --font-display: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
+  /* Accent unique. L'ember sert aux actions, le flame uniquement aux lueurs. */
+  --color-ember: #bc4213;
+  --color-ember-hover: #9d350d;
+  --color-ember-soft: #fdf2ec;
+  --color-flame: #e9762a;
+  --color-brass: #a9844f;
+
+  /* Fonds sombres : le hero et les encarts hydro. */
+  --color-night: #15110e;
+  --color-night-soft: #231b16;
+  --color-night-line: #35281f;
+
+  --color-success: #15803d;
+  --color-warn: #a16207;
+  --color-danger: #b42318;
+
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
   --font-sans:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
-  --radius-card: 0.75rem;
+  --radius-card: 0.875rem;
 }
 
 /*
- * Pas de theme sombre.
+ * Pas de thème sombre.
  *
- * Choix delibere, pas un oubli : une boutique vit de photos produits sur fond
- * clair. Un mode sombre a moitie fait, avec des visuels qui gardent leur fond
- * blanc, donne une impression d'amateurisme bien plus couteuse en conversion
- * que l'absence de l'option.
+ * Choix délibéré, pas un oubli : une boutique vit de photos produits sur fond
+ * clair. Un mode sombre à moitié fait, avec des visuels qui gardent leur fond
+ * blanc, coûte plus en crédibilité que l'absence de l'option n'en coûte en
+ * confort.
  */
 
 html {
@@ -50,7 +67,7 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -58,21 +75,24 @@ body {
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
+  letter-spacing: -0.018em;
+  line-height: 1.12;
   text-wrap: balance;
 }
 
-/* Les paragraphes evitent les lignes orphelines en fin de bloc. */
 p { text-wrap: pretty; }
 
-/* Focus visible au clavier : accessibilite, et c'est aussi la base
-   d'un parcours d'achat utilisable sans souris. */
+/* Chiffres alignés dans les tableaux de caractéristiques et les prix. */
+.tabular { font-variant-numeric: tabular-nums; }
+
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-ember);
   outline-offset: 2px;
   border-radius: 3px;
 }
+
+/* Sur fond sombre, l'ember n'est pas assez contrasté pour un anneau de focus. */
+.on-night :focus-visible { outline-color: #f5c99b; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -86,7 +106,7 @@ p { text-wrap: pretty; }
   width: 100%;
   margin-inline: auto;
   padding-inline: 1rem;
-  max-width: 76rem;
+  max-width: 78rem;
 }
 
 @media (min-width: 640px) {
@@ -94,7 +114,7 @@ p { text-wrap: pretty; }
 }
 
 /* Bouton principal : un seul style dans tout le site, pour que
-   « le bouton fonce » signifie toujours la meme chose. */
+   « le bouton foncé » signifie toujours la même chose. */
 @utility btn-primary {
   display: inline-flex;
   align-items: center;
@@ -106,11 +126,31 @@ p { text-wrap: pretty; }
   font-size: 0.9375rem;
   padding: 0.8125rem 1.5rem;
   border-radius: 0.5rem;
+  text-align: center;
   transition: background 150ms ease, transform 150ms ease;
 }
-.btn-primary:hover { background: var(--color-accent); }
+.btn-primary:hover { background: var(--color-ember); }
 .btn-primary:active { transform: translateY(1px); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-primary:disabled:hover { background: var(--color-ink); }
+
+@utility btn-ember {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--color-ember);
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.8125rem 1.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  transition: background 150ms ease, transform 150ms ease;
+}
+.btn-ember:hover { background: var(--color-ember-hover); }
+.btn-ember:active { transform: translateY(1px); }
+.btn-ember:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
 @utility btn-secondary {
   display: inline-flex;
@@ -124,9 +164,28 @@ p { text-wrap: pretty; }
   font-size: 0.9375rem;
   padding: 0.75rem 1.4375rem;
   border-radius: 0.5rem;
+  text-align: center;
   transition: border-color 150ms ease, background 150ms ease;
 }
 .btn-secondary:hover { border-color: var(--color-ink); background: var(--color-cream); }
+
+/* Variante du bouton secondaire posée sur un fond sombre. */
+@utility btn-outline-light {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.4375rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.btn-outline-light:hover { border-color: #ffffff; background: rgb(255 255 255 / 0.08); }
 
 @utility card {
   background: var(--color-paper);
@@ -137,7 +196,85 @@ p { text-wrap: pretty; }
 @utility eyebrow {
   font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--color-muted);
 }
+
+@utility eyebrow-light {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-flame);
+}
+
+/* Étiquette d'information : badge produit, classe énergétique, statut. */
+@utility chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-line);
+  background: var(--color-cream);
+  padding: 0.1875rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+  white-space: nowrap;
+}
+
+@utility chip-ember {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-ember) 28%, transparent);
+  background: var(--color-ember-soft);
+  padding: 0.1875rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-ember-hover);
+  white-space: nowrap;
+}
+
+/*
+ * Lueur de braise du hero. Deux dégradés radiaux décalés valent mieux qu'une
+ * image : aucun octet à télécharger, et le rendu reste net à toute densité
+ * d'écran.
+ */
+@utility ember-glow {
+  background-color: var(--color-night);
+  background-image:
+    radial-gradient(120% 90% at 18% 112%, rgb(233 118 42 / 0.30) 0%, transparent 58%),
+    radial-gradient(85% 70% at 86% -8%, rgb(188 66 19 / 0.22) 0%, transparent 62%);
+}
+
+/* Filet de séparation discret entre deux sections de même fond. */
+@utility hairline {
+  border-top: 1px solid var(--color-line);
+}
+
+/* Corps de texte long : guides, pages légales. */
+@utility prose-page {
+  max-width: 44rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--color-ink-soft);
+}
+.prose-page h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  color: var(--color-ink);
+}
+.prose-page h3 {
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.1875rem;
+  color: var(--color-ink);
+}
+.prose-page p { margin-bottom: 1.125rem; }
+.prose-page ul { margin-bottom: 1.125rem; padding-left: 1.125rem; list-style: disc; }
+.prose-page li { margin-bottom: 0.4375rem; }
+.prose-page strong { color: var(--color-ink); font-weight: 600; }

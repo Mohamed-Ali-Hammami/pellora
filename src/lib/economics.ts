@@ -46,27 +46,42 @@ export interface EconomicsInputs {
 }
 
 /**
- * Jeu d’hypothèses de départ pour la niche café filtre.
+ * Jeu d'hypothèses de départ pour la niche poêles à granulés.
  *
- * ATTENTION — ce sont des HYPOTHÈSES, pas des mesures. Je n’ai pas de source
+ * ATTENTION — ce sont des HYPOTHÈSES, pas des mesures. Je n'ai pas de source
  * vérifiée pour le CPC ni pour le taux de conversion de cette niche à la date
- * d’aujourd’hui : ces deux nombres doivent être remplaces par vos propres
- * données dès que vous avez dépensé vos premiers 300 à 500 € de publicité.
- * Ce sont aussi les deux variables qui pèsent le plus sur le résultat.
+ * d'aujourd'hui : ces deux nombres doivent être remplacés par vos propres
+ * données dès vos premiers 500 à 1 000 € de publicité. Ce sont aussi les deux
+ * variables qui pèsent le plus sur le résultat.
+ *
+ * Ce qui change par rapport à une niche à petit panier, et qu'il faut avoir
+ * en tête avant de lire les sorties :
+ *
+ *  - le panier moyen est élevé (environ 1 900 €), donc la marge par commande
+ *    est confortable ET le CAC supportable est élevé ;
+ *  - mais le cycle de décision est long : on n'achète pas un poêle de 2 000 €
+ *    à la première visite. Le taux de conversion est donc nettement plus bas
+ *    que sur un produit d'impulsion, et le CPC plus cher parce que les
+ *    installateurs et les grandes enseignes enchérissent sur les mêmes mots ;
+ *  - un retour coûte très cher (90 à 180 € de transport palette, plus le
+ *    risque d'avarie), d'où un taux de remboursement qui pèse lourd ;
+ *  - le réachat existe mais porte sur le combustible et les accessoires, pas
+ *    sur un second appareil : d'où `ordersPerCustomerPerYear` à peine
+ *    supérieur à 1.
  */
 export const baselineInputs: EconomicsInputs = {
-  aov: 92,
+  aov: 1900,
   vatRate: 0.2,
-  cogsPerOrder: 29,
-  supplierShippingPerOrder: 5.9,
-  shippingChargedPerOrder: 1.6,
+  cogsPerOrder: 1180,
+  supplierShippingPerOrder: 68,
+  shippingChargedPerOrder: 52,
   paymentFeeRate: 0.015,
   paymentFeeFixed: 0.25,
-  refundRate: 0.04,
-  cpc: 0.7,
-  conversionRate: 0.02,
-  fixedCostsMonthly: 420,
-  ordersPerCustomerPerYear: 1.35,
+  refundRate: 0.03,
+  cpc: 1.4,
+  conversionRate: 0.006,
+  fixedCostsMonthly: 540,
+  ordersPerCustomerPerYear: 1.15,
 };
 
 export interface UnitEconomics {
@@ -208,14 +223,32 @@ export function requiredAov(
   profitTarget: number,
   ordersPerMonth: number,
 ): number {
-  // Résolution numérique : la TVA, les commissions et les retours dépendent
-  // tous de l’AOV, une inversion analytique serait illisible.
+  /*
+   * Résolution numérique : la TVA, les commissions et les retours dépendent
+   * tous de l'AOV, une inversion analytique serait illisible.
+   *
+   * La borne haute est CHERCHÉE et non figée. Une borne constante est un piège
+   * silencieux : si l'AOV nécessaire la dépasse, la dichotomie renvoie la
+   * borne elle-même, c'est-à-dire un nombre qui n'atteint pas l'objectif,
+   * présenté comme s'il l'atteignait. Sur une niche à panier élevé, l'erreur
+   * passe inaperçue et fausse toute la décision.
+   */
+  const profitAt = (aov: number): number =>
+    monthlyPlanForOrders({ ...i, aov }, ordersPerMonth).profitMonthly;
+
+  let high = Math.max(100, i.aov * 2);
+  // 1 M€ de panier moyen : au-delà, l'objectif n'est pas atteignable par le
+  // panier, et le dire vaut mieux que de rendre un nombre arbitraire.
+  const CEILING = 1_000_000;
+  while (profitAt(high) < profitTarget) {
+    high *= 2;
+    if (high > CEILING) return Number.POSITIVE_INFINITY;
+  }
+
   let low = 0;
-  let high = 1000;
   for (let step = 0; step < 80; step += 1) {
     const mid = (low + high) / 2;
-    const profit = monthlyPlanForOrders({ ...i, aov: mid }, ordersPerMonth).profitMonthly;
-    if (profit < profitTarget) low = mid;
+    if (profitAt(mid) < profitTarget) low = mid;
     else high = mid;
   }
   return high;

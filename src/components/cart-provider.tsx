@@ -1,16 +1,17 @@
 'use client';
 
 /**
- * État du panier, cote client.
+ * État du panier, côté client.
  *
  * Le panier ne stocke QUE des identifiants et des quantités — jamais de prix.
- * Les montants affiches sont relus dans le catalogue, et les montants factures
- * sont recalcules par le serveur. Un panier qui transporterait ses prix serait
- * modifiable depuis la console du navigateur.
+ * Les montants affichés sont relus dans le catalogue, et les montants
+ * facturés sont recalculés par le serveur. Un panier qui transporterait ses
+ * prix serait modifiable depuis la console du navigateur.
  *
- * Persistance en `localStorage` : un panier perdu au rechargement de la page
- * est une vente perdue. Les accès sont encapsulés dans des try/catch car le
- * stockage est indisponible en navigation privée sur certains navigateurs.
+ * Persistance en `localStorage` : sur un panier moyen de 2 000 €, un panier
+ * perdu au rechargement est une vente perdue. Les accès sont encapsulés dans
+ * des try/catch, le stockage étant indisponible en navigation privée sur
+ * certains navigateurs.
  */
 
 import {
@@ -23,11 +24,13 @@ import {
   type ReactNode,
 } from 'react';
 import { getProductById, unitPrice } from '@/lib/catalog';
-import { amountToFreeShipping } from '@/lib/shipping';
+import { profileFor } from '@/lib/cart';
 import type { Product, ProductVariant } from '@/lib/catalog.types';
+import type { ShippingProfile } from '@/lib/shipping';
 
-const STORAGE_KEY = 'verseuse.cart.v1';
-const MAX_QUANTITY = 10;
+const STORAGE_KEY = 'pellora.cart.v1';
+/** Doit rester aligné sur `MAX_QUANTITY_PER_LINE` dans `lib/cart.ts`. */
+const MAX_QUANTITY = 5;
 
 export interface CartItem {
   productId: string;
@@ -47,8 +50,9 @@ interface CartContextValue {
   resolved: ResolvedItem[];
   itemCount: number;
   subtotal: number;
-  toFreeShipping: number;
-  /** `true` entre le montage et la lecture du stockage : évite un écart d’hydratation. */
+  /** Contraintes de transport du panier : palette ou colis, poids total. */
+  profile: ShippingProfile;
+  /** `true` entre le montage et la lecture du stockage : évite un écart d'hydratation. */
   loading: boolean;
   add(productId: string, variantId?: string | null, quantity?: number): void;
   remove(productId: string, variantId: string | null): void;
@@ -58,8 +62,8 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-function sameLine(a: CartItem, productId: string, variantId: string | null): boolean {
-  return a.productId === productId && a.variantId === variantId;
+function sameLine(item: CartItem, productId: string, variantId: string | null): boolean {
+  return item.productId === productId && item.variantId === variantId;
 }
 
 function readStorage(): CartItem[] {
@@ -69,17 +73,26 @@ function readStorage(): CartItem[] {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
     // Filtrage défensif : le catalogue a pu changer depuis la dernière visite,
-    // et un panier référençant un produit retire ferait échouer le paiement.
+    // et un panier référençant un produit retiré ferait échouer le paiement.
     return parsed.flatMap((entry): CartItem[] => {
       if (typeof entry !== 'object' || entry === null) return [];
-      const e = entry as Record<string, unknown>;
-      if (typeof e['productId'] !== 'string') return [];
-      if (!getProductById(e['productId'])) return [];
-      const quantity = typeof e['quantity'] === 'number' ? e['quantity'] : 1;
+      const record = entry as Record<string, unknown>;
+      const productId = record['productId'];
+      if (typeof productId !== 'string') return [];
+      const product = getProductById(productId);
+      if (!product) return [];
+
+      const variantId = typeof record['variantId'] === 'string' ? record['variantId'] : null;
+      // Une variante disparue du catalogue invalide la ligne : sans cela, le
+      // serveur refuserait le panier au moment du paiement.
+      if (variantId !== null && !product.variants.some((v) => v.id === variantId)) return [];
+      if (variantId === null && product.variants.length > 0) return [];
+
+      const quantity = typeof record['quantity'] === 'number' ? record['quantity'] : 1;
       return [
         {
-          productId: e['productId'],
-          variantId: typeof e['variantId'] === 'string' ? e['variantId'] : null,
+          productId,
+          variantId,
           quantity: Math.min(MAX_QUANTITY, Math.max(1, Math.floor(quantity))),
         },
       ];
@@ -94,7 +107,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   // Lecture après montage uniquement : le serveur ne connaît pas
-  // `localStorage`, lire pendant le rendu provoquerait un écart d’hydratation.
+  // `localStorage`, lire pendant le rendu provoquerait un écart d'hydratation.
   useEffect(() => {
     setItems(readStorage());
     setLoading(false);
@@ -112,18 +125,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const add = useCallback((productId: string, variantId: string | null = null, quantity = 1) => {
     const product = getProductById(productId);
     if (!product) return;
-    // Un produit a variantes exige un choix : sans cela le prix affiche et le
-    // prix facture pourraient différer.
+    // Un produit à variantes exige un choix : sans cela, le prix affiché et le
+    // prix facturé pourraient différer.
     const resolvedVariant =
-      variantId ?? (product.variants.length > 0 ? product.variants[0]!.id : null);
+      variantId ?? (product.variants.length > 0 ? (product.variants[0]?.id ?? null) : null);
 
     setItems((previous) => {
-      const existing = previous.find((i) => sameLine(i, productId, resolvedVariant));
+      const existing = previous.find((item) => sameLine(item, productId, resolvedVariant));
       if (existing) {
-        return previous.map((i) =>
-          sameLine(i, productId, resolvedVariant)
-            ? { ...i, quantity: Math.min(MAX_QUANTITY, i.quantity + quantity) }
-            : i,
+        return previous.map((item) =>
+          sameLine(item, productId, resolvedVariant)
+            ? { ...item, quantity: Math.min(MAX_QUANTITY, item.quantity + quantity) }
+            : item,
         );
       }
       return [...previous, { productId, variantId: resolvedVariant, quantity }];
@@ -131,22 +144,25 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const remove = useCallback((productId: string, variantId: string | null) => {
-    setItems((previous) => previous.filter((i) => !sameLine(i, productId, variantId)));
+    setItems((previous) => previous.filter((item) => !sameLine(item, productId, variantId)));
   }, []);
 
-  const setQuantity = useCallback((productId: string, variantId: string | null, quantity: number) => {
-    if (quantity <= 0) {
-      setItems((previous) => previous.filter((i) => !sameLine(i, productId, variantId)));
-      return;
-    }
-    setItems((previous) =>
-      previous.map((i) =>
-        sameLine(i, productId, variantId)
-          ? { ...i, quantity: Math.min(MAX_QUANTITY, quantity) }
-          : i,
-      ),
-    );
-  }, []);
+  const setQuantity = useCallback(
+    (productId: string, variantId: string | null, quantity: number) => {
+      if (quantity <= 0) {
+        setItems((previous) => previous.filter((item) => !sameLine(item, productId, variantId)));
+        return;
+      }
+      setItems((previous) =>
+        previous.map((item) =>
+          sameLine(item, productId, variantId)
+            ? { ...item, quantity: Math.min(MAX_QUANTITY, quantity) }
+            : item,
+        ),
+      );
+    },
+    [],
+  );
 
   const clear = useCallback(() => setItems([]), []);
 
@@ -159,14 +175,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return [{ ...item, product, variant, unitPrice: unit, lineTotal: unit * item.quantity }];
     });
 
-    const subtotal = resolved.reduce((acc, i) => acc + i.lineTotal, 0);
-
     return {
       items,
       resolved,
-      itemCount: resolved.reduce((acc, i) => acc + i.quantity, 0),
-      subtotal,
-      toFreeShipping: amountToFreeShipping(subtotal),
+      itemCount: resolved.reduce((acc, item) => acc + item.quantity, 0),
+      subtotal: resolved.reduce((acc, item) => acc + item.lineTotal, 0),
+      profile: profileFor(resolved),
       loading,
       add,
       remove,
@@ -181,7 +195,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 export function useCart(): CartContextValue {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart doit être utilise à l’intérieur de <CartProvider>');
+    throw new Error('useCart doit être utilisé à l’intérieur de <CartProvider>');
   }
   return context;
 }
