@@ -7,7 +7,7 @@ const en: Dictionary = {
     homeTitle: 'Hydro and ducted-air pellet stoves — shipped from the EU',
     homeDescription:
       'Hydro and ducted-air pellet stoves, sized before you buy. Delivery by appointment across France and Europe, secure payment.',
-    shopTitle: 'All pellet stoves',
+    shopTitle: 'Heating',
     shopDescription:
       'Ducted-air and hydro pellet stoves from 6 to 24 kW. Output, efficiency and heated area on every page.',
   },
@@ -122,14 +122,14 @@ const en: Dictionary = {
   },
 
   home: {
-    heroEyebrow: 'Pellet stoves — hydro and ducted air',
-    heroTitle: 'The right stove is, first of all, the right output.',
+    heroEyebrow: 'Pellet, wood, boilers, heat pumps',
+    heroTitle: 'The right appliance starts with the right output.',
     heroLead:
-      'An oversized stove idles at minimum, fouls its own glass and has you opening windows. An undersized one runs flat out and never holds the house. So we start with the calculation, and only then with the appliance.',
+      'An oversized appliance idles, clogs up and leaves you opening the windows. An undersized one runs flat out and never holds the house. So we start with the calculation, then the appliance.',
     heroCtaPrimary: 'Calculate my output',
-    heroCtaSecondary: 'Browse the stoves',
+    heroCtaSecondary: 'See all heating',
     heroStatOne: '6 to 24 kW',
-    heroStatOneLabel: 'two families, twelve models',
+    heroStatOneLabel: 'eight families of appliance',
     heroStatTwo: 'up to 92 %',
     heroStatTwoLabel: 'stated efficiency',
     heroStatThree: '4 to 8 days',
@@ -185,7 +185,7 @@ const en: Dictionary = {
   },
 
   shop: {
-    title: 'All stoves',
+    title: 'All heating',
     lead: 'Twelve models, from 6 to 24 kW. Stated characteristics are those of the supplier data sheets.',
     filterCategory: 'Family',
     filterAll: 'All',
@@ -333,9 +333,9 @@ const en: Dictionary = {
 
   about: {
     title: 'About',
-    lead: 'A specialist shop, deliberately narrow.',
+    lead: 'A shop for wood, pellet and electric heating.',
     body: [
-      'Pellora sells pellet stoves and nothing else: two families, twelve models, and the accessories that go with them. That is a deliberate choice. A catalogue of three hundred appliances forces you to copy the supplier’s sheets without reading them; twelve models let you know what you are selling, and say so when one does not fit.',
+      'Pellora covers eight families of appliance: pellet and wood stoves, cookstoves, boilers, inserts, flues, heat pumps, and the accessories that go with them. Every page is written from the manufacturer’s documentation, and carries a visible notice as long as it is not. A catalogue of three hundred appliances forces you to copy supplier sheets without reading them; we would rather know what we sell, and be able to say when a model is wrong for you.',
       'We work on a dropshipping model: appliances leave our suppliers’ European warehouses without passing through an intermediate stock. The advantage for you is the price, since there is no showroom to pay for. The drawback is that we cannot let you see the appliance before buying — we make up for it with complete data sheets and a 14-day right of withdrawal that applies in full.',
       'What we do not do: installation, annual servicing and repairs. Those are regulated trades that need a local presence. We supply the appliance, its documentation and its flue; your installer does the rest, and that is better for your insurance as well as your warranty.',
     ],

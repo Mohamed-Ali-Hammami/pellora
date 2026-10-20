@@ -7,7 +7,7 @@ const nl: Dictionary = {
     homeTitle: 'Hydro- en ventilatiekachels op pellets — verzonden vanuit de EU',
     homeDescription:
       'Hydro- en ventilatiekachels op pellets, vóór aankoop berekend. Levering op afspraak in Frankrijk en Europa, veilig betalen.',
-    shopTitle: 'Alle pelletkachels',
+    shopTitle: 'Verwarming',
     shopDescription:
       'Ventilatie- en hydro-pelletkachels van 6 tot 24 kW. Vermogen, rendement en verwarmd oppervlak op elke pagina.',
   },
@@ -122,14 +122,14 @@ const nl: Dictionary = {
   },
 
   home: {
-    heroEyebrow: 'Pelletkachels — hydro en ventilatie',
-    heroTitle: 'De juiste kachel is in de eerste plaats het juiste vermogen.',
+    heroEyebrow: 'Pellets, hout, ketels, warmtepompen',
+    heroTitle: 'Het juiste toestel begint bij het juiste vermogen.',
     heroLead:
-      'Een te grote kachel staat op minimum, vervuilt zijn eigen glas en zet u aan het ramen openen. Een te kleine draait voluit en houdt het huis niet warm. Daarom beginnen wij met de berekening, en pas daarna met het toestel.',
+      'Een te zwaar toestel draait stationair, vervuilt en laat u de ramen openzetten. Een te licht toestel draait voluit en houdt het huis niet warm. We beginnen dus bij de berekening, en pas daarna bij het toestel.',
     heroCtaPrimary: 'Mijn vermogen berekenen',
-    heroCtaSecondary: 'Kachels bekijken',
+    heroCtaSecondary: 'Alle verwarming bekijken',
     heroStatOne: '6 tot 24 kW',
-    heroStatOneLabel: 'twee families, twaalf modellen',
+    heroStatOneLabel: 'acht families toestellen',
     heroStatTwo: 'tot 92 %',
     heroStatTwoLabel: 'opgegeven rendement',
     heroStatThree: '4 tot 8 dagen',
@@ -185,7 +185,7 @@ const nl: Dictionary = {
   },
 
   shop: {
-    title: 'Alle kachels',
+    title: 'Alle verwarming',
     lead: 'Twaalf modellen, van 6 tot 24 kW. De opgegeven kenmerken komen uit de technische fiches van de leverancier.',
     filterCategory: 'Familie',
     filterAll: 'Alle',
@@ -333,9 +333,9 @@ const nl: Dictionary = {
 
   about: {
     title: 'Over ons',
-    lead: 'Een speciaalzaak, met opzet smal.',
+    lead: 'Een winkel voor verwarming op hout, pellets en stroom.',
     body: [
-      'Pellora verkoopt uitsluitend pelletkachels: twee families, twaalf modellen, en de accessoires die erbij horen. Dat is een bewuste keuze. Een aanbod van driehonderd toestellen verplicht u de fiches van de leverancier over te nemen zonder ze te lezen; twaalf modellen laten u weten wat u verkoopt, en zeggen wanneer een model niet past.',
+      'Pellora dekt acht families toestellen: pellet- en houtkachels, fornuizen, ketels, inbouwhaarden, rookkanalen, warmtepompen en de bijbehorende accessoires. Elke pagina is opgesteld aan de hand van de documentatie van de fabrikant, en draagt een zichtbare vermelding zolang dat niet zo is. Een catalogus van driehonderd toestellen dwingt u leveranciersbladen over te nemen zonder ze te lezen; wij weten liever wat we verkopen, en kunnen zeggen wanneer een model niet past.',
       'Wij werken met dropshipping: de toestellen vertrekken uit de Europese opslagplaatsen van onze leveranciers, zonder tussenvoorraad. Het voordeel voor u is de prijs, want er is geen showroom te financieren. Het nadeel is dat wij u het toestel niet vóór de aankoop kunnen laten zien — wij compenseren dat met volledige technische fiches en een herroepingsrecht van 14 dagen dat volledig geldt.',
       'Wat wij niet doen: de installatie, het jaarlijkse onderhoud en herstellingen. Dat zijn gereglementeerde beroepen die plaatselijke aanwezigheid vragen. Wij leveren het toestel, zijn documentatie en zijn afvoer; uw installateur doet de rest, en dat is beter voor uw verzekering én uw garantie.',
     ],

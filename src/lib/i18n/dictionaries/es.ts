@@ -7,7 +7,7 @@ const es: Dictionary = {
     homeTitle: 'Estufas de pellets hidro y de aire ventilado — enviadas desde la UE',
     homeDescription:
       'Estufas de pellets hidro y de aire ventilado, dimensionadas antes de comprar. Entrega con cita previa en Francia y Europa, pago seguro.',
-    shopTitle: 'Todas las estufas de pellets',
+    shopTitle: 'Calefacción',
     shopDescription:
       'Estufas de pellets de aire ventilado e hidro de 6 a 24 kW. Potencia, rendimiento y superficie calentada en cada ficha.',
   },
@@ -122,14 +122,14 @@ const es: Dictionary = {
   },
 
   home: {
-    heroEyebrow: 'Estufas de pellets — hidro y aire ventilado',
-    heroTitle: 'La estufa adecuada es, antes que nada, la potencia adecuada.',
+    heroEyebrow: 'Pellets, leña, calderas, bombas de calor',
+    heroTitle: 'El aparato adecuado empieza por la potencia adecuada.',
     heroLead:
-      'Una estufa sobredimensionada funciona al mínimo, se ensucia y le hace abrir las ventanas. Una infradimensionada va a tope y no mantiene la casa. Por eso empezamos por el cálculo, y solo después por el aparato.',
+      'Un aparato sobredimensionado funciona al ralentí, se ensucia y le obliga a abrir las ventanas. Uno infradimensionado va a tope y no mantiene la casa. Empezamos pues por el cálculo, y después por el aparato.',
     heroCtaPrimary: 'Calcular mi potencia',
-    heroCtaSecondary: 'Ver las estufas',
+    heroCtaSecondary: 'Ver toda la calefacción',
     heroStatOne: 'de 6 a 24 kW',
-    heroStatOneLabel: 'dos familias, doce referencias',
+    heroStatOneLabel: 'ocho familias de aparatos',
     heroStatTwo: 'hasta 92 %',
     heroStatTwoLabel: 'de rendimiento declarado',
     heroStatThree: '4 a 8 días',
@@ -185,7 +185,7 @@ const es: Dictionary = {
   },
 
   shop: {
-    title: 'Todas las estufas',
+    title: 'Toda la calefacción',
     lead: 'Doce referencias, de 6 a 24 kW. Las características indicadas son las de las fichas técnicas del proveedor.',
     filterCategory: 'Familia',
     filterAll: 'Todas',
@@ -333,9 +333,9 @@ const es: Dictionary = {
 
   about: {
     title: 'Quiénes somos',
-    lead: 'Una tienda especializada, deliberadamente estrecha.',
+    lead: 'Una tienda de calefacción de leña, pellets y electricidad.',
     body: [
-      'Pellora solo vende estufas de pellets: dos familias, doce referencias, y los accesorios que las acompañan. Es una elección deliberada. Un catálogo de trescientos aparatos obliga a copiar las fichas del proveedor sin leerlas; doce referencias permiten saber lo que se vende, y decirlo cuando un modelo no conviene.',
+      'Pellora cubre ocho familias de aparatos: estufas de pellets y de leña, cocinas, calderas, insertables, conductos, bombas de calor y los accesorios que los acompañan. Cada ficha se redacta a partir de la documentación del fabricante, y lleva una mención visible mientras no sea así. Un catálogo de trescientos aparatos obliga a copiar las fichas del proveedor sin leerlas; preferimos saber lo que vendemos, y poder decir cuándo un modelo no conviene.',
       'Trabajamos en dropshipping: los aparatos salen de los almacenes europeos de nuestros proveedores, sin pasar por un stock intermedio. La ventaja para usted es el precio, ya que no hay sala de exposición que financiar. El inconveniente es que no podemos mostrarle el aparato antes de la compra — lo compensamos con fichas técnicas completas y un derecho de desistimiento de 14 días que se aplica plenamente.',
       'Lo que no hacemos: la instalación, el mantenimiento anual y las reparaciones. Son oficios regulados que exigen presencia local. Suministramos el aparato, su documentación y su conducto; su instalador hace el resto, y es mejor así tanto para su seguro como para su garantía.',
     ],

@@ -12,7 +12,7 @@ const fr = {
     homeTitle: 'Poêles à granulés hydro et à air ventilé — livrés depuis l’UE',
     homeDescription:
       'Poêles à granulés hydro et à air ventilé, dimensionnés avant l’achat. Livraison sur rendez-vous en France et en Europe, paiement sécurisé.',
-    shopTitle: 'Tous les poêles à granulés',
+    shopTitle: 'Le chauffage',
     shopDescription:
       'Poêles à air ventilé et poêles hydro de 6 à 24 kW. Puissance, rendement et surface chauffée sur chaque fiche.',
   },
@@ -127,14 +127,14 @@ const fr = {
   },
 
   home: {
-    heroEyebrow: 'Poêles à granulés — hydro et air ventilé',
-    heroTitle: 'Le bon poêle, c’est d’abord la bonne puissance.',
+    heroEyebrow: 'Granulés, bois, chaudières, pompes à chaleur',
+    heroTitle: 'Le bon appareil, c’est d’abord la bonne puissance.',
     heroLead:
-      'Un poêle surdimensionné tourne au ralenti, s’encrasse et vous laisse ouvrir les fenêtres. Un poêle sous-dimensionné tourne à fond et ne tient pas la maison. Nous commençons donc par le calcul, puis par l’appareil.',
+      'Un appareil surdimensionné tourne au ralenti, s’encrasse et vous laisse ouvrir les fenêtres. Sous-dimensionné, il tourne à fond et ne tient pas la maison. Nous commençons donc par le calcul, puis par l’appareil.',
     heroCtaPrimary: 'Calculer ma puissance',
-    heroCtaSecondary: 'Voir les poêles',
+    heroCtaSecondary: 'Voir tout le chauffage',
     heroStatOne: 'de 6 à 24 kW',
-    heroStatOneLabel: 'deux familles, douze références',
+    heroStatOneLabel: 'huit familles d’appareils',
     heroStatTwo: 'jusqu’à 92 %',
     heroStatTwoLabel: 'de rendement annoncé',
     heroStatThree: '4 à 8 jours',
@@ -190,7 +190,7 @@ const fr = {
   },
 
   shop: {
-    title: 'Tous les poêles',
+    title: 'Tout le chauffage',
     lead: 'Douze références, de 6 à 24 kW. Les caractéristiques annoncées sont celles des fiches techniques fournisseur.',
     filterCategory: 'Famille',
     filterAll: 'Toutes',
@@ -338,9 +338,9 @@ const fr = {
 
   about: {
     title: 'À propos',
-    lead: 'Une boutique spécialisée, volontairement étroite.',
+    lead: 'Une boutique de chauffage au bois, au granulé et à l’électricité.',
     body: [
-      'Pellora ne vend que des poêles à granulés : deux familles, douze références, et les accessoires qui vont avec. Ce choix est délibéré. Un catalogue de trois cents appareils oblige à recopier les fiches du fournisseur sans les lire ; douze références permettent de savoir ce qu’on vend, et de dire quand un modèle ne convient pas.',
+      'Pellora couvre huit familles d’appareils : poêles à granulés et à bois, cuisinières, chaudières, inserts, conduits, pompes à chaleur, et les accessoires qui vont avec. Chaque fiche est saisie d’après la documentation du fabricant, et porte une mention visible tant que ce n’est pas le cas. Un catalogue de trois cents appareils oblige à recopier les fiches sans les lire ; nous préférons savoir ce que nous vendons, et pouvoir dire quand un modèle ne convient pas.',
       'Nous travaillons en dropshipping : les appareils partent des entrepôts européens de nos fournisseurs, sans passer par un stock intermédiaire. L’avantage pour vous est le prix, puisqu’il n’y a pas de show-room à financer. L’inconvénient est que nous ne pouvons pas vous faire voir l’appareil avant l’achat — nous compensons par des fiches techniques complètes et par un droit de rétractation de 14 jours qui s’applique pleinement.',
       'Ce que nous ne faisons pas : l’installation, l’entretien annuel et le dépannage. Ce sont des métiers réglementés qui demandent une présence locale. Nous fournissons l’appareil, sa documentation et son conduit ; votre installateur fait le reste, et c’est mieux ainsi pour votre assurance comme pour votre garantie.',
     ],
