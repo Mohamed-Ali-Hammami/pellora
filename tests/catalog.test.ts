@@ -197,18 +197,27 @@ describe('cohérence technique des poêles', () => {
     }
   });
 
-  it('ne déclare vérifiée qu’une fiche qui a de vraies photos', () => {
+  it('ne met de vraies photos que sur une fiche aux données vérifiées', () => {
     /*
-     * Garde-fou contre l'incohérence la plus facile à commettre en
-     * remplaçant le catalogue produit par produit : annoncer des
-     * caractéristiques réelles sous une illustration de substitution.
+     * Garde-fou dans le sens qui trompe réellement l'acheteur.
+     *
+     * Les deux états sont indépendants et chacun porte déjà sa mention :
+     * `dataVerified` décrit les CARACTÉRISTIQUES, `hasOnlyPlaceholders` les
+     * VISUELS. Une illustration sous des caractéristiques réelles est honnête
+     * — la fiche annonce que la photographie est à venir, et c'est la
+     * situation normale quand le fournisseur envoie son étiquette énergétique
+     * avant ses photos.
+     *
+     * L'inverse ne l'est pas : une photographie du véritable appareil à côté
+     * de puissances inventées se lit comme une fiche complète. C'est cette
+     * combinaison-là qu'on interdit.
      */
     for (const product of products) {
-      if (!product.dataVerified) continue;
+      if (hasOnlyPlaceholders(product)) continue;
       expect(
-        hasOnlyPlaceholders(product),
-        `${product.id} : données déclarées vérifiées mais visuels encore illustrés`,
-      ).toBe(false);
+        product.dataVerified,
+        `${product.id} : vraies photos mais caractéristiques encore fictives`,
+      ).toBe(true);
     }
   });
 

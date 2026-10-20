@@ -81,3 +81,19 @@ Une photo récupérée via un moteur de recherche reste protégée par le droit
 d'auteur, même sans mention de copyright. Sur un site marchand, le risque
 n'est pas théorique : les agences pratiquent la facturation rétroactive, pour
 des montants très supérieurs au prix d'un visuel sous licence.
+
+## Mettre un document de côté
+
+Un fichier dont le nom commence par un souligné est ignoré par
+`npm run media:scan` : il reste auprès de son produit sans entrer dans la
+galerie.
+
+```
+vulcano-silenzio-up/
+  _etiquette-energie.webp   ← conservée, non publiée
+```
+
+C'est le cas d'une étiquette énergétique reçue avant les photographies :
+seule exploitable, elle deviendrait l'image principale du produit et
+s'afficherait à la place de l'appareil dans toutes les grilles. Le jour où les
+photos arrivent, retirez le souligné, renumérotez et relancez le script.

@@ -96,8 +96,14 @@ if (existsSync(ROOT)) {
       continue;
     }
 
+    // Un fichier préfixé d'un souligné est mis de côté, pas publié. Sert aux
+    // documents qu'on veut garder auprès de leur produit sans qu'ils entrent
+    // dans la galerie : typiquement une étiquette énergétique reçue avant les
+    // photographies, qui deviendrait sinon la vignette du produit dans toutes
+    // les grilles. Le jour où les photos arrivent, il suffit de retirer le
+    // souligné et de relancer ce script.
     const files = readdirSync(join(ROOT, folder.name))
-      .filter((file) => ACCEPTED.test(file))
+      .filter((file) => ACCEPTED.test(file) && !file.startsWith('_'))
       .sort((a, b) => a.localeCompare(b, 'en'));
 
     const usable: string[] = [];

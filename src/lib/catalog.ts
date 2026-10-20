@@ -417,6 +417,177 @@ export const products: readonly Product[] = [
     dispatchDaysMin: 3,
     dispatchDaysMax: 6,
   },
+  // ETNA Vulcano Silenzio Up — même plateforme technique que le Vertigo Up
+  // (étanche, sortie concentrique supérieure, mêmes puissances), dans un corps
+  // rectangulaire au lieu du corps rond.
+  //
+  // PUISSANCE : l'étiquette énergétique, reçue cette fois en taille réelle et
+  // parfaitement lisible, porte « ETNA · VULCANO · A+ · 8,3 kW · 2015/1186 ».
+  // La désignation commerciale annonce 9,2 kW. Même arbitrage que pour les
+  // deux fiches précédentes : l'étiquette alimente `powerMaxKw`, et la fiche
+  // affiche les deux valeurs.
+  //
+  // PAS ENCORE DE PHOTOGRAPHIE : les trois visuels produit sont arrivés en
+  // 125 px et `media:scan` les a écartés. L'étiquette est mise de côté sous
+  // `_etiquette-energie.webp` — seule à être exploitable, elle deviendrait la
+  // vignette du produit dans toutes les grilles. La fiche porte donc
+  // l'illustration de substitution et la mention qui va avec.
+  //
+  // RESTE À CONFIRMER, signalé par `null` : puissance minimale, rendement,
+  // réservoir, diamètre de sortie, dimensions, poids, niveau sonore.
+  //
+  // PRIX ET COÛT D'ACHAT PROVISOIRES.
+  {
+    id: 'vulcano-silenzio-up',
+    slug: {
+      fr: 'etna-vulcano-silenzio-up-poele-granules-etanche-sortie-dessus',
+      en: 'etna-vulcano-silenzio-up-sealed-pellet-stove-top-outlet',
+      nl: 'etna-vulcano-silenzio-up-luchtdichte-pelletkachel-bovenafvoer',
+      es: 'etna-vulcano-silenzio-up-estufa-pellets-estanca-salida-superior',
+    },
+    name: 'ETNA Vulcano Silenzio Up',
+    category: 'pellet',
+    distribution: 'air',
+    price: euros(2690),
+    compareAtPrice: null,
+    tagline: L(
+      'La sortie par le dessus du Vertigo, dans un corps droit qui se range contre un mur.',
+      'The Vertigo’s top flue outlet, in a straight body that tucks against a wall.',
+      'De bovenafvoer van de Vertigo, in een rechte behuizing die tegen een muur past.',
+      'La salida superior del Vertigo, en un cuerpo recto que se arrima a la pared.',
+    ),
+    description: L(
+      "Le Vulcano Silenzio Up partage la plateforme du Vertigo Up : même étanchéité, même sortie concentrique par le dessus — l'air de combustion descend par l'enveloppe extérieure du conduit pendant que les fumées montent par l'intérieur — et donc le même gain de place, l'appareil n'ayant plus à réserver l'espace d'un coude arrière. La différence est la forme : un corps rectangulaire à façade plane, qui s'aligne sur un mur ou s'encastre entre deux meubles là où le corps rond du Vertigo demande à être vu de tous les côtés. Le constructeur le classe parmi ses modèles les plus silencieux, sans publier de niveau sonore mesuré.",
+      'The Vulcano Silenzio Up shares the Vertigo Up’s platform: the same sealed construction, the same concentric flue through the top — combustion air comes down the outer sleeve while the flue gases rise inside it — and therefore the same saving in space, since no room is needed for a rear elbow. The difference is the shape: a rectangular body with a flat front, which lines up against a wall or slots between two units, where the Vertigo’s round body asks to be seen from every side. The manufacturer ranks it among its quietest models, without publishing a measured noise level.',
+      'De Vulcano Silenzio Up deelt het platform van de Vertigo Up: dezelfde luchtdichte bouw, dezelfde concentrische afvoer via de bovenkant — de verbrandingslucht komt via de buitenmantel naar beneden terwijl de rookgassen er binnenin omhoog gaan — en dus dezelfde ruimtewinst, want er hoeft geen plaats te zijn voor een bocht achteraan. Het verschil is de vorm: een rechthoekige behuizing met vlak front, die tegen een muur aansluit of tussen twee kasten past, waar de ronde Vertigo van alle kanten gezien wil worden. De fabrikant rekent hem tot zijn stilste modellen, zonder een gemeten geluidsniveau te publiceren.',
+      'La Vulcano Silenzio Up comparte la plataforma de la Vertigo Up: la misma estanqueidad, la misma salida concéntrica por arriba —el aire de combustión baja por la envolvente exterior mientras los humos suben por dentro— y por tanto el mismo ahorro de espacio, ya que no hay que reservar sitio para un codo trasero. La diferencia es la forma: un cuerpo rectangular de frontal plano, que se alinea contra una pared o encaja entre dos muebles, donde el cuerpo redondo de la Vertigo pide verse por todos los lados. El fabricante la sitúa entre sus modelos más silenciosos, sin publicar un nivel sonoro medido.',
+    ),
+    bullets: {
+      fr: [
+        'Sortie concentrique par le dessus — installation plus près du mur',
+        'Étanche — zones d’installation 1, 2 ou 3',
+        'Corps rectangulaire à façade plane, pensé pour s’aligner sur un mur',
+        'Classé « ultra-silencieux » par le constructeur',
+        'Classe énergétique A+ — étiquette vérifiée',
+        'Télécommande incluse, module Wi-Fi en option',
+      ],
+      en: [
+        'Concentric flue through the top — fits closer to the wall',
+        'Sealed — installation zones 1, 2 or 3',
+        'Rectangular body with a flat front, meant to line up against a wall',
+        'Ranked “ultra-quiet” by the manufacturer',
+        'Energy class A+ — label verified',
+        'Remote control included, Wi-Fi module optional',
+      ],
+      nl: [
+        'Concentrische afvoer via de bovenkant — staat dichter bij de muur',
+        'Luchtdicht — plaatsingszones 1, 2 of 3',
+        'Rechthoekige behuizing met vlak front, om tegen een muur aan te sluiten',
+        'Door de fabrikant als “ultrastil” aangeduid',
+        'Energieklasse A+ — label geverifieerd',
+        'Afstandsbediening meegeleverd, wifimodule optioneel',
+      ],
+      es: [
+        'Salida concéntrica por arriba — se instala más cerca de la pared',
+        'Estanca — zonas de instalación 1, 2 o 3',
+        'Cuerpo rectangular de frontal plano, pensado para alinearse con la pared',
+        'Clasificada «ultrasilenciosa» por el fabricante',
+        'Clase energética A+ — etiqueta verificada',
+        'Mando a distancia incluido, módulo Wi-Fi opcional',
+      ],
+    },
+    specs: [
+      {
+        label: SPEC.power,
+        value: L(
+          '8,3 kW (étiquette énergétique) — 9,2 kW en désignation commerciale',
+          '8.3 kW (energy label) — 9.2 kW as marketed',
+          '8,3 kW (energielabel) — 9,2 kW in de handelsbenaming',
+          '8,3 kW (etiqueta energética) — 9,2 kW en la denominación comercial',
+        ),
+      },
+      { label: SPEC.energyClass, value: U('A+') },
+      {
+        label: SPEC.flue,
+        value: L(
+          'Concentrique, par le dessus',
+          'Concentric, through the top',
+          'Concentrisch, via de bovenkant',
+          'Concéntrica, por arriba',
+        ),
+      },
+      {
+        label: SPEC.sealed,
+        value: L(
+          'Oui — zones d’installation 1, 2 ou 3',
+          'Yes — installation zones 1, 2 or 3',
+          'Ja — plaatsingszones 1, 2 of 3',
+          'Sí — zonas de instalación 1, 2 o 3',
+        ),
+      },
+      {
+        label: SPEC.noise,
+        value: L(
+          'Annoncé « ultra-silencieux » — aucun niveau en dB communiqué',
+          'Stated “ultra-quiet” — no dB figure supplied',
+          'Opgegeven als “ultrastil” — geen dB-waarde opgegeven',
+          'Declarada «ultrasilenciosa» — sin valor en dB facilitado',
+        ),
+      },
+      {
+        label: SPEC.control,
+        value: L(
+          'Télécommande incluse, Wi-Fi en option',
+          'Remote control included, Wi-Fi optional',
+          'Afstandsbediening meegeleverd, wifi optioneel',
+          'Mando incluido, Wi-Fi opcional',
+        ),
+      },
+      PELLET_FUEL,
+      { label: SPEC.standard, value: U('EN 14785 · règlement UE 2015/1186') },
+      WARRANTY_2Y,
+    ],
+    tech: {
+      // Étiquette énergétique ETNA « VULCANO », lue en taille réelle.
+      powerMaxKw: 8.3,
+      powerMinKw: null,
+      heatedAreaMinM2: null,
+      // Non communiquée pour ce modèle. Reprise de la plateforme commune au
+      // Vertigo Up, dont la documentation annonce environ 90 m² à puissance
+      // identique — à confirmer sur la fiche technique du Vulcano.
+      heatedAreaMaxM2: 90,
+      hopperKg: null,
+      efficiencyPercent: null,
+      energyClass: 'A+',
+      flueDiameterMm: null,
+      noiseDbA: null,
+      waterPowerKw: null,
+      domesticHotWater: false,
+      ductedOutlets: null,
+      dimensionsMm: null,
+      weightKg: null,
+    },
+    images: [
+      placeholderImage(
+        'stove-air',
+        L(
+          'Poêle à granulés étanche ETNA Vulcano Silenzio Up, corps rectangulaire, sortie des fumées par le dessus',
+          'ETNA Vulcano Silenzio Up sealed pellet stove, rectangular body, flue through the top',
+          'ETNA Vulcano Silenzio Up luchtdichte pelletkachel, rechthoekige behuizing, afvoer via de bovenkant',
+          'Estufa de pellets estanca ETNA Vulcano Silenzio Up, cuerpo rectangular, salida de humos por arriba',
+        ),
+      ),
+    ],
+    variants: [],
+    crossSell: ['kit-conduit-80', 'thermostat-wifi', 'granules-palette'],
+    hero: false,
+    dataVerified: true,
+    weightGrams: 130_000,
+    freight: true,
+    badge: L('Sortie par le dessus', 'Top flue outlet', 'Afvoer bovenaan', 'Salida por arriba'),
+    dispatchDaysMin: 3,
+    dispatchDaysMax: 6,
+  },
   // ───────────────────────────────── POÊLES À AIR VENTILÉ ─────────────────────────────────
   {
     id: 'aria-6',
