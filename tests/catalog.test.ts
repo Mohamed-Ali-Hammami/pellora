@@ -10,6 +10,7 @@ import {
 } from '@/lib/catalog';
 import { productCategories } from '@/lib/catalog.types';
 import { guides, getGuideBySlug } from '@/lib/guides';
+import { hasOnlyPlaceholders } from '@/lib/product-media';
 import { locales } from '@/lib/i18n/config';
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -153,15 +154,46 @@ describe('cohérence technique des poêles', () => {
     }
   });
 
-  it('a des plages de puissance et de surface croissantes', () => {
+  it('a des plages de puissance et de surface croissantes quand les deux bornes sont connues', () => {
+    /*
+     * Les bornes basses peuvent manquer : un fabricant annonce parfois
+     * « jusqu'à 90 m² » sans donner de minimum. Le modèle le représente par
+     * `null` plutôt que par un nombre inventé, et ce test ne contrôle donc
+     * l'ordre que lorsque les deux valeurs existent.
+     */
     for (const product of getStoves()) {
       const tech = product.tech;
       expect(tech).not.toBeNull();
       if (!tech) continue;
-      expect(tech.powerMaxKw, product.id).toBeGreaterThan(tech.powerMinKw);
-      expect(tech.heatedAreaMaxM2, product.id).toBeGreaterThan(tech.heatedAreaMinM2);
-      expect(tech.efficiencyPercent, product.id).toBeGreaterThan(70);
-      expect(tech.efficiencyPercent, product.id).toBeLessThan(100);
+
+      expect(tech.powerMaxKw, product.id).toBeGreaterThan(0);
+      expect(tech.heatedAreaMaxM2, product.id).toBeGreaterThan(0);
+
+      if (tech.powerMinKw !== null) {
+        expect(tech.powerMaxKw, product.id).toBeGreaterThan(tech.powerMinKw);
+      }
+      if (tech.heatedAreaMinM2 !== null) {
+        expect(tech.heatedAreaMaxM2, product.id).toBeGreaterThan(tech.heatedAreaMinM2);
+      }
+      if (tech.efficiencyPercent !== null) {
+        expect(tech.efficiencyPercent, product.id).toBeGreaterThan(70);
+        expect(tech.efficiencyPercent, product.id).toBeLessThan(100);
+      }
+    }
+  });
+
+  it('ne déclare vérifiée qu’une fiche qui a de vraies photos', () => {
+    /*
+     * Garde-fou contre l'incohérence la plus facile à commettre en
+     * remplaçant le catalogue produit par produit : annoncer des
+     * caractéristiques réelles sous une illustration de substitution.
+     */
+    for (const product of products) {
+      if (!product.dataVerified) continue;
+      expect(
+        hasOnlyPlaceholders(product),
+        `${product.id} : données déclarées vérifiées mais visuels encore illustrés`,
+      ).toBe(false);
     }
   });
 

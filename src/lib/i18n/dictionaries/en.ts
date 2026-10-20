@@ -54,6 +54,7 @@ const en: Dictionary = {
     send: 'Send',
     close: 'Close',
     back: 'Back',
+    upTo: 'Up to',
     seeAll: 'See all',
     specifications: 'Specifications',
     description: 'Description',
@@ -188,6 +189,8 @@ const en: Dictionary = {
     installTitle: 'Installation',
     installText:
       'Installation and the flue connection must be carried out by a qualified professional. We supply the data sheet, the connection diagram and the declaration of performance.',
+    unverifiedNotice:
+      'Demonstration specifications: the values on this page are fictional and must be replaced with the manufacturer’s documentation.',
     crossSellTitle: 'Often ordered together',
     powerRange: 'Modulating output',
     heatedArea: 'Heated area',

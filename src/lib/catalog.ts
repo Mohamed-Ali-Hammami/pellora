@@ -59,6 +59,9 @@ const SPEC = {
   contents: L('Contenu', 'Contents', 'Inhoud', 'Contenido'),
   material: L('Matière', 'Material', 'Materiaal', 'Material'),
   compatibility: L('Compatibilité', 'Compatibility', 'Compatibiliteit', 'Compatibilidad'),
+  reference: L('Référence', 'Reference', 'Referentie', 'Referencia'),
+  sealed: L('Appareil étanche', 'Sealed appliance', 'Luchtdicht toestel', 'Aparato estanco'),
+  control: L('Pilotage', 'Control', 'Bediening', 'Control'),
 } as const;
 
 /** Garantie légale de conformité : 2 ans dans toute l'UE (directive 2019/771). */
@@ -90,6 +93,155 @@ function placeholderImage(kind: string, alt: Localized<string>) {
 }
 
 export const products: readonly Product[] = [
+  // ───────────────────────── PRODUIT RÉEL — ETNA Luxe ─────────────────────────
+  //
+  // Seule fiche du catalogue dont les caractéristiques viennent de la
+  // documentation du fabricant, d'où `dataVerified: true`.
+  //
+  // RESTE À CONFIRMER auprès de la fiche technique ETNA, et signalé par un
+  // `null` plutôt que par une valeur inventée : puissance minimale de
+  // modulation, rendement exact, capacité du réservoir, diamètre de sortie des
+  // fumées, dimensions, poids, niveau sonore.
+  //
+  // PRIX ET COÛT D'ACHAT PROVISOIRES : à remplacer avant toute vente.
+  {
+    id: 'anna-12',
+    slug: {
+      fr: 'etna-anna-12-poele-granules-etanche-canalisable',
+      en: 'etna-anna-12-sealed-ducted-pellet-stove',
+      nl: 'etna-anna-12-luchtdichte-kanaliseerbare-pelletkachel',
+      es: 'etna-anna-12-estufa-pellets-estanca-canalizable',
+    },
+    name: 'ETNA Luxe Anna 12EC',
+    category: 'air',
+    price: euros(2490),
+    compareAtPrice: null,
+    tagline: L(
+      'Étanche : l’air de combustion vient de l’extérieur, pas de votre salon.',
+      'Sealed: combustion air comes from outside, not from your living room.',
+      'Luchtdicht: de verbrandingslucht komt van buiten, niet uit uw woonkamer.',
+      'Estanca: el aire de combustión viene del exterior, no de su salón.',
+    ),
+    description: L(
+      "Un poêle étanche prend son air de combustion directement dehors, par un conduit concentrique, au lieu de le puiser dans la pièce. Deux conséquences : plus de courant d’air froid aspiré vers l’appareil, et une installation possible dans une maison RT 2012 ou BBC, où un poêle non étanche met le logement en dépression. L’Anna y ajoute une sortie canalisable pour envoyer une partie de l’air chaud vers une deuxième pièce, une vitre teintée sur toute la hauteur de la façade, et une autonomie annoncée jusqu’à vingt heures. La télécommande est fournie ; le module Wi-Fi est en option.",
+      "A sealed stove draws its combustion air straight from outside through a concentric flue, instead of taking it from the room. Two consequences: no more cold draught pulled toward the appliance, and installation becomes possible in a low-energy or airtight house, where a non-sealed stove puts the building under negative pressure. The Anna adds a ducted outlet to send part of the warm air to a second room, a tinted glass panel running the full height of the front, and a stated burn time of up to twenty hours. The remote control is supplied; the Wi-Fi module is an option.",
+      "Een luchtdichte kachel haalt zijn verbrandingslucht rechtstreeks van buiten via een concentrische afvoer, in plaats van uit de kamer. Twee gevolgen: geen koude trek meer naar het toestel, en plaatsing wordt mogelijk in een lage-energiewoning, waar een niet-luchtdichte kachel onderdruk veroorzaakt. De Anna voegt daar een kanaaluitgang aan toe om een deel van de warme lucht naar een tweede kamer te sturen, getint glas over de volle hoogte van het front, en een opgegeven autonomie tot twintig uur. De afstandsbediening wordt meegeleverd; de wifimodule is optioneel.",
+      "Una estufa estanca toma su aire de combustión directamente del exterior, por un conducto concéntrico, en lugar de cogerlo de la estancia. Dos consecuencias: se acaba la corriente de aire frío hacia el aparato, y la instalación resulta posible en una vivienda de baja demanda energética, donde una estufa no estanca pone el edificio en depresión. La Anna añade una salida canalizable para enviar parte del aire caliente a una segunda habitación, un cristal tintado en toda la altura del frontal, y una autonomía declarada de hasta veinte horas. El mando a distancia se incluye; el módulo Wi-Fi es opcional.",
+    ),
+    bullets: {
+      fr: [
+        'Étanche — installable en zone 1, 2 ou 3, sortie des fumées en façade ou en toiture',
+        'Sortie canalisable pour chauffer une deuxième pièce',
+        'Surface de chauffe annoncée jusqu’à 90 m²',
+        'Autonomie annoncée jusqu’à 20 h en fonctionnement continu',
+        'Vitre teintée intégrale et système double porte, vitre extérieure trempée',
+        'Télécommande incluse, module Wi-Fi en option',
+      ],
+      en: [
+        'Sealed — installable in zones 1, 2 or 3, flue through the wall or the roof',
+        'Ducted outlet to heat a second room',
+        'Stated heated area up to 90 m²',
+        'Stated burn time up to 20 h of continuous operation',
+        'Full-height tinted glass and twin-door system, tempered outer pane',
+        'Remote control included, Wi-Fi module optional',
+      ],
+      nl: [
+        'Luchtdicht — plaatsbaar in zone 1, 2 of 3, afvoer door gevel of dak',
+        'Kanaaluitgang om een tweede kamer te verwarmen',
+        'Opgegeven verwarmd oppervlak tot 90 m²',
+        'Opgegeven autonomie tot 20 u continu bedrijf',
+        'Getint glas over de volle hoogte en dubbeldeursysteem, gehard buitenglas',
+        'Afstandsbediening meegeleverd, wifimodule optioneel',
+      ],
+      es: [
+        'Estanca — instalable en zona 1, 2 o 3, salida de humos por fachada o tejado',
+        'Salida canalizable para calentar una segunda habitación',
+        'Superficie calentada declarada hasta 90 m²',
+        'Autonomía declarada hasta 20 h de funcionamiento continuo',
+        'Cristal tintado en toda la altura y sistema de doble puerta, vidrio exterior templado',
+        'Mando a distancia incluido, módulo Wi-Fi opcional',
+      ],
+    },
+    specs: [
+      { label: SPEC.reference, value: U('ANNA 12EC') },
+      {
+        label: SPEC.power,
+        value: L(
+          '10 kW (puissance de l’étiquette énergétique)',
+          '10 kW (figure on the energy label)',
+          '10 kW (waarde op het energielabel)',
+          '10 kW (valor de la etiqueta energética)',
+        ),
+      },
+      { label: SPEC.area, value: L('Jusqu’à 90 m²', 'Up to 90 m²', 'Tot 90 m²', 'Hasta 90 m²') },
+      { label: SPEC.efficiency, value: U('> 92 %') },
+      { label: SPEC.energyClass, value: U('A+') },
+      { label: SPEC.autonomy, value: L('Jusqu’à 20 h', 'Up to 20 h', 'Tot 20 u', 'Hasta 20 h') },
+      { label: SPEC.outlets, value: L('1 sortie canalisable', '1 ducted outlet', '1 kanaaluitgang', '1 salida canalizable') },
+      {
+        label: SPEC.sealed,
+        value: L(
+          'Oui — zones d’installation 1, 2 ou 3',
+          'Yes — installation zones 1, 2 or 3',
+          'Ja — plaatsingszones 1, 2 of 3',
+          'Sí — zonas de instalación 1, 2 o 3',
+        ),
+      },
+      {
+        label: SPEC.control,
+        value: L(
+          'Télécommande incluse, Wi-Fi en option',
+          'Remote control included, Wi-Fi optional',
+          'Afstandsbediening meegeleverd, wifi optioneel',
+          'Mando incluido, Wi-Fi opcional',
+        ),
+      },
+      PELLET_FUEL,
+      { label: SPEC.standard, value: U('EN 14785 · règlement UE 2015/1186') },
+      WARRANTY_2Y,
+    ],
+    tech: {
+      // Valeur de l'étiquette énergétique, qui est le document opposable.
+      // La désignation commerciale annonce 12 kW : l'écart est signalé au
+      // client sur la fiche et reste à trancher avec le fabricant.
+      powerMaxKw: 10,
+      powerMinKw: null,
+      heatedAreaMinM2: null,
+      heatedAreaMaxM2: 90,
+      hopperKg: null,
+      efficiencyPercent: null,
+      energyClass: 'A+',
+      flueDiameterMm: null,
+      noiseDbA: null,
+      waterPowerKw: null,
+      domesticHotWater: false,
+      ductedOutlets: 1,
+      dimensionsMm: null,
+      weightKg: null,
+    },
+    images: [
+      placeholderImage(
+        'stove-air-ducted',
+        L(
+          'Poêle à granulés étanche ETNA Luxe Anna 12EC, corps cylindrique et vitre teintée',
+          'ETNA Luxe Anna 12EC sealed pellet stove, cylindrical body and tinted glass',
+          'ETNA Luxe Anna 12EC luchtdichte pelletkachel, cilindrische behuizing en getint glas',
+          'Estufa de pellets estanca ETNA Luxe Anna 12EC, cuerpo cilíndrico y cristal tintado',
+        ),
+      ),
+    ],
+    variants: [],
+    crossSell: ['kit-conduit-80', 'thermostat-wifi', 'granules-palette'],
+    hero: true,
+    dataVerified: true,
+    // Poids provisoire, le temps d'avoir la fiche technique. Il ne sert qu'à
+    // l'information : le tarif de transport dépend du drapeau `freight`.
+    weightGrams: 140_000,
+    freight: true,
+    badge: L('Poêle étanche', 'Sealed stove', 'Luchtdichte kachel', 'Estufa estanca'),
+    dispatchDaysMin: 3,
+    dispatchDaysMax: 6,
+  },
   // ───────────────────────────────── POÊLES À AIR VENTILÉ ─────────────────────────────────
   {
     id: 'aria-6',
@@ -203,6 +355,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'thermostat-wifi', 'granules-palette'],
     hero: true,
+    dataVerified: false,
     weightGrams: 112_000,
     freight: true,
     badge: L('Le plus vendu', 'Best seller', 'Bestseller', 'Más vendido'),
@@ -312,6 +465,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'thermostat-wifi', 'aria-12-duo'],
     hero: true,
+    dataVerified: false,
     weightGrams: 150_000,
     freight: true,
     badge: L('Pour maison entière', 'Whole-home', 'Hele woning', 'Casa entera'),
@@ -420,6 +574,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'aria-6', 'aspirateur-cendres'],
     hero: false,
+    dataVerified: false,
     weightGrams: 132_000,
     freight: true,
     badge: L('Faible profondeur', 'Shallow depth', 'Geringe diepte', 'Poco fondo'),
@@ -529,6 +684,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'thermostat-wifi', 'idro-15'],
     hero: false,
+    dataVerified: false,
     weightGrams: 186_000,
     freight: true,
     badge: null,
@@ -640,6 +796,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'thermostat-wifi', 'idro-20-ecs'],
     hero: true,
+    dataVerified: false,
     weightGrams: 212_000,
     freight: true,
     badge: L('Entrée de gamme hydro', 'Entry-level hydro', 'Instapmodel hydro', 'Hidro de entrada'),
@@ -749,6 +906,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'thermostat-wifi', 'idro-20-ecs'],
     hero: true,
+    dataVerified: false,
     weightGrams: 240_000,
     freight: true,
     badge: null,
@@ -858,6 +1016,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'thermostat-wifi', 'granules-palette'],
     hero: true,
+    dataVerified: false,
     weightGrams: 280_000,
     freight: true,
     badge: L('Chauffage + eau chaude', 'Heating + hot water', 'Verwarming + warm water', 'Calefacción + ACS'),
@@ -967,6 +1126,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['kit-conduit-80', 'granules-palette', 'idro-20-ecs'],
     hero: false,
+    dataVerified: false,
     weightGrams: 325_000,
     freight: true,
     badge: null,
@@ -1051,6 +1211,7 @@ export const products: readonly Product[] = [
     variants: [],
     crossSell: ['aria-6', 'idro-15', 'aspirateur-cendres'],
     hero: false,
+    dataVerified: false,
     weightGrams: 28_000,
     freight: false,
     badge: null,
@@ -1135,6 +1296,7 @@ export const products: readonly Product[] = [
     ],
     crossSell: ['aria-9-canal', 'idro-15', 'aspirateur-cendres'],
     hero: false,
+    dataVerified: false,
     weightGrams: 420,
     freight: false,
     badge: null,
@@ -1216,6 +1378,7 @@ export const products: readonly Product[] = [
     variants: [],
     crossSell: ['aria-6', 'kit-conduit-80', 'granules-palette'],
     hero: false,
+    dataVerified: false,
     weightGrams: 5200,
     freight: false,
     badge: null,
@@ -1296,6 +1459,7 @@ export const products: readonly Product[] = [
     variants: [],
     crossSell: ['aria-6', 'idro-15', 'aspirateur-cendres'],
     hero: false,
+    dataVerified: false,
     weightGrams: 1_000_000,
     freight: true,
     badge: null,

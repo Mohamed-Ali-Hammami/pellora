@@ -30,7 +30,7 @@ export interface SizingCandidate {
   name: string;
   href: string;
   category: string;
-  powerMinKw: number;
+  powerMinKw: number | null;
   powerMaxKw: number;
   /** Prix déjà formaté dans la langue courante. */
   price: string;
@@ -202,7 +202,10 @@ export function SizingCalculator({ candidates, locale, labels }: Props) {
                     </span>
                     <span className="flex items-center gap-4">
                       <span className="tabular text-sm text-ink-soft">
-                        {format(candidate.powerMinKw)} – {format(candidate.powerMaxKw)} kW
+                        {candidate.powerMinKw === null
+                          ? format(candidate.powerMaxKw)
+                          : `${format(candidate.powerMinKw)} – ${format(candidate.powerMaxKw)}`}{' '}
+                        kW
                       </span>
                       <span className="tabular text-sm font-semibold text-ink">{candidate.price}</span>
                     </span>

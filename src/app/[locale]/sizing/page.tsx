@@ -39,7 +39,7 @@ export default async function SizingPage({ params }: { params: Promise<{ locale:
     name: product.name,
     href: productHref(product.slug[locale], locale),
     category: dict.categories[product.category],
-    powerMinKw: product.tech?.powerMinKw ?? 0,
+    powerMinKw: product.tech?.powerMinKw ?? null,
     powerMaxKw: product.tech?.powerMaxKw ?? 0,
     price: priceShort(product.price, locale),
   }));

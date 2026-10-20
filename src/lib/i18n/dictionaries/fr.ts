@@ -59,6 +59,7 @@ const fr = {
     send: 'Envoyer',
     close: 'Fermer',
     back: 'Retour',
+    upTo: 'Jusqu’à',
     seeAll: 'Tout voir',
     specifications: 'Caractéristiques',
     description: 'Description',
@@ -193,6 +194,8 @@ const fr = {
     installTitle: 'Installation',
     installText:
       'La pose et le raccordement au conduit de fumées doivent être réalisés par un professionnel qualifié. Nous fournissons la fiche technique, le schéma de raccordement et la déclaration de performance.',
+    unverifiedNotice:
+      'Caractéristiques de démonstration : les valeurs de cette fiche sont fictives et doivent être remplacées par la documentation du fabricant.',
     crossSellTitle: 'Souvent commandé avec',
     powerRange: 'Puissance modulable',
     heatedArea: 'Surface chauffée',

@@ -62,6 +62,28 @@ export function kilowatts(value: number, locale: Locale): string {
   return `${decimal(value, locale, 1)} kW`;
 }
 
+/**
+ * Rend une plage de valeurs, ou un simple maximum quand la borne basse n'est
+ * pas connue : « 2,1 – 6,2 kW » d'un côté, « Jusqu'à 90 m² » de l'autre.
+ *
+ * Exister sous cette forme évite la tentation d'inventer une borne basse pour
+ * satisfaire un gabarit d'affichage — sur une caractéristique réglementée,
+ * c'est exactement ce qu'il ne faut pas faire.
+ */
+export function rangeOrMax(
+  min: number | null,
+  max: number,
+  unit: string,
+  locale: Locale,
+  upToLabel: string,
+  digits = 1,
+): string {
+  const render = (value: number) => (digits > 0 ? decimal(value, locale, digits) : integer(value, locale));
+  return min === null
+    ? `${upToLabel} ${render(max)} ${unit}`
+    : `${render(min)} – ${render(max)} ${unit}`;
+}
+
 /** Remplace les jetons `{clef}` d'un texte du dictionnaire. */
 export function interpolate(template: string, values: Record<string, string>): string {
   return template.replace(/\{(\w+)\}/g, (match, key: string) => values[key] ?? match);

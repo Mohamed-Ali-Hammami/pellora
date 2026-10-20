@@ -30,20 +30,25 @@ export function resolveImages(product: Product): readonly ProductImage[] {
   const real = generatedMedia[product.id];
   if (!real || real.length === 0) return product.images;
 
-  // L'alternative textuelle du catalogue décrit l'appareil : elle reste
-  // valable pour une photo du même appareil, et vaut mieux qu'un `alt` vide.
-  const fallbackAlt = product.images[0]?.alt;
+  // La description du catalogue sert au visuel principal ; les suivants sont
+  // numérotés. Répéter la même alternative sur cinq photos la rend inutile
+  // pour qui navigue au lecteur d'écran.
+  const mainAlt = product.images[0]?.alt;
 
-  return real.map((src, index) => ({
-    src,
-    alt: fallbackAlt ?? {
-      fr: `${product.name} — vue ${index + 1}`,
-      en: `${product.name} — view ${index + 1}`,
-      nl: `${product.name} — weergave ${index + 1}`,
-      es: `${product.name} — vista ${index + 1}`,
-    },
-    placeholder: false,
-  }));
+  return real.map((src, index) => {
+    if (index === 0 && mainAlt) return { src, alt: mainAlt, placeholder: false };
+    const position = index + 1;
+    return {
+      src,
+      alt: {
+        fr: `${product.name} — vue ${position}`,
+        en: `${product.name} — view ${position}`,
+        nl: `${product.name} — weergave ${position}`,
+        es: `${product.name} — vista ${position}`,
+      },
+      placeholder: false,
+    };
+  });
 }
 
 /** Visuel principal — celui des cartes produit et des aperçus de partage. */

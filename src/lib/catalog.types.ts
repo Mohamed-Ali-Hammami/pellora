@@ -53,20 +53,27 @@ export interface SpecRow {
  * l'estime engage la responsabilité du vendeur.
  */
 export interface StoveTech {
-  /** Puissance nominale minimale et maximale, en kW. */
-  powerMinKw: number;
+  /**
+   * Puissance maximale, en kW. SEUL champ technique obligatoire : le filtre
+   * de la boutique et le calculateur de puissance s'appuient dessus.
+   */
   powerMaxKw: number;
-  /** Fourchette de surface chauffée annoncée, en m², pour une hauteur de 2,5 m. */
-  heatedAreaMinM2: number;
+  /** Puissance minimale de modulation, en kW. `null` tant qu'elle n'est pas connue. */
+  powerMinKw: number | null;
+  /**
+   * Surface chauffée annoncée, en m². `heatedAreaMinM2` vaut `null` quand le
+   * fabricant ne donne qu'un maximum (« jusqu'à 90 m² »).
+   */
+  heatedAreaMinM2: number | null;
   heatedAreaMaxM2: number;
   /** Capacité du réservoir à granulés, en kg. */
-  hopperKg: number;
+  hopperKg: number | null;
   /** Rendement à puissance nominale, en %. */
-  efficiencyPercent: number;
+  efficiencyPercent: number | null;
   /** Classe de l'étiquette énergétique (règlement UE 2015/1186). */
   energyClass: string;
   /** Diamètre de sortie des fumées, en mm. */
-  flueDiameterMm: number;
+  flueDiameterMm: number | null;
   /** Niveau sonore annoncé en fonctionnement, en dB(A). */
   noiseDbA: number | null;
   /** Puissance cédée à l'eau, en kW — poêles hydro uniquement. */
@@ -75,8 +82,8 @@ export interface StoveTech {
   domesticHotWater: boolean;
   /** Nombre de sorties canalisables — poêles à air uniquement. */
   ductedOutlets: number | null;
-  dimensionsMm: { height: number; width: number; depth: number };
-  weightKg: number;
+  dimensionsMm: { height: number; width: number; depth: number } | null;
+  weightKg: number | null;
 }
 
 export interface Product {
@@ -102,6 +109,15 @@ export interface Product {
   crossSell: readonly string[];
   /** Mis en avant en page d'accueil. */
   hero: boolean;
+  /**
+   * `true` quand les caractéristiques proviennent de la documentation réelle
+   * du fabricant, `false` tant que ce sont des valeurs de démonstration.
+   *
+   * Sert à afficher l'avertissement au bon endroit : une fiche vérifiée ne
+   * doit pas porter la mention qui dit le contraire, et une fiche qui ne l'est
+   * pas doit la porter même si le reste du catalogue est passé en réel.
+   */
+  dataVerified: boolean;
   /** Poids expédié en grammes, emballage inclus — sert au calcul du port. */
   weightGrams: number;
   /** `true` si l'article part en messagerie palettisée et non en colis. */

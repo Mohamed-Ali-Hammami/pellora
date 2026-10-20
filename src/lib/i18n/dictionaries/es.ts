@@ -54,6 +54,7 @@ const es: Dictionary = {
     send: 'Enviar',
     close: 'Cerrar',
     back: 'Volver',
+    upTo: 'Hasta',
     seeAll: 'Ver todo',
     specifications: 'Características',
     description: 'Descripción',
@@ -188,6 +189,8 @@ const es: Dictionary = {
     installTitle: 'Instalación',
     installText:
       'La colocación y la conexión al conducto de humos deben realizarlas un profesional cualificado. Facilitamos la ficha técnica, el esquema de conexión y la declaración de prestaciones.',
+    unverifiedNotice:
+      'Características de demostración: los valores de esta ficha son ficticios y deben sustituirse por la documentación del fabricante.',
     crossSellTitle: 'Se pide a menudo con',
     powerRange: 'Potencia modulable',
     heatedArea: 'Superficie calentada',

@@ -7,4 +7,12 @@
  * catalogue.
  */
 
-export const generatedMedia: Record<string, readonly string[]> = {};
+export const generatedMedia: Record<string, readonly string[]> = {
+  'anna-12': [
+    '/img/products/anna-12/01-produit.webp',
+    '/img/products/anna-12/02-ambiance.webp',
+    '/img/products/anna-12/03-bandeau-commande.webp',
+    '/img/products/anna-12/04-telecommande.webp',
+    '/img/products/anna-12/05-etiquette-energie.webp',
+  ],
+};

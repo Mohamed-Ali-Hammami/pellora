@@ -54,6 +54,7 @@ const nl: Dictionary = {
     send: 'Verzenden',
     close: 'Sluiten',
     back: 'Terug',
+    upTo: 'Tot',
     seeAll: 'Alles bekijken',
     specifications: 'Specificaties',
     description: 'Beschrijving',
@@ -188,6 +189,8 @@ const nl: Dictionary = {
     installTitle: 'Installatie',
     installText:
       'De plaatsing en de aansluiting op de rookgasafvoer moeten door een erkend vakman gebeuren. Wij leveren de technische fiche, het aansluitschema en de prestatieverklaring.',
+    unverifiedNotice:
+      'Demonstratiegegevens: de waarden op deze pagina zijn fictief en moeten worden vervangen door de documentatie van de fabrikant.',
     crossSellTitle: 'Vaak samen besteld',
     powerRange: 'Modulerend vermogen',
     heatedArea: 'Verwarmd oppervlak',

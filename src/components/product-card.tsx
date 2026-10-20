@@ -1,6 +1,6 @@
 /** Carte produit des grilles. Composant serveur. */
 
-import { decimal, integer, priceShort } from '@/lib/format';
+import { priceShort, rangeOrMax } from '@/lib/format';
 import { productHref } from '@/lib/i18n/routes';
 import { primaryImage } from '@/lib/product-media';
 import { savingsPercent } from '@/lib/money';
@@ -60,13 +60,13 @@ export function ProductCard({ product, locale, dict, priority }: Props) {
             <div>
               <dt className="text-xs text-muted">{dict.product.powerRange}</dt>
               <dd className="tabular font-semibold text-ink">
-                {decimal(product.tech.powerMinKw, locale)} – {decimal(product.tech.powerMaxKw, locale)} kW
+                {rangeOrMax(product.tech.powerMinKw, product.tech.powerMaxKw, 'kW', locale, dict.common.upTo)}
               </dd>
             </div>
             <div>
               <dt className="text-xs text-muted">{dict.product.heatedArea}</dt>
               <dd className="tabular font-semibold text-ink">
-                {integer(product.tech.heatedAreaMinM2, locale)} – {integer(product.tech.heatedAreaMaxM2, locale)} m²
+                {rangeOrMax(product.tech.heatedAreaMinM2, product.tech.heatedAreaMaxM2, 'm²', locale, dict.common.upTo, 0)}
               </dd>
             </div>
           </dl>

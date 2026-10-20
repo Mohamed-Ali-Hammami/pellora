@@ -6,7 +6,7 @@ import { ProductGallery } from '@/components/product-gallery';
 import { Notice } from '@/components/section';
 import { brand } from '@/lib/brand';
 import { getCrossSell, getProductBySlug, products, unitPrice } from '@/lib/catalog';
-import { decimal, integer, priceShort } from '@/lib/format';
+import { decimal, integer, priceShort, rangeOrMax } from '@/lib/format';
 import { savingsPercent } from '@/lib/money';
 import { absoluteImageUrl, hasOnlyPlaceholders, primaryImage, resolveImages } from '@/lib/product-media';
 import { getDictionary } from '@/lib/i18n/dictionaries';
@@ -92,8 +92,19 @@ export default async function ProductPage({
     ...(tech
       ? {
           additionalProperty: [
-            { '@type': 'PropertyValue', name: dict.product.powerRange, value: `${tech.powerMinKw}-${tech.powerMaxKw} kW` },
-            { '@type': 'PropertyValue', name: dict.product.efficiency, value: `${tech.efficiencyPercent} %` },
+            // Une donnée structurée ne doit porter que des valeurs connues :
+            // une propriété « null » annoncée au moteur serait une fausse
+            // déclaration, pas un champ vide.
+            {
+              '@type': 'PropertyValue',
+              name: dict.product.powerRange,
+              value: tech.powerMinKw === null
+                ? `${tech.powerMaxKw} kW`
+                : `${tech.powerMinKw}-${tech.powerMaxKw} kW`,
+            },
+            ...(tech.efficiencyPercent !== null
+              ? [{ '@type': 'PropertyValue', name: dict.product.efficiency, value: `${tech.efficiencyPercent} %` }]
+              : []),
             { '@type': 'PropertyValue', name: dict.product.energyClass, value: tech.energyClass },
           ],
         }
@@ -163,13 +174,15 @@ export default async function ProductPage({
                   le point décimal dans les quatre langues. */}
               <Fact
                 label={dict.product.powerRange}
-                value={`${decimal(tech.powerMinKw, locale)} – ${decimal(tech.powerMaxKw, locale)} kW`}
+                value={rangeOrMax(tech.powerMinKw, tech.powerMaxKw, 'kW', locale, dict.common.upTo)}
               />
               <Fact
                 label={dict.product.heatedArea}
-                value={`${integer(tech.heatedAreaMinM2, locale)} – ${integer(tech.heatedAreaMaxM2, locale)} m²`}
+                value={rangeOrMax(tech.heatedAreaMinM2, tech.heatedAreaMaxM2, 'm²', locale, dict.common.upTo, 0)}
               />
-              <Fact label={dict.product.efficiency} value={`${decimal(tech.efficiencyPercent, locale)} %`} />
+              {tech.efficiencyPercent !== null ? (
+                <Fact label={dict.product.efficiency} value={`${decimal(tech.efficiencyPercent, locale)} %`} />
+              ) : null}
               {tech.waterPowerKw !== null ? (
                 <Fact
                   label={dict.product.waterPower}
@@ -217,6 +230,15 @@ export default async function ProductPage({
 
           {hasOnlyPlaceholders(product) ? (
             <p className="mt-5 text-xs leading-relaxed text-muted">{dict.common.illustrationNotice}</p>
+          ) : null}
+
+          {/* L'avertissement se porte par fiche, pas globalement : une fiche
+              renseignée depuis la documentation du fabricant ne doit pas
+              afficher le contraire. */}
+          {!product.dataVerified ? (
+            <p className="mt-3 rounded-lg border border-warn/25 bg-[#fdf6e7] px-3 py-2 text-xs leading-relaxed text-[#6b4205]">
+              {dict.product.unverifiedNotice}
+            </p>
           ) : null}
         </div>
       </div>
