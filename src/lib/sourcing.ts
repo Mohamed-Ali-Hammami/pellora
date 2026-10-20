@@ -53,6 +53,9 @@ export const sourcing: Record<string, SourcingLine> = {
   // d'achat, ni le transport amont ne sont négociés : ces trois nombres
   // doivent venir de votre tarif ETNA avant la première vente.
   'anna-12': { supplierSku: 'ETNA-ANNA-12EC', costNet: euros(1450), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(62) },
+  // PROVISOIRE — ETNA Vertigo Up. Même réserve que pour l'Anna : référence
+  // fournisseur, prix d'achat et transport amont restent à négocier.
+  'vertigo-up': { supplierSku: 'ETNA-VERTIGO-UP', costNet: euros(1520), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(64) },
   'aria-6': { supplierSku: 'IT-ARIA-06N', costNet: euros(742), supplier: 'eu-stoves', leadTimeDays: 2, inboundShipping: euros(48) },
   'aria-9-canal': { supplierSku: 'IT-ARIA-09C', costNet: euros(1118), supplier: 'eu-stoves', leadTimeDays: 2, inboundShipping: euros(56) },
   'vela-8-slim': { supplierSku: 'IT-VELA-08S', costNet: euros(1205), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(52) },

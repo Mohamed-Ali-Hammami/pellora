@@ -15,4 +15,10 @@ export const generatedMedia: Record<string, readonly string[]> = {
     '/img/products/anna-12/04-telecommande.webp',
     '/img/products/anna-12/05-etiquette-energie.webp',
   ],
+  'vertigo-up': [
+    '/img/products/vertigo-up/01-produit.webp',
+    '/img/products/vertigo-up/02-ambiance-noir.webp',
+    '/img/products/vertigo-up/03-sortie-dessus.webp',
+    '/img/products/vertigo-up/04-ambiance-salon.webp',
+  ],
 };

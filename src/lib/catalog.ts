@@ -243,6 +243,180 @@ export const products: readonly Product[] = [
     dispatchDaysMin: 3,
     dispatchDaysMax: 6,
   },
+  // ETNA Vertigo Up — données issues de la documentation ETNA transmise par
+  // l'exploitant et de l'étiquette énergétique, d'où `dataVerified: true`.
+  //
+  // ÉCART DE PUISSANCE, VOLONTAIREMENT NON ARBITRÉ : la désignation
+  // commerciale annonce 9,2 kW, l'étiquette énergétique déclare 8,3 kW. C'est
+  // l'étiquette qui fait foi ici — c'est le document opposable, et sous-estimer
+  // la puissance est la seule erreur des deux qui ne se retourne pas contre
+  // l'acheteur. Le nom du produit ne porte donc aucun chiffre, pour ne pas se
+  // contredire lui-même, et la fiche affiche les deux valeurs.
+  //
+  // RESTE À CONFIRMER, signalé par `null` plutôt que par une valeur inventée :
+  // puissance minimale de modulation, rendement exact, capacité du réservoir,
+  // diamètre de la sortie concentrique, dimensions, poids, niveau sonore — le
+  // produit est annoncé « ultra silencieux » sans chiffre, ce qui ne se met pas
+  // dans un champ en dB.
+  //
+  // PRIX ET COÛT D'ACHAT PROVISOIRES : à remplacer avant toute vente.
+  {
+    id: 'vertigo-up',
+    slug: {
+      fr: 'etna-vertigo-up-poele-granules-etanche-sortie-dessus',
+      en: 'etna-vertigo-up-sealed-pellet-stove-top-outlet',
+      nl: 'etna-vertigo-up-luchtdichte-pelletkachel-bovenafvoer',
+      es: 'etna-vertigo-up-estufa-pellets-estanca-salida-superior',
+    },
+    name: 'ETNA Vertigo Up',
+    category: 'pellet',
+    distribution: 'air',
+    price: euros(2790),
+    compareAtPrice: null,
+    tagline: L(
+      'La sortie des fumées passe par le dessus : le poêle se colle au mur.',
+      'The flue leaves through the top: the stove sits right against the wall.',
+      'De rookgasafvoer gaat via de bovenkant: de kachel staat vlak tegen de muur.',
+      'La salida de humos pasa por arriba: la estufa se pega a la pared.',
+    ),
+    description: L(
+      "Sur la plupart des poêles, la sortie des fumées part à l'arrière, et il faut laisser passer le coude : quinze à vingt centimètres perdus contre le mur, sur toute la largeur de l'appareil. Le Vertigo Up sort par le dessus, en conduit concentrique — l'air de combustion descend par l'enveloppe extérieure pendant que les fumées montent par l'intérieur. L'appareil se place donc nettement plus près de la cloison, ce qui change la donne dans une pièce étroite ou devant un mur déjà meublé. Étanche, il prend son air dehors et s'installe en logement BBC. La vitre Magic Glass reste noire tant que le feu n'est pas allumé, et le corps rond en verre et métal se regarde de tous les côtés, ce qui compte quand le poêle n'est pas contre un mur plein.",
+      'On most stoves the flue leaves at the back, and the elbow needs room: fifteen to twenty centimetres lost against the wall, across the full width of the appliance. The Vertigo Up exits through the top, through a concentric flue — combustion air comes down the outer sleeve while the flue gases rise inside it. The stove therefore sits markedly closer to the wall, which changes things in a narrow room or in front of a wall that already holds furniture. Being sealed, it takes its air from outside and can go into an airtight house. The Magic Glass pane stays black until the fire is lit, and the round body in glass and metal reads well from every side, which matters when the stove is not against a solid wall.',
+      'Bij de meeste kachels zit de rookgasafvoer aan de achterkant, en de bocht vraagt ruimte: vijftien tot twintig centimeter verloren tegen de muur, over de volle breedte van het toestel. De Vertigo Up gaat er via de bovenkant uit, met een concentrische afvoer — de verbrandingslucht komt via de buitenmantel naar beneden terwijl de rookgassen er binnenin omhoog gaan. De kachel staat daardoor merkbaar dichter bij de wand, wat scheelt in een smalle kamer of voor een muur die al vol staat. Luchtdicht haalt hij zijn lucht van buiten en kan hij in een lage-energiewoning. Het Magic Glass blijft zwart zolang het vuur niet brandt, en de ronde behuizing in glas en metaal oogt van alle kanten goed, wat telt als de kachel niet tegen een dichte muur staat.',
+      'En la mayoría de las estufas la salida de humos va por detrás, y el codo necesita sitio: quince a veinte centímetros perdidos contra la pared, en todo el ancho del aparato. La Vertigo Up sale por arriba, con conducto concéntrico: el aire de combustión baja por la envolvente exterior mientras los humos suben por dentro. La estufa queda así bastante más cerca del tabique, lo que cambia las cosas en una estancia estrecha o ante una pared ya amueblada. Al ser estanca, toma el aire del exterior y puede instalarse en vivienda de baja demanda energética. El cristal Magic Glass permanece negro mientras el fuego no está encendido, y el cuerpo redondo en vidrio y metal se mira bien desde todos los lados, lo que importa cuando la estufa no está contra un muro ciego.',
+    ),
+    bullets: {
+      fr: [
+        'Sortie concentrique par le dessus — installation plus près du mur',
+        'Étanche — zones d’installation 1, 2 ou 3',
+        'Magic Glass : la vitre reste opaque hors combustion',
+        'Surface de chauffe annoncée : environ 90 m²',
+        'Autonomie annoncée jusqu’à 20 h en fonctionnement continu',
+        'Télécommande incluse, module Wi-Fi en option',
+        'Appareil annoncé recyclable à 85 %',
+      ],
+      en: [
+        'Concentric flue through the top — fits closer to the wall',
+        'Sealed — installation zones 1, 2 or 3',
+        'Magic Glass: the pane stays opaque when the fire is out',
+        'Stated heated area: about 90 m²',
+        'Stated burn time up to 20 h of continuous operation',
+        'Remote control included, Wi-Fi module optional',
+        'Appliance stated to be 85 % recyclable',
+      ],
+      nl: [
+        'Concentrische afvoer via de bovenkant — staat dichter bij de muur',
+        'Luchtdicht — plaatsingszones 1, 2 of 3',
+        'Magic Glass: het glas blijft ondoorzichtig als het vuur uit is',
+        'Opgegeven verwarmd oppervlak: ongeveer 90 m²',
+        'Opgegeven autonomie tot 20 u continu bedrijf',
+        'Afstandsbediening meegeleverd, wifimodule optioneel',
+        'Toestel opgegeven als 85 % recyclebaar',
+      ],
+      es: [
+        'Salida concéntrica por arriba — se instala más cerca de la pared',
+        'Estanca — zonas de instalación 1, 2 o 3',
+        'Magic Glass: el cristal permanece opaco con el fuego apagado',
+        'Superficie de calefacción declarada: unos 90 m²',
+        'Autonomía declarada de hasta 20 h en continuo',
+        'Mando a distancia incluido, módulo Wi-Fi opcional',
+        'Aparato declarado reciclable al 85 %',
+      ],
+    },
+    specs: [
+      {
+        label: SPEC.power,
+        value: L(
+          '8,3 kW (étiquette énergétique) — 9,2 kW en désignation commerciale',
+          '8.3 kW (energy label) — 9.2 kW as marketed',
+          '8,3 kW (energielabel) — 9,2 kW in de handelsbenaming',
+          '8,3 kW (etiqueta energética) — 9,2 kW en la denominación comercial',
+        ),
+      },
+      { label: SPEC.area, value: L('Environ 90 m²', 'About 90 m²', 'Ongeveer 90 m²', 'Unos 90 m²') },
+      { label: SPEC.efficiency, value: U('> 90 %') },
+      { label: SPEC.energyClass, value: U('A+') },
+      { label: SPEC.autonomy, value: L('Jusqu’à 20 h', 'Up to 20 h', 'Tot 20 u', 'Hasta 20 h') },
+      {
+        label: SPEC.flue,
+        value: L(
+          'Concentrique, par le dessus',
+          'Concentric, through the top',
+          'Concentrisch, via de bovenkant',
+          'Concéntrica, por arriba',
+        ),
+      },
+      {
+        label: SPEC.sealed,
+        value: L(
+          'Oui — zones d’installation 1, 2 ou 3',
+          'Yes — installation zones 1, 2 or 3',
+          'Ja — plaatsingszones 1, 2 of 3',
+          'Sí — zonas de instalación 1, 2 o 3',
+        ),
+      },
+      {
+        label: SPEC.noise,
+        value: L(
+          'Annoncé « ultra silencieux » — aucun niveau en dB communiqué',
+          'Stated “ultra quiet” — no dB figure supplied',
+          'Opgegeven als “ultrastil” — geen dB-waarde opgegeven',
+          'Declarada «ultrasilenciosa» — sin valor en dB facilitado',
+        ),
+      },
+      {
+        label: SPEC.control,
+        value: L(
+          'Télécommande incluse, Wi-Fi en option',
+          'Remote control included, Wi-Fi optional',
+          'Afstandsbediening meegeleverd, wifi optioneel',
+          'Mando incluido, Wi-Fi opcional',
+        ),
+      },
+      PELLET_FUEL,
+      { label: SPEC.standard, value: U('EN 14785 · règlement UE 2015/1186') },
+      WARRANTY_2Y,
+    ],
+    tech: {
+      // Valeur de l'étiquette énergétique : voir la note en tête de fiche.
+      powerMaxKw: 8.3,
+      powerMinKw: null,
+      heatedAreaMinM2: null,
+      heatedAreaMaxM2: 90,
+      hopperKg: null,
+      efficiencyPercent: null,
+      energyClass: 'A+',
+      flueDiameterMm: null,
+      noiseDbA: null,
+      waterPowerKw: null,
+      domesticHotWater: false,
+      ductedOutlets: null,
+      dimensionsMm: null,
+      weightKg: null,
+    },
+    images: [
+      placeholderImage(
+        'stove-air',
+        L(
+          'Poêle à granulés étanche ETNA Vertigo Up, corps rond en verre et métal, sortie des fumées par le dessus',
+          'ETNA Vertigo Up sealed pellet stove, round body in glass and metal, flue through the top',
+          'ETNA Vertigo Up luchtdichte pelletkachel, ronde behuizing in glas en metaal, afvoer via de bovenkant',
+          'Estufa de pellets estanca ETNA Vertigo Up, cuerpo redondo en vidrio y metal, salida de humos por arriba',
+        ),
+      ),
+    ],
+    variants: [],
+    crossSell: ['kit-conduit-80', 'thermostat-wifi', 'granules-palette'],
+    hero: true,
+    dataVerified: true,
+    // Poids provisoire, le temps d'avoir la fiche technique. Il ne sert qu'à
+    // l'information : le tarif de transport dépend du drapeau `freight`.
+    weightGrams: 135_000,
+    freight: true,
+    badge: L('Sortie par le dessus', 'Top flue outlet', 'Afvoer bovenaan', 'Salida por arriba'),
+    dispatchDaysMin: 3,
+    dispatchDaysMax: 6,
+  },
   // ───────────────────────────────── POÊLES À AIR VENTILÉ ─────────────────────────────────
   {
     id: 'aria-6',
