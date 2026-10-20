@@ -32,12 +32,41 @@ autre modification de code n'est nécessaire.
 | Hydro        | `idro-12-compact`, `idro-15`, `idro-20-ecs`, `idro-24-plus`         |
 | Accessoires  | `kit-conduit-80`, `thermostat-wifi`, `aspirateur-cendres`, `granules-palette` |
 
-## Formats
+## Formats et résolution
 
 `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`, `.svg`.
 
-Format recommandé : **1600 × 1600 px**, fond clair uni, appareil centré. Les
-cartes produit affichent un carré, la fiche produit affiche le visuel en 4/5.
+**Minimum : 600 px de côté. En dessous, `npm run media:scan` écarte le fichier
+et le signale** — une vignette de catalogue fournisseur (souvent 125 px)
+s'afficherait floue sur une fiche qui présente le visuel principal autour de
+1 000 px de large, et une photo pixelisée coûte plus de ventes qu'une
+illustration assumée.
+
+Recommandé : **1600 × 1600 px**, fond clair uni, appareil centré. Les cartes
+produit affichent un carré, la fiche produit affiche le visuel en 4/5.
+
+### Récupérer le fichier d'origine
+
+Sur un site fournisseur, un clic droit sur la photo donne souvent la vignette
+et non l'original. Demandez le *media pack* par e-mail, ou ouvrez la photo en
+grand format sur la fiche du fournisseur avant de l'enregistrer : l'adresse
+d'une vignette contient fréquemment une mention de taille (`_125x125`,
+`/thumb/`, `?w=125`) qu'il suffit de retirer pour obtenir l'original.
+
+## Documents à demander avec les photos
+
+Pour qu'une fiche soit complète et conforme, il faut, en plus des visuels :
+
+| Document | Ce qu'il apporte |
+| --- | --- |
+| Étiquette énergétique | Classe et puissance nominale — valeurs opposables (règlement UE 2015/1186) |
+| Fiche technique | Puissance mini/maxi, rendement, réservoir, sortie fumées, dimensions, poids, niveau sonore |
+| Déclaration de performance | Exigée à la demande du client et pour les aides publiques |
+| Référence commerciale exacte | Distingue deux modèles d'une même gamme |
+
+**Deux modèles d'une même gamme ont deux étiquettes énergétiques
+différentes.** Un simple changement de coloris, non : si la puissance de
+l'étiquette change, c'est un autre modèle, et il lui faut sa propre fiche.
 
 ## Droits d'usage — à lire avant de déposer un fichier
 
