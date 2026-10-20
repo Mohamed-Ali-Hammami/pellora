@@ -71,7 +71,7 @@ const nl: Dictionary = {
     illustrationNotice:
       'Illustratie — de foto van dit model wordt gepubliceerd zodra de beelden van de leverancier binnen zijn.',
     demoBanner:
-      'Demonstratiecatalogus: modellen, vermogens en prijzen zijn fictief. Vervang ze door echte leveranciersgegevens vóór u verkoopt.',
+      'Catalogus in opbouw: pagina’s waarvan de gegevens nog niet zijn geverifieerd, melden dit bovenaan. Vul ze aan met leveranciersgegevens vóór u verkoopt.',
   },
 
   categories: {

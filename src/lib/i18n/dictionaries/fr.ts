@@ -76,7 +76,7 @@ const fr = {
     illustrationNotice:
       'Illustration — la photographie du modèle sera publiée dès réception des visuels du fournisseur.',
     demoBanner:
-      'Catalogue de démonstration : modèles, puissances et prix sont fictifs. À remplacer par les données réelles du fournisseur avant toute vente.',
+      'Catalogue en cours de constitution : les fiches dont les caractéristiques n’ont pas encore été vérifiées le signalent en tête de page. À compléter avec les données du fournisseur avant toute vente.',
   },
 
   categories: {

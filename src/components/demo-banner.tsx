@@ -1,12 +1,17 @@
 /**
  * Bandeau « données de démonstration ».
  *
- * Il n'est pas décoratif : le catalogue livré contient des modèles, des
+ * Il n'est pas décoratif : le catalogue contient encore des modèles, des
  * puissances et des classes énergétiques fictifs. Afficher un appareil de
  * chauffage avec des caractéristiques inventées, sur un site qui prend des
  * paiements, est une pratique commerciale trompeuse. Le bandeau reste visible
  * jusqu'à ce que NEXT_PUBLIC_DEMO_CATALOG soit mis à « false », ce qui doit
- * se faire au moment où les vraies données du fournisseur sont saisies.
+ * se faire au moment où la dernière fiche est renseignée.
+ *
+ * Il renvoie volontairement à la mention portée PAR FICHE (`dataVerified`)
+ * plutôt que de déclarer tout le catalogue fictif : depuis qu'une fiche est
+ * saisie d'après la documentation du fabricant, une formule globale serait
+ * fausse là où elle compte le plus — sur la fiche exacte.
  */
 
 import { isDemoCatalog } from '@/lib/catalog';

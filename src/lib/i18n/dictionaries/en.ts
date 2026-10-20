@@ -71,7 +71,7 @@ const en: Dictionary = {
     illustrationNotice:
       'Illustration — the photograph of this model will be published as soon as the supplier’s images arrive.',
     demoBanner:
-      'Demonstration catalogue: models, outputs and prices are fictional. Replace them with real supplier data before selling.',
+      'Catalogue still being built: pages whose specifications have not yet been verified say so at the top. Complete them with supplier data before selling.',
   },
 
   categories: {

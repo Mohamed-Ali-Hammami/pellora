@@ -71,7 +71,7 @@ const es: Dictionary = {
     illustrationNotice:
       'Ilustración — la fotografía del modelo se publicará en cuanto recibamos las imágenes del proveedor.',
     demoBanner:
-      'Catálogo de demostración: modelos, potencias y precios son ficticios. Sustitúyalos por los datos reales del proveedor antes de vender.',
+      'Catálogo en construcción: las fichas cuyas características aún no se han verificado lo indican en la cabecera. Complételas con los datos del proveedor antes de vender.',
   },
 
   categories: {
