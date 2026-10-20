@@ -2,6 +2,7 @@
 
 import { brand } from '@/lib/brand';
 import { href } from '@/lib/i18n/routes';
+import { categoryLinks } from '@/lib/i18n/nav';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionaries';
 import { FooterLanguages } from './footer-languages';
@@ -18,9 +19,7 @@ export function Footer({ locale, dict }: Props) {
     {
       title: dict.footer.shopTitle,
       links: [
-        { href: href('air', locale), label: dict.categories.air },
-        { href: href('hydro', locale), label: dict.categories.hydro },
-        { href: href('accessories', locale), label: dict.categories.accessoire },
+        ...categoryLinks(locale, dict).map((s) => ({ href: s.href, label: s.label })),
         { href: href('shop', locale), label: dict.shop.title },
         { href: href('sizing', locale), label: dict.sizing.title },
       ],

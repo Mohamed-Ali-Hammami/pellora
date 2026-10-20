@@ -72,7 +72,8 @@ export default async function ProductPage({
     ]),
   );
 
-  const categoryRoute = product.category === 'air' ? 'air' : product.category === 'hydro' ? 'hydro' : 'accessories';
+  // Une famille, une page : le nom de route et celui de la famille coïncident.
+  const categoryRoute = product.category;
 
   /**
    * Données structurées Schema.org.

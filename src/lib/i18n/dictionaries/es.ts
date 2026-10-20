@@ -14,10 +14,7 @@ const es: Dictionary = {
 
   nav: {
     home: 'Inicio',
-    shop: 'Estufas',
-    air: 'Aire ventilado',
-    hydro: 'Hidro',
-    accessories: 'Accesorios',
+    shop: 'Calefacción',
     sizing: '¿Qué potencia?',
     guides: 'Guías',
     about: 'Quiénes somos',
@@ -66,6 +63,9 @@ const es: Dictionary = {
     products: 'productos',
     product: 'producto',
     results: 'resultados',
+    soon: 'Próximamente',
+    sectionEmpty:
+      'Esta sección se está completando. Los primeros modelos se publicarán en cuanto lleguen las fichas del proveedor.',
     noResults: 'Ningún producto coincide con estos criterios.',
     resetFilters: 'Restablecer',
     illustrationNotice:
@@ -75,15 +75,50 @@ const es: Dictionary = {
   },
 
   categories: {
-    air: 'Estufas de aire ventilado',
-    airShort: 'Aire ventilado',
-    airTagline: 'Calientan la estancia donde están, y las contiguas si están canalizadas.',
-    hydro: 'Estufas hidro',
-    hydroShort: 'Hidro',
-    hydroTagline: 'Alimentan radiadores y suelo radiante, como una caldera.',
-    accessoire: 'Accesorios',
-    accessoireShort: 'Accesorios',
-    accessoireTagline: 'Conducto, regulación, mantenimiento, combustible.',
+    pellet: 'Estufas de pellets',
+    pelletShort: 'Pellets',
+    pelletTagline: 'Automáticas y programables, autónomas durante días.',
+    wood: 'Estufas de leña',
+    woodShort: 'Leña',
+    woodTagline: 'La llama más viva y el combustible más barato, a cambio de cargarla a mano.',
+    cookstove: 'Cocinas de leña',
+    cookstoveShort: 'Cocinas',
+    cookstoveTagline: 'Calientan la estancia y cocinan la comida con el mismo fuego.',
+    boiler: 'Calderas',
+    boilerShort: 'Calderas',
+    boilerTagline: 'Se hacen cargo de toda la casa: calefacción central y agua caliente.',
+    insert: 'Insertables',
+    insertShort: 'Insertables',
+    insertTagline: 'Convierten una chimenea abierta, que pierde casi todo su calor, en un verdadero aparato de calefacción.',
+    flue: 'Conductos de humos',
+    flueShort: 'Conductos',
+    flueTagline: 'El conducto decide el tiro y la seguridad: no se improvisa.',
+    heatpump: 'Bombas de calor',
+    heatpumpShort: 'Bombas de calor',
+    heatpumpTagline: 'Calientan con electricidad y devuelven varias veces la energía que consumen.',
+    accessory: 'Accesorios',
+    accessoryShort: 'Accesorios',
+    accessoryTagline: 'Pellets, regulación, mantenimiento: lo que mantiene vivo el aparato.',
+  },
+
+  distributions: {
+    all: 'Todas',
+    air: 'Aire ventilado',
+    airTagline: 'Calienta la estancia donde está, y las contiguas si va canalizada.',
+    hydro: 'Hidro',
+    hydroTagline: 'Alimenta radiadores y suelo radiante, como una caldera.',
+    airChooseIf: 'Elija aire ventilado si',
+    airReasons: [
+      'quiere calentar una sala de estar, y quizá dos dormitorios mediante conducto',
+      'no tiene circuito de calefacción central, o lo deja tal cual',
+      'quiere una instalación sencilla: un conducto de humos y un enchufe',
+    ],
+    hydroChooseIf: 'Elija hidro si',
+    hydroReasons: [
+      'ya tiene radiadores o suelo radiante instalados',
+      'quiere sustituir o apoyar una caldera de gasóleo o gas',
+      'acepta una conexión hidráulica hecha por un profesional',
+    ],
   },
 
   home: {
@@ -100,21 +135,9 @@ const es: Dictionary = {
     heroStatThree: '4 a 8 días',
     heroStatThreeLabel: 'entrega con cita previa',
 
-    familiesTitle: 'Dos familias, dos usos que no hay que confundir',
+    familiesTitle: 'Ocho familias de aparatos',
     familiesLead:
-      'Es la decisión que estructura todo lo demás. No depende de su presupuesto sino de lo que quiera calentar.',
-    airChooseIf: 'Elija aire ventilado si',
-    airReasons: [
-      'quiere calentar una sala de estar, y quizá dos dormitorios mediante conducto',
-      'no tiene circuito de calefacción central, o lo deja tal cual',
-      'quiere una instalación sencilla: un conducto de humos y un enchufe',
-    ],
-    hydroChooseIf: 'Elija hidro si',
-    hydroReasons: [
-      'ya tiene radiadores o suelo radiante instalados',
-      'quiere sustituir o apoyar una caldera de gasóleo o gas',
-      'acepta una conexión hidráulica hecha por un profesional',
-    ],
+      'Cada una responde a una instalación y a un presupuesto distintos. Empiece por lo que quiere instalar.',
 
     featuredTitle: 'Los modelos más solicitados',
     featuredLead: 'Cuatro aparatos que cubren la mayoría de las configuraciones.',

@@ -113,7 +113,8 @@ export const products: readonly Product[] = [
       es: 'etna-anna-12-estufa-pellets-estanca-canalizable',
     },
     name: 'ETNA Luxe Anna 12EC',
-    category: 'air',
+    category: 'pellet',
+    distribution: 'air',
     price: euros(2490),
     compareAtPrice: null,
     tagline: L(
@@ -252,7 +253,8 @@ export const products: readonly Product[] = [
       es: 'aria-6-estufa-aire-ventilado',
     },
     name: 'Pellora Aria 6',
-    category: 'air',
+    category: 'pellet',
+    distribution: 'air',
     price: euros(1290),
     compareAtPrice: euros(1490),
     tagline: L(
@@ -371,7 +373,8 @@ export const products: readonly Product[] = [
       es: 'aria-9-canalizable',
     },
     name: 'Pellora Aria 9 Canalisable',
-    category: 'air',
+    category: 'pellet',
+    distribution: 'air',
     price: euros(1890),
     compareAtPrice: null,
     tagline: L(
@@ -481,7 +484,8 @@ export const products: readonly Product[] = [
       es: 'vela-8-slim-poco-fondo',
     },
     name: 'Pellora Vela 8 Slim',
-    category: 'air',
+    category: 'pellet',
+    distribution: 'air',
     price: euros(1990),
     compareAtPrice: euros(2190),
     tagline: L(
@@ -590,7 +594,8 @@ export const products: readonly Product[] = [
       es: 'aria-12-duo-gran-volumen',
     },
     name: 'Pellora Aria 12 Duo',
-    category: 'air',
+    category: 'pellet',
+    distribution: 'air',
     price: euros(2290),
     compareAtPrice: null,
     tagline: L(
@@ -702,7 +707,8 @@ export const products: readonly Product[] = [
       es: 'idro-12-compact-hidro',
     },
     name: 'Pellora Idro 12 Compact',
-    category: 'hydro',
+    category: 'pellet',
+    distribution: 'hydro',
     price: euros(2590),
     compareAtPrice: euros(2890),
     tagline: L(
@@ -812,7 +818,8 @@ export const products: readonly Product[] = [
       es: 'idro-15-hidro-radiadores',
     },
     name: 'Pellora Idro 15',
-    category: 'hydro',
+    category: 'pellet',
+    distribution: 'hydro',
     price: euros(2990),
     compareAtPrice: null,
     tagline: L(
@@ -922,7 +929,8 @@ export const products: readonly Product[] = [
       es: 'idro-20-acs-agua-caliente',
     },
     name: 'Pellora Idro 20 ECS',
-    category: 'hydro',
+    category: 'pellet',
+    distribution: 'hydro',
     price: euros(3690),
     compareAtPrice: euros(3990),
     tagline: L(
@@ -1032,7 +1040,8 @@ export const products: readonly Product[] = [
       es: 'idro-24-plus-casa-grande',
     },
     name: 'Pellora Idro 24 Plus',
-    category: 'hydro',
+    category: 'pellet',
+    distribution: 'hydro',
     price: euros(4290),
     compareAtPrice: null,
     tagline: L(
@@ -1144,7 +1153,8 @@ export const products: readonly Product[] = [
       es: 'kit-conducto-inox-80mm',
     },
     name: 'Kit conduit inox 80 mm',
-    category: 'accessoire',
+    category: 'flue',
+    distribution: null,
     price: euros(349),
     compareAtPrice: null,
     tagline: L(
@@ -1227,7 +1237,8 @@ export const products: readonly Product[] = [
       es: 'termostato-wifi-programable',
     },
     name: 'Thermostat Wi-Fi Pellora',
-    category: 'accessoire',
+    category: 'accessory',
+    distribution: null,
     price: euros(149),
     compareAtPrice: euros(179),
     tagline: L(
@@ -1312,7 +1323,8 @@ export const products: readonly Product[] = [
       es: 'aspirador-cenizas-20l',
     },
     name: 'Aspirateur à cendres 20 L',
-    category: 'accessoire',
+    category: 'accessory',
+    distribution: null,
     price: euros(89),
     compareAtPrice: null,
     tagline: L(
@@ -1394,7 +1406,8 @@ export const products: readonly Product[] = [
       es: 'palet-pellets-dinplus-1t',
     },
     name: 'Palette de granulés DINplus — 1 t',
-    category: 'accessoire',
+    category: 'accessory',
+    distribution: null,
     price: euros(449),
     compareAtPrice: null,
     tagline: L(

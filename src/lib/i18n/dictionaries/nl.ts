@@ -14,10 +14,7 @@ const nl: Dictionary = {
 
   nav: {
     home: 'Home',
-    shop: 'Kachels',
-    air: 'Ventilatie',
-    hydro: 'Hydro',
-    accessories: 'Accessoires',
+    shop: 'Verwarming',
     sizing: 'Welk vermogen?',
     guides: 'Gidsen',
     about: 'Over ons',
@@ -66,6 +63,9 @@ const nl: Dictionary = {
     products: 'producten',
     product: 'product',
     results: 'resultaten',
+    soon: 'Binnenkort',
+    sectionEmpty:
+      'Deze sectie wordt gevuld. De eerste modellen verschijnen zodra de leveranciersbladen binnen zijn.',
     noResults: 'Geen product past bij deze criteria.',
     resetFilters: 'Wissen',
     illustrationNotice:
@@ -75,15 +75,50 @@ const nl: Dictionary = {
   },
 
   categories: {
-    air: 'Ventilatiekachels',
-    airShort: 'Ventilatie',
-    airTagline: 'Verwarmen de ruimte waarin ze staan, en aangrenzende kamers indien gekanaliseerd.',
-    hydro: 'Hydrokachels',
-    hydroShort: 'Hydro',
-    hydroTagline: 'Voeden radiatoren en vloerverwarming, zoals een ketel dat doet.',
-    accessoire: 'Accessoires',
-    accessoireShort: 'Accessoires',
-    accessoireTagline: 'Afvoer, regeling, onderhoud, brandstof.',
+    pellet: 'Pelletkachels',
+    pelletShort: 'Pellets',
+    pelletTagline: 'Automatisch en programmeerbaar, dagenlang zelfstandig.',
+    wood: 'Houtkachels',
+    woodShort: 'Hout',
+    woodTagline: 'De levendigste vlam en de goedkoopste brandstof, in ruil voor handmatig bijvullen.',
+    cookstove: 'Houtfornuizen',
+    cookstoveShort: 'Fornuizen',
+    cookstoveTagline: 'Verwarmen de kamer en koken de maaltijd op hetzelfde vuur.',
+    boiler: 'CV-ketels',
+    boilerShort: 'Ketels',
+    boilerTagline: 'Nemen het hele huis over: centrale verwarming en warm water.',
+    insert: 'Inbouwhaarden',
+    insertShort: 'Inbouw',
+    insertTagline: 'Maken van een open haard, die het grootste deel van zijn warmte verliest, een echt verwarmingstoestel.',
+    flue: 'Rookkanalen',
+    flueShort: 'Rookkanalen',
+    flueTagline: 'Het rookkanaal bepaalt trek en veiligheid: daarmee wordt niet geïmproviseerd.',
+    heatpump: 'Warmtepompen',
+    heatpumpShort: 'Warmtepompen',
+    heatpumpTagline: 'Verwarmen op stroom en geven een veelvoud terug van wat ze verbruiken.',
+    accessory: 'Accessoires',
+    accessoryShort: 'Accessoires',
+    accessoryTagline: 'Pellets, regeling, onderhoud — wat het toestel draaiende houdt.',
+  },
+
+  distributions: {
+    all: 'Alle',
+    air: 'Ventilatie',
+    airTagline: 'Verwarmt de kamer waarin hij staat, en aangrenzende kamers als hij gekanaliseerd is.',
+    hydro: 'Hydro',
+    hydroTagline: 'Voedt radiatoren en vloerverwarming, net als een ketel.',
+    airChooseIf: 'Kies ventilatie als',
+    airReasons: [
+      'u een woonruimte wilt verwarmen, eventueel twee slaapkamers via kanalen',
+      'u geen centraal verwarmingscircuit hebt, of het ongewijzigd laat',
+      'u een eenvoudige installatie wilt: één rookgasafvoer, één stopcontact',
+    ],
+    hydroChooseIf: 'Kies hydro als',
+    hydroReasons: [
+      'u al radiatoren of vloerverwarming hebt liggen',
+      'u een olie- of gasketel wilt vervangen of aanvullen',
+      'u een hydraulische aansluiting door een vakman aanvaardt',
+    ],
   },
 
   home: {
@@ -100,21 +135,9 @@ const nl: Dictionary = {
     heroStatThree: '4 tot 8 dagen',
     heroStatThreeLabel: 'levering op afspraak',
 
-    familiesTitle: 'Twee families, twee gebruiken die u niet moet verwarren',
+    familiesTitle: 'Acht families toestellen',
     familiesLead:
-      'Dit is de beslissing die al het andere bepaalt. Ze hangt niet af van uw budget maar van wat u wilt verwarmen.',
-    airChooseIf: 'Kies ventilatie als',
-    airReasons: [
-      'u een woonruimte wilt verwarmen, eventueel twee slaapkamers via kanalen',
-      'u geen centraal verwarmingscircuit hebt, of het ongewijzigd laat',
-      'u een eenvoudige installatie wilt: één rookgasafvoer, één stopcontact',
-    ],
-    hydroChooseIf: 'Kies hydro als',
-    hydroReasons: [
-      'u al radiatoren of vloerverwarming hebt liggen',
-      'u een olie- of gasketel wilt vervangen of aanvullen',
-      'u een hydraulische aansluiting door een vakman aanvaardt',
-    ],
+      'Elk past bij een andere installatie en een ander budget. Begin bij wat u wilt plaatsen.',
 
     featuredTitle: 'De meest gevraagde modellen',
     featuredLead: 'Vier toestellen die de meeste situaties dekken.',

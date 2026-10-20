@@ -2,19 +2,68 @@ import type { Cents } from './money';
 import type { Localized } from './i18n/config';
 
 /**
- * Familles de produits.
+ * Familles de produits — une par section de la boutique.
  *
- * Deux familles de poêles, qui ne répondent pas au même besoin :
- *  - `air`   : poêle à air ventilé — chauffe la ou les pièces où l'air est
- *              soufflé, éventuellement canalisé vers des pièces voisines ;
- *  - `hydro` : poêle hydro — raccordé au circuit de chauffage central
- *              (radiateurs, plancher chauffant) et parfois à l'eau chaude
- *              sanitaire. Il remplace ou seconde une chaudière.
- * `accessoire` regroupe ce qui se vend avec : conduit, thermostat, entretien.
+ * Le découpage est celui de l'APPAREIL, pas celui de son mode de diffusion :
+ * c'est ainsi que cherche l'acheteur, qui sait ce qu'il veut installer
+ * (« un insert », « une chaudière ») avant de savoir comment il le raccordera.
+ * La distinction air / hydro, elle, se joue À L'INTÉRIEUR d'une famille, et
+ * vit dans `distribution` plus bas.
  */
-export type ProductCategory = 'air' | 'hydro' | 'accessoire';
+export type ProductCategory =
+  | 'pellet'
+  | 'wood'
+  | 'cookstove'
+  | 'boiler'
+  | 'insert'
+  | 'flue'
+  | 'heatpump'
+  | 'accessory';
 
-export const productCategories = ['air', 'hydro', 'accessoire'] as const;
+/** Ordre d'affichage : des appareils les plus demandés vers le périphérique. */
+export const productCategories = [
+  'pellet',
+  'wood',
+  'cookstove',
+  'boiler',
+  'insert',
+  'flue',
+  'heatpump',
+  'accessory',
+] as const;
+
+/**
+ * Mode de diffusion de la chaleur, pour les appareils où le choix se pose.
+ *
+ *  - `air`   : chauffe la pièce où il est posé, et les pièces voisines s'il
+ *              est canalisé ;
+ *  - `hydro` : raccordé au circuit de chauffage central (radiateurs, plancher
+ *              chauffant), parfois à l'eau chaude sanitaire ;
+ *  - `null`  : la question ne se pose pas (conduit, accessoire).
+ *
+ * Champ explicite et non déduit de `tech.waterPowerKw` : une fiche hydro dont
+ * on n'a pas encore la puissance hydraulique serait classée « air » à tort.
+ */
+export type HeatDistribution = 'air' | 'hydro';
+
+/**
+ * Familles qui désignent un APPAREIL de chauffage — par opposition au conduit
+ * et aux accessoires, qui n'ont ni puissance ni mode de diffusion.
+ */
+export const applianceCategories = [
+  'pellet',
+  'wood',
+  'cookstove',
+  'boiler',
+  'insert',
+  'heatpump',
+] as const satisfies readonly ProductCategory[];
+
+export function isAppliance(category: ProductCategory): boolean {
+  return (applianceCategories as readonly ProductCategory[]).includes(category);
+}
+
+export const heatDistributions = ['air', 'hydro'] as const;
 
 export interface ProductVariant {
   id: string;
@@ -93,6 +142,12 @@ export interface Product {
   /** Nom commercial — identique dans les quatre langues (c'est une référence). */
   name: string;
   category: ProductCategory;
+  /**
+   * Air ventilé ou hydro, quand la distinction existe pour cette famille.
+   * `null` pour un conduit, un accessoire — et pour toute famille où le
+   * fournisseur ne tranche pas.
+   */
+  distribution: HeatDistribution | null;
   /** Prix de vente TTC. */
   price: Cents;
   /** Prix barré TTC. `null` s'il n'existe pas de référence barrée honnête. */

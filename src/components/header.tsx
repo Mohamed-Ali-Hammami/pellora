@@ -7,6 +7,7 @@ import { CartBadge, CartCountLabel } from './cart-badge';
 import { MobileNav, type NavLink } from './mobile-nav';
 import { LocaleSwitcher } from './locale-switcher';
 import { href, type RouteName } from '@/lib/i18n/routes';
+import { categoryLinks, headlineCategories } from '@/lib/i18n/nav';
 import { locales, type Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionaries';
 
@@ -16,10 +17,21 @@ interface Props {
 }
 
 export function Header({ locale, dict }: Props) {
+  const sections = categoryLinks(locale, dict);
+
+  // Barre du haut : trois familles, puis l'entrée qui mène aux huit.
   const primary: readonly NavLink[] = [
-    { href: href('air', locale), label: dict.nav.air },
-    { href: href('hydro', locale), label: dict.nav.hydro },
-    { href: href('accessories', locale), label: dict.nav.accessories },
+    ...sections
+      .filter((s) => (headlineCategories as readonly string[]).includes(s.category))
+      .map((s) => ({ href: s.href, label: s.short })),
+    { href: href('shop', locale), label: dict.shop.title },
+    { href: href('sizing', locale), label: dict.nav.sizing },
+    { href: href('guides', locale), label: dict.nav.guides },
+  ];
+
+  // Menu mobile : les huit familles, sans arbitrage de place.
+  const mobile: readonly NavLink[] = [
+    ...sections.map((s) => ({ href: s.href, label: s.label })),
     { href: href('sizing', locale), label: dict.nav.sizing },
     { href: href('guides', locale), label: dict.nav.guides },
   ];
@@ -70,7 +82,7 @@ export function Header({ locale, dict }: Props) {
           </a>
 
           <MobileNav
-            links={primary}
+            links={mobile}
             secondary={secondary}
             openLabel={dict.nav.openMenu}
             closeLabel={dict.nav.closeMenu}

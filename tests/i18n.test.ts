@@ -141,16 +141,16 @@ describe('table des routes', () => {
   });
 
   it('réécrit un chemin localisé vers sa route canonique', () => {
-    expect(toCanonicalPath('es', 'estufas/hidro')).toBe('/es/shop/hydro');
-    expect(toCanonicalPath('nl', 'kachels/ventilatie')).toBe('/nl/shop/air');
-    expect(toCanonicalPath('fr', 'poeles/accessoires')).toBe('/fr/shop/accessories');
+    expect(toCanonicalPath('es', 'calefaccion/estufas-de-pellets')).toBe('/es/shop/pellet');
+    expect(toCanonicalPath('nl', 'verwarming/inbouwhaarden')).toBe('/nl/shop/insert');
+    expect(toCanonicalPath('fr', 'chauffage/pompe-a-chaleur')).toBe('/fr/shop/heatpump');
   });
 
   it('fait gagner le préfixe le plus long : une catégorie n’avale pas ses enfants', () => {
-    // Sans tri décroissant, « poeles » capturerait « poeles/hydro » et la page
-    // catégorie répondrait à la place de la sous-catégorie.
-    expect(toCanonicalPath('fr', 'poeles')).toBe('/fr/shop');
-    expect(toCanonicalPath('fr', 'poeles/hydro')).toBe('/fr/shop/hydro');
+    // Sans tri décroissant, « chauffage » capturerait « chauffage/chaudiere »
+    // et l'ombrelle répondrait à la place de la famille.
+    expect(toCanonicalPath('fr', 'chauffage')).toBe('/fr/shop');
+    expect(toCanonicalPath('fr', 'chauffage/chaudiere')).toBe('/fr/shop/boiler');
   });
 
   it('ne réécrit pas quand le chemin public est déjà le chemin canonique', () => {
@@ -161,7 +161,7 @@ describe('table des routes', () => {
   });
 
   it('réécrit le préfixe d’une fiche produit en gardant le slug', () => {
-    expect(toCanonicalPath('es', 'estufas/p/idro-15-hidro-radiadores')).toBe(
+    expect(toCanonicalPath('es', 'calefaccion/p/idro-15-hidro-radiadores')).toBe(
       '/es/shop/p/idro-15-hidro-radiadores',
     );
   });
@@ -173,12 +173,17 @@ describe('table des routes', () => {
 
 describe('équivalences entre langues', () => {
   it('découpe une URL en langue et reste', () => {
-    expect(splitLocalePath('/nl/kachels/hydro')).toEqual({ locale: 'nl', rest: 'kachels/hydro' });
+    expect(splitLocalePath('/nl/verwarming/cv-ketels')).toEqual({
+      locale: 'nl',
+      rest: 'verwarming/cv-ketels',
+    });
     expect(splitLocalePath('/unknown/page')).toBeNull();
   });
 
   it('mène à la même page statique dans l’autre langue', () => {
-    expect(equivalentPath('/fr/poeles/hydro', 'es')).toBe('/es/estufas/hidro');
+    expect(equivalentPath('/fr/chauffage/poele-a-granules', 'es')).toBe(
+      '/es/calefaccion/estufas-de-pellets',
+    );
     expect(equivalentPath('/es/calculo-potencia', 'nl')).toBe('/nl/vermogen-berekenen');
   });
 
@@ -199,7 +204,7 @@ describe('équivalences entre langues', () => {
   });
 
   it('reconnaît aussi une URL déjà réécrite par le proxy', () => {
-    expect(equivalentPath('/fr/shop/hydro', 'es')).toBe('/es/estufas/hidro');
+    expect(equivalentPath('/fr/shop/pellet', 'es')).toBe('/es/calefaccion/estufas-de-pellets');
   });
 
   it('retombe sur l’accueil plutôt que sur un 404', () => {
@@ -208,34 +213,34 @@ describe('équivalences entre langues', () => {
   });
 
   it('donne les quatre équivalences, toutes préfixées de leur langue', () => {
-    const all = allEquivalents('/fr/poeles/air-ventile');
+    const all = allEquivalents('/fr/chauffage/poele-a-bois');
     for (const locale of locales) {
       expect(all[locale].startsWith(`/${locale}`), locale).toBe(true);
     }
-    expect(all.fr).toBe('/fr/poeles/air-ventile');
+    expect(all.fr).toBe('/fr/chauffage/poele-a-bois');
   });
 });
 
 describe('redirection du chemin canonique vers le chemin public', () => {
   it('redirige un chemin canonique atteint directement', () => {
-    // Sans cela, « /fr/shop/hydro » et « /fr/poeles/hydro » servent la même
-    // page : deux URL qui se concurrencent sur les mêmes mots-clés.
-    expect(toLocalizedPath('fr', 'shop/hydro')).toBe('/fr/poeles/hydro');
-    expect(toLocalizedPath('es', 'shop')).toBe('/es/estufas');
+    // Sans cela, « /fr/shop/pellet » et « /fr/chauffage/poele-a-granules »
+    // servent la même page : deux URL qui se concurrencent sur les mêmes mots.
+    expect(toLocalizedPath('fr', 'shop/pellet')).toBe('/fr/chauffage/poele-a-granules');
+    expect(toLocalizedPath('es', 'shop')).toBe('/es/calefaccion');
     expect(toLocalizedPath('nl', 'guides')).toBe('/nl/gidsen');
   });
 
   it('redirige aussi le préfixe d’une fiche produit, slug conservé', () => {
     expect(toLocalizedPath('fr', 'shop/p/aria-6-poele-air-ventile')).toBe(
-      '/fr/poeles/p/aria-6-poele-air-ventile',
+      '/fr/chauffage/p/aria-6-poele-air-ventile',
     );
   });
 
   it('redirige aussi l’anglais, dont les segments publics ne sont pas les canoniques', () => {
-    // « shop » est le nom du dossier, « stoves » le segment public anglais :
+    // « shop » est le nom du dossier, « heating » le segment public anglais :
     // les deux diffèrent, donc l'anglais a besoin de la redirection comme
     // les autres langues.
-    expect(toLocalizedPath('en', 'shop/hydro')).toBe('/en/stoves/hydro');
+    expect(toLocalizedPath('en', 'shop/pellet')).toBe('/en/heating/pellet-stoves');
   });
 
   it('ne redirige pas quand le canonique est déjà le chemin public', () => {

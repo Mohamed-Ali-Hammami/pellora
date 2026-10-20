@@ -19,10 +19,7 @@ const fr = {
 
   nav: {
     home: 'Accueil',
-    shop: 'Les poêles',
-    air: 'Air ventilé',
-    hydro: 'Hydro',
-    accessories: 'Accessoires',
+    shop: 'Chauffage',
     sizing: 'Quelle puissance ?',
     guides: 'Guides',
     about: 'À propos',
@@ -71,6 +68,9 @@ const fr = {
     products: 'produits',
     product: 'produit',
     results: 'résultats',
+    soon: 'Bientôt',
+    sectionEmpty:
+      'Cette section se remplit. Les premiers modèles y seront publiés dès réception des fiches du fournisseur.',
     noResults: 'Aucun produit ne correspond à ces critères.',
     resetFilters: 'Réinitialiser',
     illustrationNotice:
@@ -80,15 +80,50 @@ const fr = {
   },
 
   categories: {
-    air: 'Poêles à air ventilé',
-    airShort: 'Air ventilé',
-    airTagline: 'Chauffent la pièce où ils sont, et les pièces voisines si canalisés.',
-    hydro: 'Poêles hydro',
-    hydroShort: 'Hydro',
-    hydroTagline: 'Alimentent radiateurs et plancher chauffant, comme une chaudière.',
-    accessoire: 'Accessoires',
-    accessoireShort: 'Accessoires',
-    accessoireTagline: 'Conduit, régulation, entretien, combustible.',
+    pellet: 'Poêles à granulés',
+    pelletShort: 'Granulés',
+    pelletTagline: 'Automatiques et programmables, autonomes pendant plusieurs jours.',
+    wood: 'Poêles à bois',
+    woodShort: 'Bois',
+    woodTagline: 'La flamme la plus vive et le combustible le moins cher, au prix d’un rechargement à la main.',
+    cookstove: 'Cuisinières à bois',
+    cookstoveShort: 'Cuisinières',
+    cookstoveTagline: 'Chauffent la pièce et font la cuisine sur la même flambée.',
+    boiler: 'Chaudières',
+    boilerShort: 'Chaudières',
+    boilerTagline: 'Prennent en charge toute la maison : chauffage central et eau chaude.',
+    insert: 'Inserts',
+    insertShort: 'Inserts',
+    insertTagline: 'Transforment une cheminée ouverte, qui perd l’essentiel de sa chaleur, en véritable appareil de chauffage.',
+    flue: 'Conduits de fumée',
+    flueShort: 'Conduits',
+    flueTagline: 'Le conduit décide du tirage et de la sécurité : il ne s’improvise pas.',
+    heatpump: 'Pompes à chaleur',
+    heatpumpShort: 'Pompes à chaleur',
+    heatpumpTagline: 'Chauffent à l’électricité en restituant plusieurs fois l’énergie consommée.',
+    accessory: 'Accessoires',
+    accessoryShort: 'Accessoires',
+    accessoryTagline: 'Granulés, régulation, entretien — ce qui fait vivre l’appareil au quotidien.',
+  },
+
+  distributions: {
+    all: 'Tous',
+    air: 'Air ventilé',
+    airTagline: 'Chauffe la pièce où il est posé, et les pièces voisines s’il est canalisé.',
+    hydro: 'Hydro',
+    hydroTagline: 'Alimente radiateurs et plancher chauffant, comme une chaudière.',
+    airChooseIf: 'Choisissez l’air ventilé si',
+    airReasons: [
+      'vous voulez chauffer une pièce de vie, éventuellement deux chambres par gaine',
+      'vous n’avez pas de circuit de chauffage central, ou vous le gardez tel quel',
+      'vous voulez une installation simple : un conduit de fumées, une prise électrique',
+    ],
+    hydroChooseIf: 'Choisissez l’hydro si',
+    hydroReasons: [
+      'vous avez des radiateurs ou un plancher chauffant déjà en place',
+      'vous voulez remplacer ou seconder une chaudière fioul ou gaz',
+      'vous acceptez un raccordement hydraulique par un professionnel',
+    ],
   },
 
   home: {
@@ -105,21 +140,9 @@ const fr = {
     heroStatThree: '4 à 8 jours',
     heroStatThreeLabel: 'livraison sur rendez-vous',
 
-    familiesTitle: 'Deux familles, deux usages qu’il ne faut pas confondre',
+    familiesTitle: 'Huit familles d’appareils',
     familiesLead:
-      'C’est la décision qui structure tout le reste. Elle ne dépend pas de votre budget mais de ce que vous voulez chauffer.',
-    airChooseIf: 'Choisissez l’air ventilé si',
-    airReasons: [
-      'vous voulez chauffer une pièce de vie, éventuellement deux chambres par gaine',
-      'vous n’avez pas de circuit de chauffage central, ou vous le gardez tel quel',
-      'vous voulez une installation simple : un conduit de fumées, une prise électrique',
-    ],
-    hydroChooseIf: 'Choisissez l’hydro si',
-    hydroReasons: [
-      'vous avez des radiateurs ou un plancher chauffant déjà en place',
-      'vous voulez remplacer ou seconder une chaudière fioul ou gaz',
-      'vous acceptez un raccordement hydraulique par un professionnel',
-    ],
+      'Chacune répond à une installation et à un budget différents. Commencez par ce que vous voulez poser.',
 
     featuredTitle: 'Les modèles les plus demandés',
     featuredLead: 'Quatre appareils qui couvrent la majorité des configurations.',

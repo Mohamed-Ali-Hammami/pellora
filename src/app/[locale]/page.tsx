@@ -10,6 +10,7 @@ import { priceShort, date as formatDate } from '@/lib/format';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { assertLocale, localeStaticParams, pageMetadata, routeAlternates } from '@/lib/i18n/page';
 import { guideHref, href } from '@/lib/i18n/routes';
+import { categoryLinks } from '@/lib/i18n/nav';
 import type { Locale } from '@/lib/i18n/config';
 
 export function generateStaticParams() {
@@ -37,8 +38,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const dict = getDictionary(locale);
 
   const featured = getHeroProducts().slice(0, 4);
-  const airStoves = getProductsByCategory('air');
-  const hydroStoves = getProductsByCategory('hydro');
 
   /**
    * Données structurées de l'enseigne. Elles doivent rester exactes : une
@@ -61,7 +60,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
       <Hero locale={locale} dict={dict} />
       <TrustBar locale={locale} />
-      <Families locale={locale} dict={dict} airCount={airStoves.length} hydroCount={hydroStoves.length} />
+      <Families locale={locale} dict={dict} />
 
       {/* ───────────────────────────── Modèles mis en avant ───────────────────────────── */}
       <section className="container-page py-16 md:py-20">
@@ -174,37 +173,15 @@ function TrustBar({ locale }: { locale: Locale }) {
   );
 }
 
-function Families({
-  locale,
-  dict,
-  airCount,
-  hydroCount,
-}: {
-  locale: Locale;
-  dict: ReturnType<typeof getDictionary>;
-  airCount: number;
-  hydroCount: number;
-}) {
-  const families = [
-    {
-      route: 'air' as const,
-      title: dict.categories.air,
-      tagline: dict.categories.airTagline,
-      chooseIf: dict.home.airChooseIf,
-      reasons: dict.home.airReasons,
-      count: airCount,
-      image: '/img/placeholder/family-air.svg',
-    },
-    {
-      route: 'hydro' as const,
-      title: dict.categories.hydro,
-      tagline: dict.categories.hydroTagline,
-      chooseIf: dict.home.hydroChooseIf,
-      reasons: dict.home.hydroReasons,
-      count: hydroCount,
-      image: '/img/placeholder/family-hydro.svg',
-    },
-  ];
+/**
+ * Les huit sections, en grille.
+ *
+ * L'accueil n'arbitre plus entre deux familles : il oriente vers l'appareil
+ * que le visiteur est venu chercher. Le choix fin — air ventilé ou hydro —
+ * se joue une fois dans la section, où ses critères sont donnés.
+ */
+function Families({ locale, dict }: { locale: Locale; dict: ReturnType<typeof getDictionary> }) {
+  const sections = categoryLinks(locale, dict);
 
   return (
     <section className="container-page py-16 md:py-20">
@@ -214,35 +191,25 @@ function Families({
         lead={dict.home.familiesLead}
       />
 
-      <div className="mt-10 grid gap-5 lg:grid-cols-2">
-        {families.map((family) => (
-          <article key={family.route} className="card overflow-hidden">
-            <div className="flex items-center gap-5 border-b border-line bg-sand px-6 py-5">
-              {/* eslint-disable-next-line @next/next/no-img-element -- illustration SVG */}
-              <img src={family.image} alt="" width={92} height={92} className="h-20 w-20 shrink-0" />
-              <div>
-                <h3 className="text-xl">{family.title}</h3>
-                <p className="mt-1 text-sm text-ink-soft">{family.tagline}</p>
-              </div>
-            </div>
-
-            <div className="p-6">
-              <p className="text-sm font-semibold text-ink">{family.chooseIf} :</p>
-              <ul className="mt-3 space-y-2">
-                {family.reasons.map((reason) => (
-                  <li key={reason} className="flex items-start gap-2.5 text-sm text-ink-soft">
-                    <span aria-hidden="true" className="mt-2 h-1 w-1 shrink-0 rounded-full bg-ember" />
-                    {reason}
-                  </li>
-                ))}
-              </ul>
-
-              <a href={href(family.route, locale)} className="btn-primary mt-6 w-full">
-                {family.title} · {family.count} {dict.common.products}
-              </a>
-            </div>
-          </article>
-        ))}
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {sections.map((section) => {
+          const count = getProductsByCategory(section.category).length;
+          return (
+            <a
+              key={section.category}
+              href={section.href}
+              className="card flex flex-col p-5 transition-colors hover:border-ink"
+            >
+              <h3 className="text-lg">{section.label}</h3>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{section.tagline}</p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-muted">
+                {count === 0
+                  ? dict.common.soon
+                  : `${count} ${count === 1 ? dict.common.product : dict.common.products}`}
+              </p>
+            </a>
+          );
+        })}
       </div>
     </section>
   );

@@ -8,6 +8,7 @@ import {
   assertSourcingComplete,
   sourcing,
 } from '@/lib/sourcing';
+import { isAppliance } from '@/lib/catalog.types';
 import { products } from '@/lib/catalog';
 import { splitVatInclusive } from '@/lib/money';
 
@@ -49,7 +50,7 @@ describe('approvisionnement', () => {
     const exceptions: Record<string, number> = { 'granules-palette': 8 };
 
     for (const product of products) {
-      const floor = exceptions[product.id] ?? (product.category === 'accessoire' ? 38 : 22);
+      const floor = exceptions[product.id] ?? (isAppliance(product.category) ? 22 : 38);
       const { net } = splitVatInclusive(product.price);
       const margin = ((net - landedCostOf(product.id)) / net) * 100;
       expect(

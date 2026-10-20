@@ -8,7 +8,7 @@ import {
   getStoves,
   getProductsByCategory,
 } from '@/lib/catalog';
-import { productCategories } from '@/lib/catalog.types';
+import { isAppliance, productCategories } from '@/lib/catalog.types';
 import { guides, getGuideBySlug } from '@/lib/guides';
 import { hasOnlyPlaceholders } from '@/lib/product-media';
 import { locales } from '@/lib/i18n/config';
@@ -124,11 +124,26 @@ describe('intégrité du catalogue', () => {
     }
   });
 
-  it('couvre les deux familles de poêles', () => {
-    expect(getProductsByCategory('air').length).toBeGreaterThan(0);
-    expect(getProductsByCategory('hydro').length).toBeGreaterThan(0);
-    for (const category of productCategories) {
-      expect(products.some((p) => p.category === category), category).toBe(true);
+  it('range chaque produit dans une famille déclarée', () => {
+    for (const product of products) {
+      expect(productCategories, product.id).toContain(product.category);
+    }
+  });
+
+  it('présente les deux modes de diffusion chez les poêles à granulés', () => {
+    // Seule famille garnie pour l'instant : c'est là que le choix air / hydro
+    // se pose, et la page la présente en deux groupes.
+    const granules = getProductsByCategory('pellet');
+    expect(granules.some((p) => p.distribution === 'air')).toBe(true);
+    expect(granules.some((p) => p.distribution === 'hydro')).toBe(true);
+  });
+
+  it('ne prête un mode de diffusion qu’à un appareil', () => {
+    for (const product of products) {
+      if (!isAppliance(product.category)) {
+        // Un conduit ne diffuse rien, un sac de granulés non plus.
+        expect(product.distribution, product.id).toBeNull();
+      }
     }
   });
 
@@ -144,9 +159,9 @@ describe('intégrité du catalogue', () => {
 });
 
 describe('cohérence technique des poêles', () => {
-  it('renseigne un bloc technique pour chaque poêle, et aucun pour les accessoires', () => {
+  it('renseigne un bloc technique pour chaque appareil, et aucun pour le reste', () => {
     for (const product of products) {
-      if (product.category === 'accessoire') {
+      if (!isAppliance(product.category)) {
         expect(product.tech, product.id).toBeNull();
       } else {
         expect(product.tech, product.id).not.toBeNull();
@@ -201,7 +216,7 @@ describe('cohérence technique des poêles', () => {
     for (const product of products) {
       const tech = product.tech;
       if (!tech) continue;
-      if (product.category === 'hydro') {
+      if (product.distribution === 'hydro') {
         expect(tech.waterPowerKw, product.id).not.toBeNull();
         expect(tech.waterPowerKw ?? 0, product.id).toBeLessThan(tech.powerMaxKw);
       } else {

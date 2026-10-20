@@ -14,10 +14,7 @@ const en: Dictionary = {
 
   nav: {
     home: 'Home',
-    shop: 'Stoves',
-    air: 'Ducted air',
-    hydro: 'Hydro',
-    accessories: 'Accessories',
+    shop: 'Heating',
     sizing: 'What output?',
     guides: 'Guides',
     about: 'About',
@@ -66,6 +63,9 @@ const en: Dictionary = {
     products: 'products',
     product: 'product',
     results: 'results',
+    soon: 'Coming soon',
+    sectionEmpty:
+      'This section is being filled. The first models go up as soon as the supplier sheets arrive.',
     noResults: 'No product matches these criteria.',
     resetFilters: 'Reset',
     illustrationNotice:
@@ -75,15 +75,50 @@ const en: Dictionary = {
   },
 
   categories: {
-    air: 'Ducted-air stoves',
-    airShort: 'Ducted air',
-    airTagline: 'Heat the room they stand in, and adjoining rooms when ducted.',
-    hydro: 'Hydro stoves',
-    hydroShort: 'Hydro',
-    hydroTagline: 'Feed radiators and underfloor heating, the way a boiler does.',
-    accessoire: 'Accessories',
-    accessoireShort: 'Accessories',
-    accessoireTagline: 'Flue, controls, maintenance, fuel.',
+    pellet: 'Pellet stoves',
+    pelletShort: 'Pellet',
+    pelletTagline: 'Automatic and programmable, running unattended for days.',
+    wood: 'Wood stoves',
+    woodShort: 'Wood',
+    woodTagline: 'The liveliest flame and the cheapest fuel, at the cost of loading it by hand.',
+    cookstove: 'Wood cookstoves',
+    cookstoveShort: 'Cookstoves',
+    cookstoveTagline: 'Heat the room and cook the meal on the same fire.',
+    boiler: 'Boilers',
+    boilerShort: 'Boilers',
+    boilerTagline: 'Take on the whole house: central heating and hot water.',
+    insert: 'Fireplace inserts',
+    insertShort: 'Inserts',
+    insertTagline: 'Turn an open fireplace, which loses most of its heat, into a real heating appliance.',
+    flue: 'Flue systems',
+    flueShort: 'Flues',
+    flueTagline: 'The flue decides draught and safety: it is not something to improvise.',
+    heatpump: 'Heat pumps',
+    heatpumpShort: 'Heat pumps',
+    heatpumpTagline: 'Heat with electricity, returning several times the energy they draw.',
+    accessory: 'Accessories',
+    accessoryShort: 'Accessories',
+    accessoryTagline: 'Pellets, controls, maintenance — what keeps the appliance running.',
+  },
+
+  distributions: {
+    all: 'All',
+    air: 'Ducted air',
+    airTagline: 'Heats the room it stands in, and neighbouring rooms when ducted.',
+    hydro: 'Hydro',
+    hydroTagline: 'Feeds radiators and underfloor heating, like a boiler.',
+    airChooseIf: 'Choose ducted air if',
+    airReasons: [
+      'you want to heat a living space, possibly two bedrooms through ducting',
+      'you have no central heating circuit, or you are keeping it as it is',
+      'you want a simple installation: one flue, one power socket',
+    ],
+    hydroChooseIf: 'Choose hydro if',
+    hydroReasons: [
+      'you already have radiators or underfloor heating in place',
+      'you want to replace or supplement an oil or gas boiler',
+      'you accept a hydraulic connection made by a professional',
+    ],
   },
 
   home: {
@@ -100,21 +135,9 @@ const en: Dictionary = {
     heroStatThree: '4 to 8 days',
     heroStatThreeLabel: 'delivery by appointment',
 
-    familiesTitle: 'Two families, two uses that should not be confused',
+    familiesTitle: 'Eight families of appliance',
     familiesLead:
-      'This is the decision that shapes everything else. It does not depend on your budget but on what you want to heat.',
-    airChooseIf: 'Choose ducted air if',
-    airReasons: [
-      'you want to heat a living space, possibly two bedrooms through ducting',
-      'you have no central heating circuit, or you are keeping it as it is',
-      'you want a simple installation: one flue, one power socket',
-    ],
-    hydroChooseIf: 'Choose hydro if',
-    hydroReasons: [
-      'you already have radiators or underfloor heating in place',
-      'you want to replace or supplement an oil or gas boiler',
-      'you accept a hydraulic connection made by a professional',
-    ],
+      'Each suits a different installation and budget. Start from what you want to fit.',
 
     featuredTitle: 'The models most often asked for',
     featuredLead: 'Four appliances that cover the majority of situations.',

@@ -7,7 +7,7 @@ import { powerBands, type PowerBandId } from '@/lib/sizing';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import { assertLocale, localeStaticParams, pageMetadata, routeAlternates } from '@/lib/i18n/page';
 import { href } from '@/lib/i18n/routes';
-import type { ProductCategory } from '@/lib/catalog.types';
+import { productCategories, type ProductCategory } from '@/lib/catalog.types';
 
 /**
  * Boutique complète, avec filtres.
@@ -124,9 +124,10 @@ export default async function ShopPage({
           options={{
             category: [
               { value: 'all', label: dict.shop.filterAll },
-              { value: 'air', label: dict.categories.airShort },
-              { value: 'hydro', label: dict.categories.hydroShort },
-              { value: 'accessoire', label: dict.categories.accessoireShort },
+              ...productCategories.map((c) => ({
+                value: c,
+                label: dict.categories[`${c}Short` as const],
+              })),
             ],
             power: [
               { value: 'all', label: dict.shop.anyPower },
