@@ -30,6 +30,12 @@ sanction ou à une perte d'argent s'ils sont ignorés.
 
 ## 2. Fournisseur
 
+- [ ] **Bloquant — Remplacer les douze fiches de démonstration.** Une seule
+      fiche sur treize est renseignée d'après la documentation du fabricant
+      (ETNA Luxe Anna 12EC). Les douze autres portent des modèles, des
+      puissances et des classes énergétiques inventés, et le signalent en tête
+      de page. Vendre un appareil de chauffage sur des caractéristiques
+      inventées est une pratique commerciale trompeuse.
 - [ ] **Bloquant — Trouver un vrai fournisseur.** Les coûts dans
       `src/lib/sourcing.ts` sont des hypothèses. Toute la rentabilité dépend de
       ces nombres : remplacez-les par vos tarifs négociés.
@@ -64,8 +70,11 @@ sanction ou à une perte d'argent s'ils sont ignorés.
 - [ ] **Renseigner `OPS_ALERT_EMAIL`.** C'est par là qu'arrivent les incidents.
 - [ ] **Générer `CRON_SECRET` et `SUPPLIER_WEBHOOK_SECRET`**
       (`openssl rand -hex 32`).
-- [ ] **Remplacer les visuels** dans `public/img/`. Les SVG actuels portent la
-      mention « VISUEL À REMPLACER ».
+- [ ] **Remplacer les visuels.** Déposez les photos dans
+      `public/img/products/<id-produit>/` puis lancez `npm run media:scan` ;
+      les illustrations vectorielles s'effacent d'elles-mêmes. Minimum 600 px
+      de côté, sinon le fichier est écarté et signalé. État actuel : **1 fiche
+      sur 13** a ses photographies (ETNA Luxe Anna 12EC).
 - [ ] **Faire une commande de test réelle**, en cartes de test puis en
       conditions réelles avec un petit montant. Vérifiez : confirmation reçue,
       commande transmise, suivi affiché.
@@ -85,8 +94,11 @@ sanction ou à une perte d'argent s'ils sont ignorés.
 - [ ] **Surveiller le panier moyen.** C'est le paramètre qui décide
       (voir [ECONOMICS.md](ECONOMICS.md)). En dessous de 100 €, la marge ne
       finance pas l'acquisition.
-- [ ] **Prévoir la trésorerie** : environ 6 450 € pour le scénario de
-      référence. Vous payez la publicité et la marchandise avant d'être payé.
+- [ ] **Prévoir la trésorerie** : environ **88 000 €** pour le scénario de
+      référence (90 commandes/mois). Vous payez la publicité et la marchandise
+      avant d'être payé, et un poêle coûte ~1 180 € à l'achat : c'est le poste
+      qui décide si l'activité tient. Relancez `npm run economics` après avoir
+      saisi vos tarifs négociés — ce nombre bouge énormément avec eux.
 - [ ] **Publier du contenu.** Le trafic organique est le seul levier qui fasse
       baisser durablement le CAC. Deux guides sont fournis ; il en faut
       davantage.
