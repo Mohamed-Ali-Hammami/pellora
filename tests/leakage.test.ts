@@ -16,7 +16,11 @@ import { join } from 'node:path';
 
 const FORBIDDEN_IN_CLIENT = [
   'lib/sourcing',
-  'lib/stripe',
+  // Les coordonnées bancaires ne sont pas secrètes, mais les figer dans le
+  // bundle interdirait de changer de compte sans reconstruire le site.
+  'lib/bank',
+  // Le mot de passe du back-office, lui, l'est.
+  'lib/admin',
   'lib/fulfillment',
   'lib/store',
   'lib/email',

@@ -8,7 +8,6 @@ import {
   htmlLangs,
   ogLocales,
   localeNames,
-  stripeLocales,
   defaultLocale,
 } from '@/lib/i18n/config';
 import {
@@ -81,7 +80,6 @@ describe('complétude des dictionnaires', () => {
       expect(htmlLangs[locale]).toBe(locale);
       expect(ogLocales[locale]).toMatch(/^[a-z]{2}_[A-Z]{2}$/);
       expect(localeNames[locale].length).toBeGreaterThan(2);
-      expect(stripeLocales[locale]).toBe(locale);
     }
   });
 

@@ -5,14 +5,15 @@ familles, **hydro** et **air ventilé** — en **français, anglais, néerlandai
 espagnol**, conçue pour qu'aucune intervention humaine ne soit nécessaire entre
 le paiement du client et l'expédition par le fournisseur.
 
-Next.js 16 · TypeScript · Tailwind 4 · Stripe · Resend · Redis
+Next.js 16 · TypeScript · Tailwind 4 · Resend · Redis
 
 ---
 
 ## Ce que ce dépôt contient, et ce qu'il ne contient pas
 
 **Il contient** une boutique fonctionnelle et testée : catalogue traduit,
-calculateur de puissance, panier, paiement Stripe, transmission automatique des
+calculateur de puissance, panier, commande payée par virement, back-office de
+validation, transmission automatique des
 commandes au fournisseur, e-mails transactionnels dans la langue du client,
 suivi de commande, pages légales, contenu éditorial, et un modèle économique
 chiffré.
@@ -147,36 +148,54 @@ pratiquent la facturation rétroactive.
 
 ---
 
-## Brancher Stripe
+## Brancher le paiement
 
-1. Créez un compte sur [stripe.com](https://stripe.com) et récupérez votre clé
-   secrète de **test** (`sk_test_...`) dans le tableau de bord, section
-   « Développeurs → Clés API ».
-2. Renseignez `STRIPE_SECRET_KEY` dans `.env.local`.
-3. Créez un point de terminaison de webhook vers
-   `https://votre-domaine/api/webhooks/stripe`, abonné aux événements
-   `checkout.session.completed`, `checkout.session.expired`, `charge.refunded`
-   et `charge.dispute.created`. Copiez son secret dans `STRIPE_WEBHOOK_SECRET`.
-4. En local : `stripe listen --forward-to localhost:3000/api/webhooks/stripe`.
-5. Passez une commande de test avec la carte `4242 4242 4242 4242`.
+Le règlement se fait par **virement bancaire**, validé à la main par l'équipe.
+Il n'y a aucun prestataire de paiement, donc aucune donnée de carte, donc
+aucune obligation PCI-DSS.
 
-Ce qu'il faut savoir sur cette intégration :
+1. Renseignez le RIB dans `.env.local` :
 
-- Le paiement passe par **Stripe Checkout**, page hébergée par Stripe. Aucune
-  donnée de carte ne traverse ce code, ce qui change la portée PCI-DSS (SAQ A
-  au lieu de SAQ A-EP) et évite d'implémenter soi-même 3-D Secure, Apple Pay et
-  Google Pay.
-- **Les prix sont toujours relus côté serveur.** Le panier envoyé par le
-  navigateur ne contient que des identifiants et des quantités ; `priceCart()`
-  recalcule chaque montant depuis le catalogue. Sans cela, il suffirait de
-  modifier un prix dans la console du navigateur pour payer un centime.
-- `tax_behavior: 'inclusive'` est déterminant : les prix catalogue sont TTC,
-  comme l'exige l'affichage au consommateur dans l'UE. Sans ce drapeau, Stripe
-  ajouterait la TVA par-dessus et le client paierait 20 % de trop.
-- La page de paiement s'affiche dans la langue du parcours, et le retour se
-  fait sur la page de confirmation de cette même langue.
+   ```
+   BANK_HOLDER=Votre raison sociale
+   BANK_IBAN=FR76...
+   BANK_BIC=...
+   BANK_NAME=Votre banque
+   ```
 
----
+   Sans titulaire ni IBAN, la page de commande affiche un avertissement et
+   refuse d'enregistrer une commande : un client ne doit jamais se retrouver
+   avec une commande qu'il ne peut pas payer.
+
+2. Choisissez un mot de passe de back-office, douze caractères au minimum :
+
+   ```
+   ADMIN_PASSWORD=$(openssl rand -base64 24)
+   ```
+
+### Le parcours
+
+```
+panier → /commande → le client saisit ses coordonnées
+                   → commande enregistrée, état « en attente de virement »
+                   → e-mail au client : RIB, montant, référence
+                   → e-mail à l'équipe : nouvelle commande
+
+/admin → l'équipe constate le virement sur le relevé
+       → « Virement reçu » → état « confirmée »
+       → transmission automatique au fournisseur
+       → numéro de suivi → « en route » → « livrée »
+```
+
+**Rien n'est automatique entre le virement et la confirmation**, et c'est
+délibéré : seule une personne qui a vu la ligne sur le relevé peut faire
+avancer une commande. Une commande transmise au fournisseur sans virement reçu
+est une perte sèche.
+
+La référence de commande (`PEL-XXXXXX`) est ce qui rattache un virement à une
+commande. Elle est répétée trois fois dans l'e-mail client — objet, corps,
+encadré du RIB — parce qu'un virement sans référence se retrouve à la main sur
+un relevé.
 
 ## Avant de vendre : la liste à cocher
 
@@ -207,7 +226,7 @@ src/
 ├─ proxy.ts                  Routage des langues (redirection, réécriture, cookie)
 ├─ app/
 │  ├─ [locale]/              Toutes les pages, un dossier par page et non par langue
-│  └─ api/                   Paiement, webhooks Stripe et fournisseur, suivi, reprise
+│  └─ api/                   Commandes, webhook fournisseur, suivi, reprise
 ├─ components/               Composants serveur, et îlots client là où c'est nécessaire
 └─ lib/
    ├─ i18n/                  Langues, dictionnaires, table des URL, équivalences
@@ -233,7 +252,7 @@ src/
    montants affichés sont indicatifs.
 3. **Un montant est toujours un entier de centimes.** `0.1 + 0.2` vaut
    `0.30000000000000004` : les flottants finissent par produire des écarts d'un
-   centime entre le panier, Stripe et la comptabilité.
+   centime entre le panier, le virement attendu et la comptabilité.
 
 ---
 

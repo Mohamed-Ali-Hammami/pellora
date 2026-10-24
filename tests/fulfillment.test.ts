@@ -24,14 +24,14 @@ const ADDRESS: ShippingAddress = {
   phone: null,
 };
 
-async function seedPaidOrder(productId = 'aria-6'): Promise<Order> {
+async function seedConfirmedOrder(productId = 'aria-6'): Promise<Order> {
   const cart = priceCart({
     lines: [{ productId, variantId: 'noir', quantity: 1 }],
     shippingCountry: 'FR',
     locale: 'fr',
   });
-  let order = createOrder({ cart, email: 'client@exemple.fr', stripeSessionId: 'cs_test_1' });
-  order = withStatus(order, 'paid');
+  let order = createOrder({ cart, email: 'client@exemple.fr', address: ADDRESS, transferHolder: null });
+  order = withStatus(order, 'confirmed');
   order = withAddress(order, ADDRESS);
   await getStore().save(order);
   return order;
@@ -42,8 +42,8 @@ beforeEach(() => {
 });
 
 describe('traitement des commandes', () => {
-  it('transmet une commande payee', async () => {
-    const order = await seedPaidOrder();
+  it('transmet une commande dont le virement est constaté', async () => {
+    const order = await seedConfirmedOrder();
     const outcome = await fulfillOrder(order.ref);
 
     expect(outcome.forwarded).toBe(true);
@@ -56,7 +56,7 @@ describe('traitement des commandes', () => {
   it('ne transmet pas deux fois la même commande', async () => {
     // C’est LA garantie critique : Stripe rejoue ses webhooks, et une
     // double transmission signifie une double expédition payee deux fois.
-    const order = await seedPaidOrder();
+    const order = await seedConfirmedOrder();
 
     const first = await fulfillOrder(order.ref);
     expect(first.forwarded).toBe(true);
@@ -67,7 +67,7 @@ describe('traitement des commandes', () => {
   });
 
   it('n’envoie la confirmation qu’une seule fois', async () => {
-    const order = await seedPaidOrder();
+    const order = await seedConfirmedOrder();
     const first = await fulfillOrder(order.ref);
     const sentOnce = first.order.events.filter((e) => e.type === 'email:confirmation_sent');
     expect(sentOnce).toHaveLength(1);
@@ -79,7 +79,7 @@ describe('traitement des commandes', () => {
   });
 
   it('transmet un appareil à son seul grossiste', async () => {
-    const order = await seedPaidOrder('aria-6');
+    const order = await seedConfirmedOrder('aria-6');
     const outcome = await fulfillOrder(order.ref);
     expect(outcome.order.supplierOrders).toHaveLength(1);
     expect(outcome.order.supplierOrders[0]!.supplier).toBe('eu-stoves');
@@ -94,8 +94,8 @@ describe('traitement des commandes', () => {
       shippingCountry: 'FR',
       locale: 'fr',
     });
-    let order = createOrder({ cart, email: 'client@exemple.fr', stripeSessionId: 'cs_test_2' });
-    order = withAddress(withStatus(order, 'paid'), ADDRESS);
+    let order = createOrder({ cart, email: 'client@exemple.fr', address: ADDRESS, transferHolder: null });
+    order = withAddress(withStatus(order, 'confirmed'), ADDRESS);
     await getStore().save(order);
 
     const outcome = await fulfillOrder(order.ref);
@@ -108,13 +108,20 @@ describe('traitement des commandes', () => {
   });
 
   it('bascule en échec quand l’adresse manque', async () => {
+    /*
+     * Le formulaire de commande rend l'adresse obligatoire, donc ce cas ne
+     * peut plus naître du parcours normal. Il reste couvert parce que la
+     * commande est relue depuis un magasin externe : un enregistrement
+     * antérieur au formulaire, ou tronqué, ne doit pas partir chez le
+     * fournisseur sans adresse. On fabrique donc l'état à la main.
+     */
     const cart = priceCart({
       lines: [{ productId: 'aria-6', variantId: 'noir', quantity: 1 }],
       shippingCountry: 'FR',
       locale: 'fr',
     });
-    let order = createOrder({ cart, email: 'client@exemple.fr', stripeSessionId: 'cs_test_3' });
-    order = withStatus(order, 'paid');
+    let order = createOrder({ cart, email: 'client@exemple.fr', address: ADDRESS, transferHolder: null });
+    order = { ...withStatus(order, 'confirmed'), address: null };
     await getStore().save(order);
 
     const outcome = await fulfillOrder(order.ref);
@@ -127,7 +134,7 @@ describe('traitement des commandes', () => {
   });
 
   it('empeche deux traitements concurrents', async () => {
-    const order = await seedPaidOrder();
+    const order = await seedConfirmedOrder();
     // Lancees ensemble, une seule doit obtenir le verrou.
     const [a, b] = await Promise.all([fulfillOrder(order.ref), fulfillOrder(order.ref)]);
     const forwardedCount = [a, b].filter((o) => o.forwarded).length;
@@ -138,10 +145,10 @@ describe('traitement des commandes', () => {
 
 describe('état par fournisseur', () => {
   const base = (): Order => ({
-    ref: 'PEL-TEST01', status: 'paid', createdAt: '', updatedAt: '', locale: 'fr',
+    ref: 'PEL-TEST01', status: 'confirmed', createdAt: '', updatedAt: '', locale: 'fr',
     email: 'a@b.fr', lines: [], subtotal: 0, shippingPrice: 0, total: 0, vat: 0,
-    currency: 'EUR', shippingLabel: 'x', address: ADDRESS, stripeSessionId: null,
-    stripePaymentIntentId: null, supplierOrders: [], trackingNumber: null, carrier: null,
+    currency: 'EUR', shippingLabel: 'x', address: ADDRESS, transferHolder: null,
+    supplierOrders: [], trackingNumber: null, carrier: null,
     events: [], fulfillmentAttempts: 0,
   });
 
@@ -210,7 +217,7 @@ describe('références et vue publique', () => {
       shippingCountry: 'FR',
       locale: 'fr',
     });
-    let order = createOrder({ cart, email: 'secret@exemple.fr', stripeSessionId: 'cs_x' });
+    let order = createOrder({ cart, email: 'secret@exemple.fr', address: ADDRESS, transferHolder: null });
     order = withAddress(order, ADDRESS);
 
     const serialized = JSON.stringify(toPublicOrder(order));

@@ -3,10 +3,11 @@
 /**
  * Page panier.
  *
- * Les montants affichés ici sont indicatifs : le serveur les recalcule
- * intégralement à l'ouverture du paiement (`/api/checkout`). Si les deux
- * divergent, c'est le serveur qui a raison — et c'est voulu, car seul lui
- * n'est pas modifiable depuis le navigateur.
+ * Les montants affichés ici sont une ESTIMATION, et le pays n'y sert qu'à
+ * cela : le choix qui engage se fait sur la page de commande, avec l'adresse
+ * de livraison, et le serveur recalcule tout à l'enregistrement. Si les deux
+ * divergent, c'est le serveur qui a raison — seul lui n'est pas modifiable
+ * depuis le navigateur.
  */
 
 import { useMemo, useState } from 'react';
@@ -28,6 +29,8 @@ import type { Locale } from '@/lib/i18n/config';
 interface Props {
   locale: Locale;
   shopHref: string;
+  /** Page de commande : coordonnées, mode de livraison et RIB. */
+  checkoutHref: string;
   canceled: boolean;
   /** Noms de pays traduits, fournis par le serveur via `Intl.DisplayNames`. */
   countryNames: Record<string, string>;
@@ -43,7 +46,6 @@ interface Props {
     total: string;
     vatLine: string;
     checkout: string;
-    checkoutPending: string;
     freeProgress: string;
     freeReached: string;
     canceled: string;
@@ -54,12 +56,10 @@ interface Props {
   };
 }
 
-export function CartView({ locale, shopHref, canceled, countryNames, labels }: Props) {
+export function CartView({ locale, shopHref, checkoutHref, canceled, countryNames, labels }: Props) {
   const { resolved, subtotal, profile, setQuantity, remove, loading } = useCart();
   const [country, setCountry] = useState('FR');
   const [rateId, setRateId] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const zone = zoneForCountry(country);
   const rates = useMemo(() => ratesFor(subtotal, zone, profile), [subtotal, zone, profile]);
@@ -68,50 +68,6 @@ export function CartView({ locale, shopHref, canceled, countryNames, labels }: P
   const total = subtotal + (rate?.price ?? 0);
   const vat = total > 0 ? splitVatInclusive(total).vat : 0;
   const missing = amountToFreeShipping(subtotal, zone, profile);
-
-  async function checkout() {
-    setSubmitting(true);
-    setError(null);
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          lines: resolved.map((item) => ({
-            productId: item.productId,
-            variantId: item.variantId,
-            quantity: item.quantity,
-          })),
-          shippingCountry: country,
-          shippingRateId: rate?.id,
-          locale,
-        }),
-      });
-
-      const payload: unknown = await response.json();
-      const url =
-        typeof payload === 'object' && payload !== null && 'url' in payload
-          ? (payload as { url?: unknown }).url
-          : undefined;
-
-      if (!response.ok || typeof url !== 'string') {
-        const message =
-          typeof payload === 'object' && payload !== null && 'error' in payload
-            ? String((payload as { error?: unknown }).error)
-            : labels.error;
-        setError(message);
-        setSubmitting(false);
-        return;
-      }
-
-      // Redirection vers la page hébergée par Stripe : aucune donnée de carte
-      // ne transite par ce site.
-      window.location.assign(url);
-    } catch {
-      setError(labels.error);
-      setSubmitting(false);
-    }
-  }
 
   if (loading) {
     return <div className="h-48 animate-pulse rounded-xl bg-cream" aria-hidden="true" />;
@@ -285,15 +241,9 @@ export function CartView({ locale, shopHref, canceled, countryNames, labels }: P
               : labels.freeReached}
           </p>
 
-          <button type="button" onClick={checkout} disabled={submitting} className="btn-ember mt-5 w-full">
-            {submitting ? labels.checkoutPending : labels.checkout}
-          </button>
-
-          {error ? (
-            <p role="alert" className="mt-3 text-sm text-danger">
-              {error}
-            </p>
-          ) : null}
+          <a href={checkoutHref} className="btn-ember mt-5 w-full">
+            {labels.checkout}
+          </a>
 
           <p className="mt-4 text-xs leading-relaxed text-muted">{labels.secured}</p>
         </div>

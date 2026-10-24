@@ -101,7 +101,7 @@ soit environ 14 jours de dépenses avec un coefficient de sécurité de 1,5.
 
 Ce nombre est le plus souvent ignoré dans les présentations du dropshipping, et
 c'est pourtant lui qui arrête la plupart des projets : la publicité se paie
-immédiatement, le fournisseur avant expédition, et Stripe verse sous plusieurs
+immédiatement, le fournisseur avant expédition, et le virement client arrive sous un à plusieurs
 jours. Sur un panier à quatre chiffres, le besoin en fonds de roulement est
 plusieurs fois supérieur au bénéfice annuel visé.
 

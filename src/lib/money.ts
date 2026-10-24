@@ -4,7 +4,7 @@
  * Règle absolue du projet : un montant est TOUJOURS un entier de centimes
  * (`Cents`). Aucun prix ne transite jamais en nombre flottant : `0.1 + 0.2`
  * vaut `0.30000000000000004`, ce qui finit par produire des écarts d’un
- * centime entre le panier, Stripe et la comptabilité.
+ * centime entre le panier, le virement attendu et la comptabilité.
  *
  * Convention TVA : tous les prix catalogue sont exprimes TTC (taxe incluse),
  * comme l’exige l’affichage au consommateur en France / UE. La TVA est donc

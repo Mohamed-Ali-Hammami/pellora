@@ -7,7 +7,7 @@
  *
  * Trois garanties, dans cet ordre d’importance :
  *
- *   1. IDEMPOTENCE. Stripe rejoue ses webhooks (nouvelle tentative, incident
+ *   1. IDEMPOTENCE. La confirmation manuelle peut être cliquée deux fois, et
  *      réseau, double livraison). Une commande transmise deux fois est
  *      expédiée deux fois et payée deux fois. On verrouille, puis on vérifié
  *      l’état de la commande avant d’agir.
@@ -113,7 +113,7 @@ export async function fulfillOrder(ref: string): Promise<FulfillmentOutcome> {
     await store.save(updated);
     await alertOps(
       `Commande ${ref} sans adresse`,
-      `Paiement encaisse (${formatPrice(order.total)}) mais aucune adresse de livraison. ` +
+      `Virement constaté (${formatPrice(order.total)}) mais aucune adresse de livraison. ` +
         `A traiter manuellement : contacter ${order.email}.`,
     );
     return { order: updated, forwarded: false, skipped: 'no_address', errors: ['adresse manquante'] };

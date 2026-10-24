@@ -55,6 +55,7 @@ export default async function CartPage({
         <CartView
           locale={locale}
           shopHref={href('shop', locale)}
+          checkoutHref={href('checkout', locale)}
           canceled={query['canceled'] === '1'}
           countryNames={countryNames(locale, SHIPPING_COUNTRIES)}
           labels={{
@@ -69,7 +70,6 @@ export default async function CartPage({
             total: dict.common.total,
             vatLine: dict.cart.vatLine,
             checkout: dict.cart.checkout,
-            checkoutPending: dict.cart.checkoutPending,
             freeProgress: dict.cart.freeShippingProgress,
             freeReached: dict.cart.freeShippingReached,
             canceled: dict.cart.canceled,

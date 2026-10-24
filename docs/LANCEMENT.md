@@ -60,11 +60,16 @@ sanction ou à une perte d'argent s'ils sont ignorés.
 - [ ] **Bloquant — Configurer Redis** (`UPSTASH_REDIS_REST_URL` et `_TOKEN`).
       Sans persistance, une commande payée peut être perdue et le suivi ne
       fonctionne pas.
-- [ ] **Bloquant — Créer le webhook Stripe** vers
-      `https://votre-domaine/api/webhooks/stripe`, événements
-      `checkout.session.completed`, `checkout.session.expired`,
-      `charge.refunded`, `charge.dispute.created`. Reportez la clé secrète dans
-      `STRIPE_WEBHOOK_SECRET`.
+- [ ] **Bloquant — Renseigner le RIB** (`BANK_HOLDER`, `BANK_IBAN`, et de
+      préférence `BANK_BIC` et `BANK_NAME`). Sans titulaire ni IBAN, la page de
+      commande refuse d'enregistrer une commande.
+- [ ] **Bloquant — Choisir un mot de passe de back-office** (`ADMIN_PASSWORD`,
+      douze caractères minimum). En dessous, `/admin` reste fermé — et sans
+      back-office, aucun virement ne peut être confirmé.
+- [ ] **Désigner qui surveille le compte.** Le passage de « en attente de
+      virement » à « confirmée » est manuel, par construction. Une commande
+      payée que personne ne regarde est une vente perdue, et un client qui a
+      viré son argent sans nouvelle devient un litige.
 - [ ] **Vérifier le domaine dans Resend** (SPF, DKIM). Sans cela, les
       confirmations partent en courrier indésirable.
 - [ ] **Renseigner `OPS_ALERT_EMAIL`.** C'est par là qu'arrivent les incidents.

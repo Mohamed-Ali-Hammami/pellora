@@ -15,7 +15,7 @@ export interface PublicOrderLine {
   quantity: number;
 }
 
-/** Champs volontairement absents : e-mail, adresse détaillée, identifiants Stripe. */
+/** Champs volontairement absents : e-mail, adresse détaillée, titulaire du virement. */
 export interface PublicOrder {
   ref: string;
   status: string;

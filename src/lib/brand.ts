@@ -126,12 +126,12 @@ export const promises: readonly { title: Localized<string>; detail: Localized<st
     ),
   },
   {
-    title: L('Paiement sécurisé', 'Secure payment', 'Veilig betalen', 'Pago seguro'),
+    title: L('Paiement par virement', 'Payment by transfer', 'Betaling per overschrijving', 'Pago por transferencia'),
     detail: L(
-      'Stripe — carte, Apple Pay, Google Pay, virement SEPA',
-      'Stripe — card, Apple Pay, Google Pay, SEPA transfer',
-      'Stripe — kaart, Apple Pay, Google Pay, SEPA',
-      'Stripe — tarjeta, Apple Pay, Google Pay, SEPA',
+      'Aucune donnée bancaire à saisir sur le site',
+      'No card details to enter on the site',
+      'Geen bankgegevens in te voeren op de site',
+      'Ningún dato bancario que introducir en el sitio',
     ),
   },
 ];

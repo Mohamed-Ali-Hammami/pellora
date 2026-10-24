@@ -1,22 +1,29 @@
 # L'automatisation : le pipeline et ses pannes
 
-« Automatisé de A à Z » ne veut pas dire « sans panne ». Cela veut dire que les
-pannes sont détectées, rattrapées, et signalées — jamais silencieuses. Un
-client qui a payé et dont la commande n'est jamais partie est le pire incident
-possible d'une boutique.
+Une seule étape est manuelle, et elle l'est par construction : constater le
+virement. Tout ce qui suit est automatique, et les pannes y sont détectées,
+rattrapées et signalées — jamais silencieuses. Un client qui a viré son argent
+et dont la commande n'est jamais partie est le pire incident possible d'une
+boutique.
 
 ---
 
 ## Le parcours nominal
 
 ```
-Client paie
+Client valide sa commande sur /commande
+    │
+    ▼  /api/orders
+Panier recalculé côté serveur, commande créée
+en « attente de virement », RIB et référence
+envoyés au client, équipe notifiée
     │
     ▼
-Stripe envoie checkout.session.completed
+Le client vire le montant en indiquant sa référence
     │
-    ▼  /api/webhooks/stripe
-Signature vérifiée (sinon 400 : l'URL est publique)
+    ▼  ⟵ SEULE ÉTAPE MANUELLE
+Une personne voit la ligne sur le relevé et clique
+« Virement reçu » dans /admin
     │
     ▼  fulfillment.ts
 ┌─────────────────────────────────────────────┐
@@ -35,17 +42,19 @@ Le fournisseur expédie et appelle /api/webhooks/supplier
 Numéro de suivi enregistré → e-mail « votre colis est parti »
 ```
 
-Aucune étape ne demande d'intervention.
+Une seule étape demande une intervention : la confirmation du virement. Elle
+n'est pas automatisable — aucun relevé bancaire ne dit de façon fiable quel
+virement correspond à quelle commande — et surtout, elle ne doit pas l'être :
+c'est le point où quelqu'un vérifie que l'argent est bien arrivé avant que la
+marchandise ne parte.
 
 ---
 
 ## Pourquoi le client est prévenu avant le fournisseur
 
 L'ordre des étapes 3 et 5 n'est pas anodin. Un client sans confirmation pense
-avoir perdu son argent, écrit au support, puis conteste le paiement auprès de
-sa banque — une contestation coûte les frais de dossier, la marchandise, et
-dégrade le score du compte Stripe. Un fournisseur servi dix minutes plus tard
-ne change rien à rien.
+avoir perdu son argent, écrit au support, puis demande à sa banque de rappeler
+le virement. Un fournisseur servi dix minutes plus tard ne change rien à rien.
 
 Donc : **on rassure d'abord, on approvisionne ensuite.**
 
@@ -55,9 +64,10 @@ Donc : **on rassure d'abord, on approvisionne ensuite.**
 
 ### 1. Une commande ne peut pas être expédiée deux fois
 
-Stripe **rejoue** ses webhooks : nouvelle tentative après un incident réseau,
-double livraison, reprise après panne. Sans protection, chaque rejeu
-déclencherait une nouvelle expédition, payée par vous.
+La confirmation est un bouton : il peut être cliqué deux fois, par deux
+personnes, ou pendant qu'un rattrapage planifié travaille sur la même
+commande. Sans protection, chaque déclenchement enverrait une nouvelle
+commande au fournisseur, payée par vous.
 
 Trois verrous successifs :
 
@@ -85,7 +95,7 @@ rattrapage ne reprend que ceux qui ont échoué.
 | Fournisseur injoignable | Statut `fulfillment_failed`, alerte, réessai automatique |
 | 4 tentatives épuisées | Alerte « intervention manuelle requise » |
 | Paiement sans adresse | Alerte avec l'e-mail du client |
-| Paiement sans commande rattachée | Alerte pour rapprochement manuel dans Stripe |
+| Virement sans référence lisible | Rapprochement manuel sur le relevé, depuis le montant et le nom du titulaire |
 | Confirmation client non partie | Alerte : le client ignore que sa commande existe |
 | Contestation de paiement | Alerte immédiate avec le motif |
 

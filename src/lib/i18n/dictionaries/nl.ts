@@ -170,7 +170,7 @@ const nl: Dictionary = {
     processTitle: 'Hoe een bestelling verloopt',
     processSteps: [
       { title: 'U berekent het vermogen', text: 'De calculator geeft een bereik in kW en de modellen die erin passen.' },
-      { title: 'U bestelt online', text: 'Kaart, Apple Pay, Google Pay of SEPA-overschrijving via Stripe. Geen kaartgegevens via onze site.' },
+      { title: 'U bestelt online', text: 'U betaalt per overschrijving, met de gegevens en de mededeling die u bij uw bestelling krijgt. Er worden nooit kaartgegevens gevraagd.' },
       { title: 'De vervoerder belt u', text: 'Binnen 2 tot 4 werkdagen, om een leveringstijdvak af te spreken.' },
       { title: 'U laat het toestel plaatsen', text: 'Door een erkend installateur. Wij leveren de technische fiche en het aansluitschema.' },
     ],
@@ -268,34 +268,72 @@ const nl: Dictionary = {
     rateLabel: 'Leveringswijze',
     freeShippingProgress: 'Nog {amount} voor gratis levering',
     freeShippingReached: 'Gratis levering voor deze bestelling',
-    checkout: 'Naar de betaling',
-    checkoutPending: 'Betaling wordt geopend…',
+    checkout: 'Bestellen',
+    checkoutPending: 'Vastleggen…',
     vatLine: 'waarvan btw',
     estimatedDelivery: 'Geschatte levering',
     canceled: 'Betaling onderbroken. Uw winkelwagen is bewaard.',
     error: 'De betaling kon niet worden geopend. Probeer het straks opnieuw.',
-    securedBy: 'Betaling beveiligd door Stripe. Geen kaartgegevens via deze site.',
+    securedBy: 'Betaling per overschrijving. Op deze site worden geen kaartgegevens gevraagd.',
     freightNotice:
       'Uw winkelwagen bevat een toestel dat op pallet wordt verzonden: levering gebeurt op afspraak, naast de wagen.',
   },
 
   checkout: {
-    successTitle: 'Bedankt — uw bestelling is geregistreerd',
-    successLead:
-      'U ontvangt binnen enkele minuten een bevestigingsmail. De vervoerder belt u om een leveringstijdvak af te spreken.',
-    reference: 'Bestelreferentie',
+    title: 'Uw bestelling',
+    lead: 'Controleer uw winkelwagen, laat uw gegevens achter en betaal per overschrijving.',
+
+    detailsTitle: 'Uw gegevens',
+    detailsLead:
+      'Ze dienen voor de levering en om u op de hoogte te houden. Een toestel gaat op pallet: de vervoerder belt voordat hij komt.',
+    firstName: 'Voornaam',
+    lastName: 'Achternaam',
+    email: 'E-mailadres',
+    phone: 'Telefoon',
+    phoneHint: 'Noodzakelijk: de vervoerder belt om een tijdslot af te spreken.',
+    addressTitle: 'Leveringsadres',
+    line1: 'Adres',
+    line2: 'Extra regel (gebouw, verdieping, deurcode)',
+    postalCode: 'Postcode',
+    city: 'Plaats',
+    shippingTitle: 'Leveringswijze',
+
+    transferTitle: 'Over de overschrijving',
+    transferLead:
+      'Komt de overschrijving van een rekening op een andere naam, geef dat hier aan: zonder die vermelding kunnen wij uw betaling niet aan uw bestelling koppelen.',
+    transferHolder: 'Rekeninghouder die overschrijft',
+    transferHolderHint: 'Alleen invullen als u dat niet zelf bent.',
+
+    summaryTitle: 'Overzicht',
+    submit: 'Mijn bestelling plaatsen',
+    submitPending: 'Vastleggen…',
+    submitNote:
+      'Er wordt niets afgeschreven: u voert de overschrijving zelf uit vanaf uw bank. Uw bestelling gaat in voorbereiding zodra ze binnen is.',
+    error: 'De bestelling kon niet worden vastgelegd. Probeer het zo meteen opnieuw.',
+
+    bankRefLater: 'Uw bestelnummer verschijnt in de volgende stap: dat is wat u als mededeling bij de overschrijving zet.',
+    bankMissing:
+      'De bankgegevens zijn op deze site nog niet ingesteld: bestellen is tijdelijk niet mogelijk.',
+
+    placedEyebrow: 'Bestelling vastgelegd',
+    placedTitle: 'Alleen de overschrijving nog',
+    placedLead:
+      'Uw bestelling wacht op betaling. Ze gaat in voorbereiding zodra de overschrijving op onze rekening staat, doorgaans binnen één werkdag.',
+    placedEmail: 'Een overzicht met deze gegevens is zojuist verstuurd naar {email}.',
+    printCta: 'Afdrukken of bewaren',
+
+    reference: 'Bestelnummer',
     nextStepsTitle: 'Wat er nu gebeurt',
     nextSteps: [
-      'Wij geven uw bestelling binnen één werkdag door aan de leverancier.',
-      'U ontvangt het volgnummer zodra de vervoerder de zending ophaalt.',
-      'De vervoerder belt u om een leveringstijdvak af te spreken.',
-      'Controleer op de dag zelf de staat van de pallet vóór u ondertekent: elk voorbehoud moet op de leveringsbon staan.',
+      'U voert de overschrijving uit vanaf uw bank, met vermelding van uw bestelnummer.',
+      'Wij bevestigen de ontvangst en geven uw bestelling door aan de leverancier.',
+      'U krijgt het trackingnummer zodra de vervoerder het pakket ophaalt.',
+      'Controleer op de dag zelf de pallet voordat u tekent: schade moet op de vrachtbrief worden genoteerd.',
     ],
     damageTitle: 'Belangrijk bij ontvangst',
     damageText:
-      'Een toestel van 200 kg kan transportschade oplopen. Pak het indien mogelijk uit in aanwezigheid van de chauffeur, en noteer bij elke stoot een nauwkeurig, handgeschreven voorbehoud op de leveringsbon. Zonder schriftelijk voorbehoud wordt een claim tegen de vervoerder zeer moeilijk.',
+      'Een toestel van 200 kg kan tijdens het transport beschadigd raken. Pak het indien mogelijk uit in het bijzijn van de chauffeur, en noteer bij schade een nauwkeurige, handgeschreven opmerking op de vrachtbrief. Zonder schriftelijke opmerking wordt een claim tegen de vervoerder erg moeilijk.',
     trackCta: 'Mijn bestelling volgen',
-    noSession: 'Geen bestelling om te tonen. Hebt u net betaald, controleer dan uw mailbox.',
   },
 
   tracking: {
@@ -499,7 +537,7 @@ const nl: Dictionary = {
       },
       {
         heading: '4. Bestelling en betaling',
-        body: 'De bestelling is vast zodra de betaling is bevestigd. De betaling wordt verwerkt door Stripe Payments Europe, Ltd. Er worden geen kaartgegevens door de verkoper verzameld of bewaard. De verkoper mag een bestelling weigeren bij een eerder geschil, een vermoeden van fraude, of een leveringsadres buiten de bediende zone.',
+        body: 'De bestelling is vast zodra de overschrijving op de rekening van de verkoper staat. De betaling gebeurt uitsluitend per overschrijving, op de gegevens die de klant bij de bestelling krijgt en per e-mail worden herhaald. Er worden door de verkoper geen kaartgegevens verzameld. Is de overschrijving na tien werkdagen niet ontvangen, dan wordt de bestelling van rechtswege geannuleerd en wordt de klant daarvan op de hoogte gebracht. De verkoper mag een bestelling weigeren bij een eerder geschil, een vermoeden van fraude, of een leveringsadres buiten de bediende zone.',
       },
       {
         heading: '5. Levering',
@@ -546,7 +584,7 @@ const nl: Dictionary = {
     dataHeaders: { data: 'Gegeven', purpose: 'Doeleinde', basis: 'Rechtsgrond', retention: 'Bewaartermijn' },
     paymentTitle: 'Betaling',
     paymentText:
-      'De betaling wordt verwerkt door Stripe Payments Europe, Ltd. Kaartgegevens worden ingevoerd op een pagina die door Stripe wordt gehost en komen nooit op onze servers. Stripe treedt op als verwerkingsverantwoordelijke voor fraudepreventie.',
+      'De betaling gebeurt per overschrijving, van uw bank naar die van de verkoper. Op deze site worden geen kaartgegevens ingevoerd en er komt geen betaaldienstverlener aan te pas: de gegevens van uw overschrijving worden verwerkt door uw bank en die van de verkoper, volgens hun eigen beleid. De verkoper bewaart de naam van de rekeninghouder die overschrijft, als u die opgeeft, uitsluitend om uw betaling aan uw bestelling te koppelen.',
     cookiesTitle: 'Cookies',
     cookiesText:
       'Deze site gebruikt geen advertentie- of analysecookies. Alleen de lokale opslag van de browser wordt gebruikt, om uw winkelwagen tussen bezoeken te bewaren: die gegevens blijven op uw toestel en worden niet naar ons verzonden. Daarvoor is dus geen toestemming nodig.',
@@ -566,7 +604,7 @@ const nl: Dictionary = {
     languageTitle: 'Taal',
     rights: 'Alle rechten voorbehouden.',
     vatNote: 'Vermelde prijzen zijn inclusief Franse btw van 20 %. Levering apart gerekend.',
-    paymentNote: 'Betaling beveiligd door Stripe',
+    paymentNote: 'Betaling per overschrijving',
   },
 
   notFound: {
@@ -582,6 +620,21 @@ const nl: Dictionary = {
     retry: 'Opnieuw proberen',
   },
   emails: {
+    transferSubject: 'Bestelling {ref} — gegevens voor de overschrijving',
+    transferTitle: 'Uw bestelling is geregistreerd',
+    transferLead:
+      'Ze gaat in voorbereiding zodra uw overschrijving op onze rekening staat. U krijgt op dat moment een tweede bericht.',
+    transferHow: 'Uit te voeren overschrijving',
+    transferRefNotice:
+      'Vermeld beslist {ref} als mededeling bij de overschrijving: daarmee koppelen wij uw betaling aan uw bestelling. Zonder die vermelding gebeurt de koppeling handmatig en duurt ze enkele dagen.',
+    transferFooter:
+      'Een SEPA-overschrijving komt doorgaans binnen één werkdag aan. Hoort u na drie werkdagen niets van ons, schrijf ons dan: er is waarschijnlijk iets misgegaan.',
+    bankAmount: 'Bedrag',
+    bankReference: 'Mededeling',
+    bankHolder: 'Begunstigde',
+    bankIban: 'IBAN',
+    bankBic: 'BIC',
+    bankName: 'Bank',
     confirmSubject: 'Bestelling {ref} bevestigd',
     confirmTitle: 'Bestelling bevestigd',
     confirmLead: 'Bedankt. Uw betaling is geregistreerd en uw bestelling wordt voorbereid.',

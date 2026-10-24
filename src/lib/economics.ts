@@ -29,7 +29,14 @@ export interface EconomicsInputs {
   supplierShippingPerOrder: number;
   /** Part des frais de port refacturee au client (moyenne, TTC). */
   shippingChargedPerOrder: number;
-  /** Commission du prestataire de paiement (0,015 = 1,5 %). */
+  /**
+   * Commission du prestataire de paiement (0,015 = 1,5 %).
+   *
+   * Nulle en paiement par virement : il n'y a pas de prestataire. Le champ
+   * reste dans le modèle pour pouvoir chiffrer ce que coûterait l'ajout d'un
+   * paiement par carte — c'est précisément l'arbitrage que ce nombre sert à
+   * éclairer.
+   */
   paymentFeeRate: number;
   /** Part fixe de la commission de paiement, par transaction. */
   paymentFeeFixed: number;
@@ -75,8 +82,10 @@ export const baselineInputs: EconomicsInputs = {
   cogsPerOrder: 1180,
   supplierShippingPerOrder: 68,
   shippingChargedPerOrder: 52,
-  paymentFeeRate: 0.015,
-  paymentFeeFixed: 0.25,
+  // Virement bancaire : aucune commission. Un virement SEPA entrant est
+  // gratuit sur un compte professionnel courant.
+  paymentFeeRate: 0,
+  paymentFeeFixed: 0,
   refundRate: 0.03,
   cpc: 1.4,
   conversionRate: 0.006,

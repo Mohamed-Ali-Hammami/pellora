@@ -170,7 +170,7 @@ const en: Dictionary = {
     processTitle: 'How an order works',
     processSteps: [
       { title: 'You calculate the output', text: 'The calculator returns a range in kW and the models that fall inside it.' },
-      { title: 'You order online', text: 'Card, Apple Pay, Google Pay or SEPA transfer through Stripe. No card data passes through our site.' },
+      { title: 'You order online', text: 'You pay by bank transfer, using the details and reference given with your order. No card details are ever requested.' },
       { title: 'The carrier calls you', text: 'Within 2 to 4 business days, to agree a delivery slot.' },
       { title: 'You have it installed', text: 'By a qualified installer. We supply the data sheet and the connection diagram.' },
     ],
@@ -268,34 +268,72 @@ const en: Dictionary = {
     rateLabel: 'Delivery method',
     freeShippingProgress: '{amount} more for free delivery',
     freeShippingReached: 'Free delivery on this order',
-    checkout: 'Proceed to payment',
-    checkoutPending: 'Opening payment…',
+    checkout: 'Place order',
+    checkoutPending: 'Recording…',
     vatLine: 'of which VAT',
     estimatedDelivery: 'Estimated delivery',
     canceled: 'Payment interrupted. Your cart has been kept.',
     error: 'Payment could not be opened. Please try again in a moment.',
-    securedBy: 'Payment secured by Stripe. No card data passes through this site.',
+    securedBy: 'Payment by bank transfer. No card details are requested on this site.',
     freightNotice:
       'Your cart contains an appliance shipped on a pallet: delivery is by appointment, at the kerbside.',
   },
 
   checkout: {
-    successTitle: 'Thank you — your order is registered',
-    successLead:
-      'A confirmation email is on its way within the next few minutes. The carrier will call you to agree a delivery slot.',
+    title: 'Your order',
+    lead: 'Check your basket, leave us your details, then pay by bank transfer.',
+
+    detailsTitle: 'Your details',
+    detailsLead:
+      'They are used for delivery and to keep you informed. An appliance ships on a pallet: the carrier calls before coming out.',
+    firstName: 'First name',
+    lastName: 'Last name',
+    email: 'E-mail address',
+    phone: 'Phone',
+    phoneHint: 'Required: the carrier calls to agree a delivery slot.',
+    addressTitle: 'Delivery address',
+    line1: 'Address',
+    line2: 'Extra line (building, floor, door code)',
+    postalCode: 'Postcode',
+    city: 'Town',
+    shippingTitle: 'Delivery method',
+
+    transferTitle: 'About the transfer',
+    transferLead:
+      'If the transfer comes from an account in another name, tell us here: without it we cannot match your payment to your order.',
+    transferHolder: 'Sending account holder',
+    transferHolderHint: 'Only fill this in if it is not you.',
+
+    summaryTitle: 'Summary',
+    submit: 'Place my order',
+    submitPending: 'Recording…',
+    submitNote:
+      'Nothing is debited: you make the transfer yourself, from your bank. Your order goes into preparation as soon as it arrives.',
+    error: 'The order could not be recorded. Try again in a moment.',
+
+    bankRefLater: 'Your order reference appears at the next step: that is what goes in the transfer reference.',
+    bankMissing:
+      'Bank details are not configured on this site yet: ordering is temporarily unavailable.',
+
+    placedEyebrow: 'Order recorded',
+    placedTitle: 'All that is left is the transfer',
+    placedLead:
+      'Your order is awaiting payment. It goes into preparation as soon as the transfer reaches our account, usually within one working day.',
+    placedEmail: 'A summary with these details has just been sent to {email}.',
+    printCta: 'Print or save',
+
     reference: 'Order reference',
     nextStepsTitle: 'What happens now',
     nextSteps: [
-      'We pass your order to the supplier within one business day.',
-      'You receive the tracking number as soon as the carrier collects it.',
-      'The carrier calls you to agree a delivery slot.',
-      'On the day, check the state of the pallet before signing: any reservation must be written on the delivery note.',
+      'You make the transfer from your bank, quoting your reference.',
+      'We confirm receipt and pass your order to the supplier.',
+      'You get the tracking number as soon as the carrier collects it.',
+      'On the day, check the pallet before signing: any damage must be written on the delivery note.',
     ],
-    damageTitle: 'Important on receipt',
+    damageTitle: 'Important on delivery',
     damageText:
-      'A 200 kg appliance can suffer in transit. Unwrap it in front of the driver if you can, and if there is any impact write a precise, handwritten reservation on the delivery note. Without a written reservation, a claim against the carrier becomes very difficult.',
+      'A 200 kg appliance can suffer in transit. Unpack in front of the driver if you can, and if anything is knocked, write a precise, handwritten note of damage on the delivery note. Without a written note, a claim against the carrier becomes very hard.',
     trackCta: 'Track my order',
-    noSession: 'No order to display. If you have just paid, check your inbox.',
   },
 
   tracking: {
@@ -499,7 +537,7 @@ const en: Dictionary = {
       },
       {
         heading: '4. Order and payment',
-        body: 'The order is firm once payment is confirmed. Payment is processed by Stripe Payments Europe, Ltd. No card data is collected or stored by the seller. The seller may decline an order in the event of a previous dispute, suspected fraud, or a delivery address outside the served zone.',
+        body: 'The order becomes firm once the transfer reaches the seller’s account. Payment is made solely by bank transfer, to the details supplied to the customer at the time of ordering and repeated by e-mail. No card data is collected by the seller. If the transfer has not arrived within ten working days, the order is cancelled automatically and the customer is informed. The seller may decline an order in the event of a previous dispute, suspected fraud, or a delivery address outside the served zone.',
       },
       {
         heading: '5. Delivery',
@@ -546,7 +584,7 @@ const en: Dictionary = {
     dataHeaders: { data: 'Data', purpose: 'Purpose', basis: 'Legal basis', retention: 'Retention' },
     paymentTitle: 'Payment',
     paymentText:
-      'Payment is processed by Stripe Payments Europe, Ltd. Card details are entered on a page hosted by Stripe and never pass through our servers. Stripe acts as a controller for fraud prevention purposes.',
+      'Payment is made by bank transfer, from your bank to the seller’s. No card details are entered on this site, and no payment processor is involved: the details of your transfer are handled by your bank and the seller’s, under their own policies. The seller keeps the name of the sending account holder, where you supply it, for the sole purpose of matching your payment to your order.',
     cookiesTitle: 'Cookies',
     cookiesText:
       'This site uses no advertising or analytics cookies. Only the browser’s local storage is used, to keep your cart between visits: that data stays on your device and is not sent to us. No consent is therefore required on that basis.',
@@ -566,7 +604,7 @@ const en: Dictionary = {
     languageTitle: 'Language',
     rights: 'All rights reserved.',
     vatNote: 'Prices shown include French VAT at 20 %. Delivery charged separately.',
-    paymentNote: 'Payment secured by Stripe',
+    paymentNote: 'Payment by bank transfer',
   },
 
   notFound: {
@@ -582,6 +620,21 @@ const en: Dictionary = {
     retry: 'Try again',
   },
   emails: {
+    transferSubject: 'Order {ref} — bank transfer details',
+    transferTitle: 'Your order is recorded',
+    transferLead:
+      'It goes into preparation as soon as your transfer reaches our account. You will get a second message at that point.',
+    transferHow: 'Transfer to make',
+    transferRefNotice:
+      'Please put {ref} in the transfer reference: that is what lets us match your payment to your order. Without it, matching is done by hand and takes several days.',
+    transferFooter:
+      'A SEPA transfer usually arrives within one working day. If you have heard nothing from us after three working days, write to us: something has probably gone wrong.',
+    bankAmount: 'Amount',
+    bankReference: 'Reference',
+    bankHolder: 'Beneficiary',
+    bankIban: 'IBAN',
+    bankBic: 'BIC',
+    bankName: 'Bank',
     confirmSubject: 'Order {ref} confirmed',
     confirmTitle: 'Order confirmed',
     confirmLead: 'Thank you. Your payment is recorded and your order is being prepared.',

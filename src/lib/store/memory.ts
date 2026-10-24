@@ -10,7 +10,6 @@ import type { Order, OrderStore } from './types';
 
 export function createMemoryStore(): OrderStore {
   const orders = new Map<string, Order>();
-  const bySession = new Map<string, string>();
   const locks = new Map<string, number>();
 
   return {
@@ -19,11 +18,6 @@ export function createMemoryStore(): OrderStore {
     },
     async save(order) {
       orders.set(order.ref, order);
-      if (order.stripeSessionId) bySession.set(order.stripeSessionId, order.ref);
-    },
-    async findByStripeSession(sessionId) {
-      const ref = bySession.get(sessionId);
-      return ref ? orders.get(ref) ?? null : null;
     },
     async acquireLock(key, ttlSeconds) {
       const now = Date.now();
@@ -31,6 +25,11 @@ export function createMemoryStore(): OrderStore {
       if (expiry !== undefined && expiry > now) return false;
       locks.set(key, now + ttlSeconds * 1000);
       return true;
+    },
+    async listRecent(limit) {
+      return [...orders.values()]
+        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+        .slice(0, limit);
     },
     async listFailed(limit) {
       return [...orders.values()]

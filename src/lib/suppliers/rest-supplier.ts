@@ -56,7 +56,7 @@ export function createRestSupplier(config: RestSupplierConfig): Supplier {
           method: 'POST',
           headers: {
             ...headers(),
-            // Clé d’idempotence : si le webhook Stripe est rejoue, le
+            // Clé d’idempotence : si la confirmation est rejouée, le
             // fournisseur ne doit pas expédier deux fois.
             'Idempotency-Key': order.orderRef,
           },

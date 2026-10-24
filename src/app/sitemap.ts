@@ -14,7 +14,7 @@ import { guideHref, href, productHref, routeNames, type RouteName } from '@/lib/
  */
 
 /** Pages exclues : un panier et une confirmation de commande n'ont rien à indexer. */
-const excluded: readonly RouteName[] = ['cart', 'checkoutSuccess', 'tracking'];
+const excluded: readonly RouteName[] = ['cart', 'checkout', 'tracking'];
 
 type Entry = MetadataRoute.Sitemap[number];
 

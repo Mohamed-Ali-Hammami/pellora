@@ -49,12 +49,15 @@ export function cartToOrderLines(cart: PricedCart): OrderLine[] {
 export function createOrder(params: {
   cart: PricedCart;
   email: string;
-  stripeSessionId: string | null;
+  address: ShippingAddress;
+  transferHolder: string | null;
 }): Order {
   const now = new Date().toISOString();
   return {
     ref: generateOrderRef(),
-    status: 'pending',
+    // La commande naît en attente du virement : rien n'est engagé tant que
+    // l'argent n'est pas arrivé.
+    status: 'awaiting_transfer',
     createdAt: now,
     updatedAt: now,
     locale: params.cart.locale,
@@ -66,9 +69,8 @@ export function createOrder(params: {
     vat: params.cart.vat,
     currency: CURRENCY,
     shippingLabel: params.cart.shipping.label[params.cart.locale],
-    address: null,
-    stripeSessionId: params.stripeSessionId,
-    stripePaymentIntentId: null,
+    address: params.address,
+    transferHolder: params.transferHolder,
     supplierOrders: [],
     trackingNumber: null,
     carrier: null,
@@ -126,7 +128,10 @@ export function isFullyForwarded(order: Order, suppliers: readonly string[]): bo
 }
 
 /** Vrai si un e-mail de ce type a déjà été envoyé (idempotence des notifications). */
-export function hasSentEmail(order: Order, kind: 'confirmation' | 'shipping'): boolean {
+export function hasSentEmail(
+  order: Order,
+  kind: 'instructions' | 'confirmation' | 'shipping',
+): boolean {
   return order.events.some((e) => e.type === `email:${kind}_sent`);
 }
 

@@ -10,7 +10,8 @@ import { Redis } from '@upstash/redis';
 import type { Order, OrderStore } from './types';
 
 const KEY_ORDER = (ref: string) => `order:${ref}`;
-const KEY_SESSION = (sessionId: string) => `session:${sessionId}`;
+/** Index chronologique, le plus récent en tête : alimente la page d'administration. */
+const KEY_RECENT = 'orders:recent';
 const KEY_FAILED = 'orders:failed';
 const KEY_LOCK = (key: string) => `lock:${key}`;
 
@@ -26,9 +27,13 @@ export function createRedisStore(): OrderStore {
     },
 
     async save(order) {
+      const existait = (await redis.get<Order>(KEY_ORDER(order.ref))) !== null;
       await redis.set(KEY_ORDER(order.ref), order, { ex: ORDER_TTL_SECONDS });
-      if (order.stripeSessionId) {
-        await redis.set(KEY_SESSION(order.stripeSessionId), order.ref, { ex: ORDER_TTL_SECONDS });
+      // L'index n'est alimenté qu'à la création : une commande ne doit
+      // apparaître qu'une fois dans la liste, quel que soit le nombre de
+      // changements d'état qu'elle traverse ensuite.
+      if (!existait) {
+        await redis.lpush(KEY_RECENT, order.ref);
       }
       // La file des échecs sert au travail de rattrapage planifie.
       if (order.status === 'fulfillment_failed') {
@@ -36,16 +41,17 @@ export function createRedisStore(): OrderStore {
       }
     },
 
-    async findByStripeSession(sessionId) {
-      const ref = await redis.get<string>(KEY_SESSION(sessionId));
-      return ref ? this.get(ref) : null;
-    },
-
     async acquireLock(key, ttlSeconds) {
       // `SET key 1 NX EX ttl` : atomique, donc deux webhooks simultanés ne
       // peuvent pas obtenir le verrou tous les deux.
       const result = await redis.set(KEY_LOCK(key), '1', { nx: true, ex: ttlSeconds });
       return result === 'OK';
+    },
+
+    async listRecent(limit) {
+      const refs = await redis.lrange<string>(KEY_RECENT, 0, limit - 1);
+      const orders = await Promise.all(refs.map((ref) => this.get(ref)));
+      return orders.filter((o): o is Order => o !== null);
     },
 
     async listFailed(limit) {

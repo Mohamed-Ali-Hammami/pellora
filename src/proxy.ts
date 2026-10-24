@@ -79,8 +79,11 @@ export const config = {
    * portant une extension (visuels, sitemap, robots, favicon). Sans cette
    * exclusion, `/img/...` serait redirigé vers `/fr/img/...` et les visuels
    * disparaîtraient.
+   *
+   * `admin` est exclu pour la même raison : le back-office vit hors du système
+   * de langues, et une redirection vers `/fr/admin` ne mènerait nulle part.
    */
-  matcher: ['/((?!api/|_next/|.*\\.).*)'],
+  matcher: ['/((?!api/|admin|_next/|.*\\.).*)'],
 };
 
 export { LOCALE_COOKIE, locales, defaultLocale };

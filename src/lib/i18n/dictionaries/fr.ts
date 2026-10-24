@@ -175,7 +175,7 @@ const fr = {
     processTitle: 'Comment se passe une commande',
     processSteps: [
       { title: 'Vous calculez la puissance', text: 'Le calculateur donne une fourchette en kW et les modèles qui entrent dedans.' },
-      { title: 'Vous commandez en ligne', text: 'Paiement par carte, Apple Pay, Google Pay ou virement SEPA via Stripe. Aucune donnée de carte ne transite par notre site.' },
+      { title: 'Vous commandez en ligne', text: 'Vous réglez par virement bancaire, avec les coordonnées et la référence fournies à la commande. Aucune donnée de carte ne vous est demandée.' },
       { title: 'Le transporteur vous appelle', text: 'Sous 2 à 4 jours ouvrés, pour convenir d’un créneau de livraison.' },
       { title: 'Vous faites poser l’appareil', text: 'Par un installateur qualifié. Nous fournissons la fiche technique et le schéma de raccordement.' },
     ],
@@ -273,34 +273,72 @@ const fr = {
     rateLabel: 'Mode de livraison',
     freeShippingProgress: 'Plus que {amount} pour la livraison offerte',
     freeShippingReached: 'Livraison offerte sur cette commande',
-    checkout: 'Passer au paiement',
-    checkoutPending: 'Ouverture du paiement…',
+    checkout: 'Commander',
+    checkoutPending: 'Enregistrement…',
     vatLine: 'dont TVA',
     estimatedDelivery: 'Livraison estimée',
     canceled: 'Paiement interrompu. Votre panier a été conservé.',
     error: 'Le paiement n’a pas pu être ouvert. Réessayez dans un instant.',
-    securedBy: 'Paiement sécurisé par Stripe. Aucune donnée bancaire ne transite par ce site.',
+    securedBy: 'Paiement par virement. Aucune donnée bancaire ne vous est demandée sur ce site.',
     freightNotice:
       'Votre panier contient un appareil expédié sur palette : la livraison se fait sur rendez-vous, au pied du camion.',
   },
 
   checkout: {
-    successTitle: 'Merci, votre commande est enregistrée',
-    successLead:
-      'Vous recevez un e-mail de confirmation dans les minutes qui viennent. Le transporteur vous appellera pour convenir d’un créneau de livraison.',
+    title: 'Votre commande',
+    lead: 'Vérifiez votre panier, laissez-nous vos coordonnées, puis réglez par virement.',
+
+    detailsTitle: 'Vos coordonnées',
+    detailsLead:
+      'Elles servent à la livraison et à vous tenir informé. Un appareil part sur palette : le transporteur appelle avant de se déplacer.',
+    firstName: 'Prénom',
+    lastName: 'Nom',
+    email: 'Adresse e-mail',
+    phone: 'Téléphone',
+    phoneHint: 'Indispensable : le transporteur appelle pour convenir d’un créneau.',
+    addressTitle: 'Adresse de livraison',
+    line1: 'Adresse',
+    line2: 'Complément (bâtiment, étage, code)',
+    postalCode: 'Code postal',
+    city: 'Ville',
+    shippingTitle: 'Mode de livraison',
+
+    transferTitle: 'À propos du virement',
+    transferLead:
+      'Si le virement part d’un compte à un autre nom que le vôtre, indiquez-le : sans cela, nous ne pouvons pas rattacher votre paiement à votre commande.',
+    transferHolder: 'Titulaire du compte émetteur',
+    transferHolderHint: 'À remplir seulement si ce n’est pas vous.',
+
+    summaryTitle: 'Récapitulatif',
+    submit: 'Enregistrer ma commande',
+    submitPending: 'Enregistrement…',
+    submitNote:
+      'Aucun prélèvement : c’est vous qui effectuez le virement, depuis votre banque. Votre commande part en préparation dès sa réception.',
+    error: 'La commande n’a pas pu être enregistrée. Réessayez dans un instant.',
+
+    bankRefLater: 'Votre référence de commande s’affichera à l’étape suivante : c’est elle qu’il faudra indiquer en libellé du virement.',
+    bankMissing:
+      'Les coordonnées bancaires ne sont pas encore configurées sur ce site : la commande est momentanément indisponible.',
+
+    placedEyebrow: 'Commande enregistrée',
+    placedTitle: 'Il ne reste qu’à effectuer le virement',
+    placedLead:
+      'Votre commande est en attente de paiement. Elle part en préparation dès que le virement est constaté sur notre compte, en général sous un jour ouvré.',
+    placedEmail: 'Un récapitulatif avec ces coordonnées vient de partir à {email}.',
+    printCta: 'Imprimer ou enregistrer',
+
     reference: 'Référence de commande',
     nextStepsTitle: 'Ce qui se passe maintenant',
     nextSteps: [
-      'Nous transmettons votre commande au fournisseur, sous un jour ouvré.',
+      'Vous effectuez le virement depuis votre banque, en indiquant votre référence.',
+      'Nous confirmons la réception et transmettons votre commande au fournisseur.',
       'Vous recevez le numéro de suivi dès la prise en charge par le transporteur.',
-      'Le transporteur vous appelle pour convenir d’un créneau de livraison.',
       'Le jour J, vérifiez l’état de la palette avant de signer : toute réserve doit être écrite sur le bon de livraison.',
     ],
     damageTitle: 'Important à la réception',
     damageText:
       'Un appareil de 200 kg peut souffrir du transport. Déballez devant le chauffeur si possible, et en cas de choc notez une réserve précise et manuscrite sur le bon de livraison. Sans réserve écrite, un recours contre le transporteur devient très difficile.',
     trackCta: 'Suivre ma commande',
-    noSession: 'Aucune commande à afficher. Si vous venez de payer, vérifiez votre boîte e-mail.',
   },
 
   tracking: {
@@ -504,7 +542,7 @@ const fr = {
       },
       {
         heading: '4. Commande et paiement',
-        body: 'La commande est ferme à compter de la confirmation du paiement. Le paiement est traité par Stripe Payments Europe, Ltd. Aucune donnée de carte bancaire n’est collectée ni conservée par le vendeur. Le vendeur peut refuser une commande en cas de litige antérieur, de suspicion de fraude ou d’adresse de livraison hors zone desservie.',
+        body: 'La commande est ferme à compter de la réception du virement sur le compte du vendeur. Le paiement s’effectue exclusivement par virement bancaire, aux coordonnées communiquées au client lors de la commande et rappelées par courrier électronique. Aucune donnée de carte bancaire n’est collectée par le vendeur. À défaut de réception du virement dans un délai de dix jours ouvrés, la commande est annulée de plein droit et le client en est informé. Le vendeur peut refuser une commande en cas de litige antérieur, de suspicion de fraude ou d’adresse de livraison hors zone desservie.',
       },
       {
         heading: '5. Livraison',
@@ -551,7 +589,7 @@ const fr = {
     dataHeaders: { data: 'Donnée', purpose: 'Finalité', basis: 'Base légale', retention: 'Conservation' },
     paymentTitle: 'Paiement',
     paymentText:
-      'Le paiement est traité par Stripe Payments Europe, Ltd. Les données de carte bancaire sont saisies sur une page hébergée par Stripe et ne transitent jamais par nos serveurs. Stripe agit comme responsable de traitement pour la lutte contre la fraude.',
+      'Le paiement s’effectue par virement bancaire, de votre banque vers celle du vendeur. Aucune donnée de carte bancaire n’est saisie sur ce site, et aucun prestataire de paiement n’intervient : les informations de votre virement sont traitées par votre banque et par celle du vendeur, selon leurs propres politiques. Le vendeur conserve le nom du titulaire du compte émetteur lorsque vous le renseignez, aux seules fins de rapprocher votre paiement de votre commande.',
     cookiesTitle: 'Cookies',
     cookiesText:
       'Ce site n’utilise aucun cookie publicitaire ni de mesure d’audience. Seul le stockage local du navigateur est utilisé, pour conserver votre panier d’une visite à l’autre : cette donnée reste sur votre appareil et ne nous est pas transmise. Aucun consentement n’est donc requis à ce titre.',
@@ -571,7 +609,7 @@ const fr = {
     languageTitle: 'Langue',
     rights: 'Tous droits réservés.',
     vatNote: 'Prix affichés TTC, TVA française de 20 % incluse. Livraison en supplément.',
-    paymentNote: 'Paiement sécurisé par Stripe',
+    paymentNote: 'Paiement par virement bancaire',
   },
 
   notFound: {
@@ -587,6 +625,21 @@ const fr = {
     retry: 'Réessayer',
   },
   emails: {
+    transferSubject: 'Commande {ref} — coordonnées pour le virement',
+    transferTitle: 'Votre commande est enregistrée',
+    transferLead:
+      'Elle part en préparation dès que votre virement est constaté sur notre compte. Vous recevrez un second message à ce moment-là.',
+    transferHow: 'Virement à effectuer',
+    transferRefNotice:
+      'Indiquez impérativement {ref} en libellé du virement : c’est ce qui nous permet de rattacher votre paiement à votre commande. Sans cette référence, le rapprochement se fait à la main et prend plusieurs jours.',
+    transferFooter:
+      'Un virement SEPA met en général un jour ouvré à arriver. Passé trois jours ouvrés sans nouvelle de notre part, écrivez-nous : il s’est probablement passé quelque chose.',
+    bankAmount: 'Montant',
+    bankReference: 'Référence',
+    bankHolder: 'Bénéficiaire',
+    bankIban: 'IBAN',
+    bankBic: 'BIC',
+    bankName: 'Banque',
     confirmSubject: 'Commande {ref} confirmée',
     confirmTitle: 'Commande confirmée',
     confirmLead:

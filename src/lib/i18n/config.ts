@@ -67,19 +67,6 @@ export const ogLocales: Record<Locale, string> = {
   es: 'es_ES',
 };
 
-/**
- * Code de langue de la page de paiement Stripe. Les quatre langues du site
- * font partie des locales supportées par Stripe Checkout ; en cas de doute
- * Stripe accepte `auto`, mais on préfère imposer la langue déjà choisie par
- * le visiteur pour ne pas casser la continuité du parcours.
- */
-export const stripeLocales: Record<Locale, 'fr' | 'en' | 'nl' | 'es'> = {
-  fr: 'fr',
-  en: 'en',
-  nl: 'nl',
-  es: 'es',
-};
-
 /** Un contenu décliné dans les quatre langues. */
 export type Localized<T> = Record<Locale, T>;
 

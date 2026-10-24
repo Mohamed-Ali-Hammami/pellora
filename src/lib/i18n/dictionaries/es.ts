@@ -170,7 +170,7 @@ const es: Dictionary = {
     processTitle: 'Cómo se desarrolla un pedido',
     processSteps: [
       { title: 'Usted calcula la potencia', text: 'La calculadora da un rango en kW y los modelos que entran en él.' },
-      { title: 'Pide en línea', text: 'Tarjeta, Apple Pay, Google Pay o transferencia SEPA mediante Stripe. Ningún dato de tarjeta pasa por nuestro sitio.' },
+      { title: 'Pide en línea', text: 'Paga mediante transferencia bancaria, con los datos y la referencia facilitados con su pedido. Nunca se le piden datos de tarjeta.' },
       { title: 'El transportista le llama', text: 'En 2 a 4 días laborables, para acordar una franja de entrega.' },
       { title: 'Hace instalar el aparato', text: 'Por un instalador cualificado. Facilitamos la ficha técnica y el esquema de conexión.' },
     ],
@@ -268,34 +268,72 @@ const es: Dictionary = {
     rateLabel: 'Modo de entrega',
     freeShippingProgress: 'Faltan {amount} para el envío gratuito',
     freeShippingReached: 'Envío gratuito en este pedido',
-    checkout: 'Ir al pago',
-    checkoutPending: 'Abriendo el pago…',
+    checkout: 'Realizar el pedido',
+    checkoutPending: 'Registrando…',
     vatLine: 'del cual IVA',
     estimatedDelivery: 'Entrega estimada',
     canceled: 'Pago interrumpido. Su carrito se ha conservado.',
     error: 'No se ha podido abrir el pago. Inténtelo de nuevo en un momento.',
-    securedBy: 'Pago seguro con Stripe. Ningún dato bancario pasa por este sitio.',
+    securedBy: 'Pago por transferencia. En este sitio no se le piden datos bancarios.',
     freightNotice:
       'Su carrito contiene un aparato que se envía en palet: la entrega es con cita previa, a pie de camión.',
   },
 
   checkout: {
-    successTitle: 'Gracias, su pedido está registrado',
-    successLead:
-      'Recibirá un correo de confirmación en los próximos minutos. El transportista le llamará para acordar una franja de entrega.',
-    reference: 'Referencia del pedido',
+    title: 'Su pedido',
+    lead: 'Revise su carrito, déjenos sus datos y pague por transferencia.',
+
+    detailsTitle: 'Sus datos',
+    detailsLead:
+      'Sirven para la entrega y para mantenerle informado. Un aparato se envía en palet: el transportista llama antes de desplazarse.',
+    firstName: 'Nombre',
+    lastName: 'Apellidos',
+    email: 'Correo electrónico',
+    phone: 'Teléfono',
+    phoneHint: 'Imprescindible: el transportista llama para acordar una franja horaria.',
+    addressTitle: 'Dirección de entrega',
+    line1: 'Dirección',
+    line2: 'Complemento (edificio, piso, código)',
+    postalCode: 'Código postal',
+    city: 'Población',
+    shippingTitle: 'Modo de entrega',
+
+    transferTitle: 'Sobre la transferencia',
+    transferLead:
+      'Si la transferencia sale de una cuenta a otro nombre, indíquelo aquí: sin ese dato no podemos vincular su pago con su pedido.',
+    transferHolder: 'Titular de la cuenta emisora',
+    transferHolderHint: 'Rellénelo solo si no es usted.',
+
+    summaryTitle: 'Resumen',
+    submit: 'Registrar mi pedido',
+    submitPending: 'Registrando…',
+    submitNote:
+      'No se carga nada: la transferencia la hace usted desde su banco. Su pedido entra en preparación en cuanto llega.',
+    error: 'El pedido no se ha podido registrar. Inténtelo de nuevo en un momento.',
+
+    bankRefLater: 'Su referencia de pedido aparecerá en el paso siguiente: es la que debe indicar en el concepto de la transferencia.',
+    bankMissing:
+      'Los datos bancarios aún no están configurados en este sitio: no es posible pedir por el momento.',
+
+    placedEyebrow: 'Pedido registrado',
+    placedTitle: 'Solo queda hacer la transferencia',
+    placedLead:
+      'Su pedido está a la espera de pago. Entra en preparación en cuanto la transferencia llegue a nuestra cuenta, por lo general en un día hábil.',
+    placedEmail: 'Acabamos de enviar un resumen con estos datos a {email}.',
+    printCta: 'Imprimir o guardar',
+
+    reference: 'Referencia de pedido',
     nextStepsTitle: 'Qué ocurre ahora',
     nextSteps: [
-      'Transmitimos su pedido al proveedor en un día laborable.',
-      'Recibirá el número de seguimiento en cuanto el transportista lo recoja.',
-      'El transportista le llama para acordar una franja de entrega.',
-      'El día de la entrega, compruebe el estado del palet antes de firmar: toda reserva debe constar por escrito en el albarán.',
+      'Usted hace la transferencia desde su banco, indicando su referencia.',
+      'Confirmamos la recepción y trasladamos su pedido al proveedor.',
+      'Recibe el número de seguimiento en cuanto el transportista lo recoge.',
+      'El día de la entrega, revise el palet antes de firmar: cualquier reserva debe constar por escrito en el albarán.',
     ],
     damageTitle: 'Importante en la recepción',
     damageText:
-      'Un aparato de 200 kg puede sufrir en el transporte. Desembale delante del conductor si es posible, y ante cualquier golpe anote una reserva precisa y manuscrita en el albarán. Sin reserva escrita, reclamar al transportista resulta muy difícil.',
+      'Un aparato de 200 kg puede sufrir durante el transporte. Desembale delante del conductor si es posible y, en caso de golpe, anote una reserva precisa y manuscrita en el albarán. Sin reserva escrita, reclamar al transportista resulta muy difícil.',
     trackCta: 'Seguir mi pedido',
-    noSession: 'Ningún pedido que mostrar. Si acaba de pagar, revise su correo.',
   },
 
   tracking: {
@@ -499,7 +537,7 @@ const es: Dictionary = {
       },
       {
         heading: '4. Pedido y pago',
-        body: 'El pedido es firme desde la confirmación del pago. El pago lo procesa Stripe Payments Europe, Ltd. El vendedor no recoge ni conserva ningún dato de tarjeta bancaria. El vendedor puede rechazar un pedido en caso de litigio anterior, sospecha de fraude o dirección de entrega fuera de la zona servida.',
+        body: 'El pedido es firme desde la recepción de la transferencia en la cuenta del vendedor. El pago se efectúa exclusivamente por transferencia bancaria, a los datos comunicados al cliente al realizar el pedido y recordados por correo electrónico. El vendedor no recoge ningún dato de tarjeta bancaria. De no recibirse la transferencia en un plazo de diez días hábiles, el pedido queda anulado de pleno derecho y se informa al cliente. El vendedor puede rechazar un pedido en caso de litigio anterior, sospecha de fraude o dirección de entrega fuera de la zona servida.',
       },
       {
         heading: '5. Entrega',
@@ -546,7 +584,7 @@ const es: Dictionary = {
     dataHeaders: { data: 'Dato', purpose: 'Finalidad', basis: 'Base legal', retention: 'Conservación' },
     paymentTitle: 'Pago',
     paymentText:
-      'El pago lo procesa Stripe Payments Europe, Ltd. Los datos de tarjeta se introducen en una página alojada por Stripe y nunca pasan por nuestros servidores. Stripe actúa como responsable del tratamiento para la lucha contra el fraude.',
+      'El pago se efectúa por transferencia bancaria, de su banco al del vendedor. En este sitio no se introduce ningún dato de tarjeta y no interviene ningún proveedor de pagos: los datos de su transferencia los tratan su banco y el del vendedor, según sus propias políticas. El vendedor conserva el nombre del titular de la cuenta emisora, cuando usted lo facilita, con el único fin de vincular su pago con su pedido.',
     cookiesTitle: 'Cookies',
     cookiesText:
       'Este sitio no utiliza ninguna cookie publicitaria ni de medición de audiencia. Solo se usa el almacenamiento local del navegador, para conservar su carrito entre visitas: ese dato permanece en su dispositivo y no se nos transmite. Por tanto, no se requiere consentimiento por este motivo.',
@@ -566,7 +604,7 @@ const es: Dictionary = {
     languageTitle: 'Idioma',
     rights: 'Todos los derechos reservados.',
     vatNote: 'Precios con IVA francés del 20 % incluido. Envío aparte.',
-    paymentNote: 'Pago seguro con Stripe',
+    paymentNote: 'Pago por transferencia bancaria',
   },
 
   notFound: {
@@ -582,6 +620,21 @@ const es: Dictionary = {
     retry: 'Reintentar',
   },
   emails: {
+    transferSubject: 'Pedido {ref} — datos para la transferencia',
+    transferTitle: 'Su pedido está registrado',
+    transferLead:
+      'Entra en preparación en cuanto su transferencia llegue a nuestra cuenta. Recibirá un segundo mensaje en ese momento.',
+    transferHow: 'Transferencia a realizar',
+    transferRefNotice:
+      'Indique obligatoriamente {ref} en el concepto de la transferencia: es lo que nos permite vincular su pago con su pedido. Sin esa referencia, la conciliación se hace a mano y tarda varios días.',
+    transferFooter:
+      'Una transferencia SEPA suele llegar en un día hábil. Si pasados tres días hábiles no tiene noticias nuestras, escríbanos: probablemente algo ha fallado.',
+    bankAmount: 'Importe',
+    bankReference: 'Referencia',
+    bankHolder: 'Beneficiario',
+    bankIban: 'IBAN',
+    bankBic: 'BIC',
+    bankName: 'Banco',
     confirmSubject: 'Pedido {ref} confirmado',
     confirmTitle: 'Pedido confirmado',
     confirmLead: 'Gracias. Su pago está registrado y su pedido entra en preparación.',

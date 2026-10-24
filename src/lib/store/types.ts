@@ -3,22 +3,33 @@ import type { Locale } from '../i18n/config';
 import type { ShippingAddress } from '../suppliers/types';
 
 /**
- * Cycle de vie d’une commande.
+ * Cycle de vie d’une commande, en paiement par virement.
  *
- *   pending ──paiement──> paid ──transmission──> forwarded ──suivi──> shipped ──> delivered
- *                           │                       │
- *                           └──> fulfillment_failed (reessai automatique)
- *                           └──> refunded / cancelled
+ *   awaiting_transfer ──l'équipe constate le virement──> confirmed
+ *        │                                                   │
+ *        └──> cancelled                          transmission au fournisseur
+ *                                                            ↓
+ *                                   forwarded ──suivi──> shipped ──> delivered
+ *                                        └──> fulfillment_failed (réessai)
+ *
+ * `awaiting_transfer` est l'état d'entrée : la commande existe, le client a
+ * ses coordonnées bancaires et sa référence, mais rien n'est engagé tant que
+ * l'argent n'est pas arrivé. Le passage à `confirmed` est MANUEL — c'est une
+ * personne qui a vu la ligne sur le relevé. Aucun automatisme ne doit le
+ * faire : une commande transmise au fournisseur sans virement reçu est une
+ * perte sèche.
  */
 export type OrderStatus =
-  | 'pending'
-  | 'paid'
+  | 'awaiting_transfer'
+  | 'confirmed'
   | 'forwarded'
   | 'fulfillment_failed'
   | 'shipped'
   | 'delivered'
-  | 'refunded'
   | 'cancelled';
+
+/** Les états depuis lesquels l'équipe peut encore annuler sans conséquence. */
+export const CANCELLABLE: readonly OrderStatus[] = ['awaiting_transfer', 'confirmed'];
 
 export interface OrderLine {
   productId: string;
@@ -68,8 +79,13 @@ export interface Order {
   shippingLabel: string;
   address: ShippingAddress | null;
 
-  stripeSessionId: string | null;
-  stripePaymentIntentId: string | null;
+  /**
+   * Nom du titulaire du compte qui émettra le virement, quand il diffère de
+   * celui du client. Sert uniquement au rapprochement : sur un relevé, le
+   * libellé porte le nom du compte, pas celui de l'acheteur, et sans cette
+   * information une commande payée par un conjoint reste introuvable.
+   */
+  transferHolder: string | null;
 
   /**
    * État de transmission PAR FOURNISSEUR.
@@ -92,14 +108,18 @@ export interface Order {
 export interface OrderStore {
   get(ref: string): Promise<Order | null>;
   save(order: Order): Promise<void>;
-  /** Index inverse : retrouver une commande depuis l’identifiant Stripe. */
-  findByStripeSession(sessionId: string): Promise<Order | null>;
   /**
    * Verrou d’idempotence. Renvoie `true` si le verrou est obtenu,
-   * `false` s’il était déjà pris. Essentiel : Stripe rejoue ses webhooks,
-   * et une commande transmise deux fois est expédiée deux fois.
+   * `false` s’il était déjà pris. Protège la transmission au fournisseur :
+   * un double clic sur « virement reçu », ou un rattrapage qui croise une
+   * confirmation manuelle, expédierait la commande deux fois.
    */
   acquireLock(key: string, ttlSeconds: number): Promise<boolean>;
+  /**
+   * Commandes les plus récentes, pour la page d’administration. Triées de la
+   * plus récente à la plus ancienne.
+   */
+  listRecent(limit: number): Promise<Order[]>;
   /** Commandes à réessayer (transmission en échec). */
   listFailed(limit: number): Promise<Order[]>;
 }

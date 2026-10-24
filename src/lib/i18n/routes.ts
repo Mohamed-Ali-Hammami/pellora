@@ -39,7 +39,7 @@ export const routeNames = [
   'legal',
   'tracking',
   'cart',
-  'checkoutSuccess',
+  'checkout',
 ] as const;
 
 export type RouteName = (typeof routeNames)[number];
@@ -71,7 +71,7 @@ export const canonicalPaths: Record<RouteName, string> = {
   legal: 'legal',
   tracking: 'tracking',
   cart: 'cart',
-  checkoutSuccess: 'checkout/success',
+  checkout: 'checkout',
 };
 
 /**
@@ -156,11 +156,11 @@ export const localizedPaths: Record<RouteName, Record<Locale, string>> = {
   },
   tracking: { fr: 'suivi', en: 'tracking', nl: 'bestelling-volgen', es: 'seguimiento' },
   cart: { fr: 'panier', en: 'cart', nl: 'winkelwagen', es: 'carrito' },
-  checkoutSuccess: {
-    fr: 'commande/confirmee',
-    en: 'checkout/success',
-    nl: 'bestelling/bevestigd',
-    es: 'pedido/confirmado',
+  checkout: {
+    fr: 'commande',
+    en: 'checkout',
+    nl: 'bestellen',
+    es: 'pedido',
   },
 };
 

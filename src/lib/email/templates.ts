@@ -13,6 +13,7 @@
  */
 
 import { brand, isLegalPlaceholder } from '../brand';
+import { formatIban, type BankDetails } from '../bank';
 import { price } from '../format';
 import { interpolate } from '../format';
 import { getDictionary } from '../i18n/dictionaries';
@@ -177,4 +178,126 @@ ${escapeHtml(dict.emails.shippedFooter)}
   ].join('\n');
 
   return { subject, html: layout(order, subject, inner), text };
+}
+
+/**
+ * Message envoyé à la commande : coordonnées bancaires et référence.
+ *
+ * C'est le message le plus important du tunnel. S'il n'arrive pas, le client
+ * ne peut pas payer, ou paie sans référence — et un virement sans référence
+ * est un virement qu'il faut retrouver à la main sur un relevé.
+ *
+ * D'où deux partis pris : la référence est répétée trois fois (objet, corps,
+ * encadré du RIB), et le montant exact figure à côté de l'IBAN, pour que le
+ * client n'ait pas à revenir sur le site pour remplir son formulaire de
+ * virement.
+ */
+export function transferInstructions(
+  order: Order,
+  bank: BankDetails,
+): { subject: string; html: string; text: string } {
+  const dict = getDictionary(order.locale);
+  const subject = interpolate(dict.emails.transferSubject, { ref: order.ref });
+  const montant = price(order.total, order.locale);
+  const iban = formatIban(bank.iban);
+
+  const ligne = (label: string, valeur: string, fort = false) =>
+    `<tr><td style="padding:5px 0;font-size:13px;color:${C.muted};white-space:nowrap;">${escapeHtml(label)}</td>
+<td style="padding:5px 0 5px 14px;font-size:${fort ? '15px' : '14px'};font-weight:${fort ? '700' : '500'};font-family:ui-monospace,SFMono-Regular,Menlo,monospace;">${escapeHtml(valeur)}</td></tr>`;
+
+  const inner = `<tr><td style="padding:16px 28px 4px;">
+<div style="font-size:21px;font-weight:700;">${escapeHtml(dict.emails.transferTitle)}</div>
+<div style="font-size:14px;color:${C.muted};margin-top:6px;line-height:1.6;">
+${escapeHtml(dict.emails.transferLead)}
+</div></td></tr>
+
+<tr><td style="padding:18px 28px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0">${lineRows(order)}${totalsRows(order)}</table>
+</td></tr>
+
+<tr><td style="padding:22px 28px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${C.bg};border:1px solid ${C.line};border-radius:8px;">
+<tr><td style="padding:16px 18px;">
+<div style="font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:${C.muted};">${escapeHtml(dict.emails.transferHow)}</div>
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+${ligne(dict.emails.bankAmount, montant, true)}
+${ligne(dict.emails.bankReference, order.ref, true)}
+${ligne(dict.emails.bankHolder, bank.holder)}
+${ligne(dict.emails.bankIban, iban)}
+${bank.bic ? ligne(dict.emails.bankBic, bank.bic) : ''}
+${bank.bankName ? ligne(dict.emails.bankName, bank.bankName) : ''}
+</table>
+<div style="margin-top:12px;font-size:13px;line-height:1.6;color:${C.ink};">
+${escapeHtml(interpolate(dict.emails.transferRefNotice, { ref: order.ref }))}
+</div>
+</td></tr></table>
+</td></tr>
+
+${button(trackingUrl(order), dict.emails.trackCta)}
+<tr><td style="padding:18px 28px 22px;font-size:13px;color:${C.muted};line-height:1.6;">
+${escapeHtml(dict.emails.transferFooter)}
+</td></tr>`;
+
+  const text = [
+    `${dict.emails.transferTitle} — ${order.ref}`,
+    '',
+    dict.emails.transferLead,
+    '',
+    ...order.lines.map(
+      (line) => `  ${line.quantity} x ${line.name}  ${price(line.lineTotal, order.locale)}`,
+    ),
+    `  ${order.shippingLabel}  ${order.shippingPrice === 0 ? dict.emails.free : price(order.shippingPrice, order.locale)}`,
+    '',
+    `${dict.emails.transferHow} :`,
+    `  ${dict.emails.bankAmount}     ${montant}`,
+    `  ${dict.emails.bankReference}  ${order.ref}`,
+    `  ${dict.emails.bankHolder}     ${bank.holder}`,
+    `  ${dict.emails.bankIban}       ${iban}`,
+    ...(bank.bic ? [`  ${dict.emails.bankBic}        ${bank.bic}`] : []),
+    ...(bank.bankName ? [`  ${dict.emails.bankName}       ${bank.bankName}`] : []),
+    '',
+    interpolate(dict.emails.transferRefNotice, { ref: order.ref }),
+    '',
+    `${dict.emails.trackCta} : ${trackingUrl(order)}`,
+    '',
+    dict.emails.transferFooter,
+  ].join('\n');
+
+  return { subject, html: layout(order, subject, inner), text };
+}
+
+/**
+ * Notification interne d'une nouvelle commande.
+ *
+ * Volontairement en texte brut et sans mise en forme : elle part vers une
+ * boîte d'équipe, elle doit se lire sur un téléphone en trois secondes, et
+ * tout ce qui compte est le montant à rapprocher et la référence à chercher
+ * sur le relevé.
+ */
+export function newOrderForTeam(order: Order): { subject: string; text: string } {
+  const montant = price(order.total, order.locale);
+  const a = order.address;
+
+  return {
+    subject: `Nouvelle commande ${order.ref} — ${montant} en attente de virement`,
+    text: [
+      `Référence  ${order.ref}`,
+      `Montant    ${montant}`,
+      `Client     ${a?.name ?? '—'} <${order.email}>`,
+      `Téléphone  ${a?.phone ?? '—'}`,
+      ...(order.transferHolder ? [`Virement émis par : ${order.transferHolder}`] : []),
+      '',
+      'Livraison',
+      `  ${a?.line1 ?? '—'}`,
+      ...(a?.line2 ? [`  ${a.line2}`] : []),
+      `  ${a?.postalCode ?? ''} ${a?.city ?? ''} (${a?.country ?? ''})`,
+      `  ${order.shippingLabel}`,
+      '',
+      'Articles',
+      ...order.lines.map((l) => `  ${l.quantity} x ${l.name}  ${price(l.lineTotal, order.locale)}`),
+      '',
+      `Rien n'est transmis au fournisseur tant que le virement de ${montant}`,
+      `portant la référence ${order.ref} n'est pas constaté sur le compte.`,
+    ].join('\n'),
+  };
 }
