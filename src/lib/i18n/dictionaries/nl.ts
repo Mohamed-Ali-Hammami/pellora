@@ -319,6 +319,12 @@ const nl: Dictionary = {
     bankMissing:
       'De bankgegevens zijn op deze site nog niet ingesteld: bestellen is tijdelijk niet mogelijk.',
 
+    declareCta: 'Ik heb de overschrijving gedaan',
+    declarePending: 'Vastleggen…',
+    declareDone: 'Dank u. We controleren onze rekening en schrijven u zodra het bedrag zichtbaar is — doorgaans binnen één werkdag.',
+    declareHint: 'Klik zodra u de overschrijving bij uw bank hebt verstuurd. Zo weten wij wanneer we de rekening moeten bekijken.',
+    declareError: 'Uw melding kon niet worden vastgelegd. Probeer het zo meteen opnieuw.',
+    declaredOn: 'Overschrijving gemeld op',
     placedEyebrow: 'Bestelling vastgelegd',
     placedTitle: 'Alleen de overschrijving nog',
     placedLead:
@@ -353,13 +359,12 @@ const nl: Dictionary = {
     carrierLabel: 'Vervoerder',
     trackingNumber: 'Volgnummer',
     statuses: {
-      pending: 'In afwachting van betaling',
-      paid: 'Betaald',
+      awaiting_transfer: 'Wacht op uw overschrijving',
+      confirmed: 'Overschrijving ontvangen',
       forwarded: 'Doorgegeven aan de leverancier',
-      fulfillment_failed: 'Doorgifte wordt opnieuw geprobeerd',
-      shipped: 'Verzonden',
+      fulfillment_failed: 'Wordt opnieuw doorgegeven',
+      shipped: 'Onderweg',
       delivered: 'Geleverd',
-      refunded: 'Terugbetaald',
       cancelled: 'Geannuleerd',
     },
   },
@@ -669,6 +674,7 @@ const nl: Dictionary = {
     noCheckoutUrl: 'De betaaldienst heeft geen betaaladres teruggegeven.',
     checkoutFailed: 'De betaling kon niet worden geopend. Probeer het straks opnieuw.',
     lookupMissingFields: 'Geef de bestelreferentie en het gebruikte e-mailadres op.',
+    declareNotPending: 'Deze bestelling wacht niet langer op een overschrijving.',
     lookupNotFound: 'Geen bestelling past bij deze gegevens.',
   },
 

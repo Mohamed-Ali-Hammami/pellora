@@ -27,6 +27,8 @@ export interface PublicOrder {
   shippingLabel: string;
   trackingNumber: string | null;
   carrier: string | null;
+  /** Non nul dès que le client a déclaré son virement : masque le bouton. */
+  transferDeclaredAt: string | null;
   city: string | null;
   country: string | null;
 }

@@ -108,6 +108,11 @@ export default async function CheckoutPage({ params }: { params: Promise<{ local
           bankRefLater: dict.checkout.bankRefLater,
           bankMissing: dict.checkout.bankMissing,
 
+          declareCta: dict.checkout.declareCta,
+          declarePending: dict.checkout.declarePending,
+          declareDone: dict.checkout.declareDone,
+          declareHint: dict.checkout.declareHint,
+          declareError: dict.checkout.declareError,
           placedEyebrow: dict.checkout.placedEyebrow,
           placedTitle: dict.checkout.placedTitle,
           placedLead: dict.checkout.placedLead,

@@ -84,6 +84,38 @@ export function CheckoutView({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [ref, setRef] = useState<string | null>(null);
+  const [declaring, setDeclaring] = useState(false);
+  const [declared, setDeclared] = useState(false);
+  const [declareError, setDeclareError] = useState<string | null>(null);
+
+  /**
+   * Le client signale son virement.
+   *
+   * Ne confirme RIEN : c'est l'équipe, relevé sous les yeux, qui confirme. Ce
+   * bouton dit seulement « regardez le compte », et c'est ce qui raccourcit le
+   * délai entre le virement et sa constatation.
+   */
+  async function declare() {
+    if (!ref || declaring || declared) return;
+    setDeclaring(true);
+    setDeclareError(null);
+    try {
+      const response = await fetch('/api/orders/declare', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ ref, email: champs.email, locale }),
+      });
+      if (!response.ok) {
+        setDeclareError(labels['declareError']!);
+        return;
+      }
+      setDeclared(true);
+    } catch {
+      setDeclareError(labels['declareError']!);
+    } finally {
+      setDeclaring(false);
+    }
+  }
 
   const zone = zoneForCountry(country);
   const rates = useMemo(() => ratesFor(subtotal, zone, profile), [subtotal, zone, profile]);
@@ -177,8 +209,34 @@ export function CheckoutView({
             {interpolate(labels['placedEmail']!, { email: champs.email })}
           </p>
 
-          <div className="mt-7 flex flex-wrap gap-3">
-            <a href={`${trackingHref}?ref=${encodeURIComponent(ref)}`} className="btn-primary">
+          {/* ── Le client signale son virement ── */}
+          <div className="mt-7 rounded-xl border border-line bg-paper p-4">
+            {declared ? (
+              <p role="status" className="text-sm leading-relaxed text-ink">
+                {labels['declareDone']}
+              </p>
+            ) : (
+              <>
+                <button
+                  type="button"
+                  onClick={declare}
+                  disabled={declaring}
+                  className="btn-primary w-full disabled:opacity-60 sm:w-auto"
+                >
+                  {declaring ? labels['declarePending'] : labels['declareCta']}
+                </button>
+                <p className="mt-2.5 text-xs leading-relaxed text-muted">{labels['declareHint']}</p>
+                {declareError ? (
+                  <p role="alert" className="mt-2 text-sm text-ember">
+                    {declareError}
+                  </p>
+                ) : null}
+              </>
+            )}
+          </div>
+
+          <div className="mt-6 flex flex-wrap gap-3">
+            <a href={`${trackingHref}?ref=${encodeURIComponent(ref)}`} className="btn-ghost">
               {labels['trackCta']}
             </a>
             <button type="button" onClick={() => window.print()} className="btn-ghost">

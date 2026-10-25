@@ -147,7 +147,7 @@ describe('état par fournisseur', () => {
   const base = (): Order => ({
     ref: 'PEL-TEST01', status: 'confirmed', createdAt: '', updatedAt: '', locale: 'fr',
     email: 'a@b.fr', lines: [], subtotal: 0, shippingPrice: 0, total: 0, vat: 0,
-    currency: 'EUR', shippingLabel: 'x', address: ADDRESS, transferHolder: null,
+    currency: 'EUR', shippingLabel: 'x', address: ADDRESS, transferHolder: null, transferDeclaredAt: null,
     supplierOrders: [], trackingNumber: null, carrier: null,
     events: [], fulfillmentAttempts: 0,
   });

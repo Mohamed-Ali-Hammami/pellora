@@ -319,6 +319,12 @@ const es: Dictionary = {
     bankMissing:
       'Los datos bancarios aún no están configurados en este sitio: no es posible pedir por el momento.',
 
+    declareCta: 'He realizado la transferencia',
+    declarePending: 'Registrando…',
+    declareDone: 'Gracias. Comprobamos nuestra cuenta y le escribimos en cuanto aparezca, por lo general en un día hábil.',
+    declareHint: 'Pulse una vez enviada la transferencia desde su banco. Así sabemos cuándo mirar la cuenta.',
+    declareError: 'Su aviso no se ha podido registrar. Inténtelo de nuevo en un momento.',
+    declaredOn: 'Transferencia declarada el',
     placedEyebrow: 'Pedido registrado',
     placedTitle: 'Solo queda hacer la transferencia',
     placedLead:
@@ -353,13 +359,12 @@ const es: Dictionary = {
     carrierLabel: 'Transportista',
     trackingNumber: 'Número de seguimiento',
     statuses: {
-      pending: 'Pendiente de pago',
-      paid: 'Pagado',
-      forwarded: 'Transmitido al proveedor',
-      fulfillment_failed: 'Transmisión en reintento',
-      shipped: 'Enviado',
+      awaiting_transfer: 'A la espera de su transferencia',
+      confirmed: 'Transferencia recibida',
+      forwarded: 'Trasladado al proveedor',
+      fulfillment_failed: 'Reintentando el traslado',
+      shipped: 'En camino',
       delivered: 'Entregado',
-      refunded: 'Reembolsado',
       cancelled: 'Anulado',
     },
   },
@@ -669,6 +674,7 @@ const es: Dictionary = {
     noCheckoutUrl: 'El proveedor de pago no ha devuelto una dirección de pago.',
     checkoutFailed: 'No se ha podido abrir el pago. Inténtelo de nuevo en un momento.',
     lookupMissingFields: 'Indique la referencia del pedido y el correo utilizado.',
+    declareNotPending: 'Este pedido ya no está a la espera de una transferencia.',
     lookupNotFound: 'Ningún pedido coincide con estos datos.',
   },
 

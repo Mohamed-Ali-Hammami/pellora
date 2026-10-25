@@ -324,6 +324,12 @@ const fr = {
     bankMissing:
       'Les coordonnées bancaires ne sont pas encore configurées sur ce site : la commande est momentanément indisponible.',
 
+    declareCta: 'J’ai effectué le virement',
+    declarePending: 'Enregistrement…',
+    declareDone: 'Merci. Nous vérifions la réception sur notre compte et vous écrivons dès que c’est fait — en général sous un jour ouvré.',
+    declareHint: 'À cliquer une fois le virement envoyé depuis votre banque. Cela nous dit quand regarder le compte.',
+    declareError: 'Votre déclaration n’a pas pu être enregistrée. Réessayez dans un instant.',
+    declaredOn: 'Virement déclaré le',
     placedEyebrow: 'Commande enregistrée',
     placedTitle: 'Il ne reste qu’à effectuer le virement',
     placedLead:
@@ -358,13 +364,12 @@ const fr = {
     carrierLabel: 'Transporteur',
     trackingNumber: 'Numéro de suivi',
     statuses: {
-      pending: 'En attente de paiement',
-      paid: 'Payée',
+      awaiting_transfer: 'En attente de votre virement',
+      confirmed: 'Virement reçu',
       forwarded: 'Transmise au fournisseur',
       fulfillment_failed: 'Transmission en cours de reprise',
-      shipped: 'Expédiée',
+      shipped: 'En route',
       delivered: 'Livrée',
-      refunded: 'Remboursée',
       cancelled: 'Annulée',
     },
   },
@@ -675,6 +680,7 @@ const fr = {
     noCheckoutUrl: 'Le prestataire de paiement n’a pas renvoyé d’adresse de paiement.',
     checkoutFailed: 'Impossible d’ouvrir le paiement. Réessayez dans un instant.',
     lookupMissingFields: 'Indiquez la référence de commande et l’adresse e-mail utilisée.',
+    declareNotPending: 'Cette commande n’est plus en attente de virement.',
     lookupNotFound: 'Aucune commande ne correspond à ces informations.',
   },
 

@@ -100,8 +100,17 @@ export default async function AdminPage({
     );
   }
 
-  const orders = await getStore().listRecent(100);
-  const attente = orders.filter((o) => o.status === 'awaiting_transfer');
+  const toutes = await getStore().listRecent(100);
+  const attente = toutes.filter((o) => o.status === 'awaiting_transfer');
+  const déclarées = attente.filter((o) => o.transferDeclaredAt !== null);
+
+  // Les virements déclarés passent en tête : ce sont ceux à vérifier
+  // maintenant, et les chercher dans une liste de cent est le meilleur moyen
+  // de les oublier.
+  const orders = [
+    ...déclarées,
+    ...toutes.filter((o) => !déclarées.includes(o)),
+  ];
   const bank = bankDetails();
 
   return (
@@ -122,6 +131,14 @@ export default async function AdminPage({
         {attente.length === 0
           ? 'Aucune commande en attente de virement.'
           : `${attente.length} commande${attente.length > 1 ? 's' : ''} en attente de virement, sur ${orders.length} au total.`}
+        {déclarées.length > 0 ? (
+          <>
+            {' '}
+            <strong className="text-ink">
+              {déclarées.length} à vérifier sur le relevé.
+            </strong>
+          </>
+        ) : null}
         {bank.iban ? (
           <>
             {' · '}
@@ -175,9 +192,21 @@ function Ligne({
             {formatDate(order.createdAt, 'fr')} · {order.locale.toUpperCase()}
           </p>
         </div>
-        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${état.ton}`}>
-          {état.label}
-        </span>
+        <div className="flex flex-wrap items-center gap-2">
+          {/*
+            Le client dit avoir viré. Ce n'est PAS une preuve : c'est un signal
+            « regardez le compte ». Il est mis en avant parce que c'est lui qui
+            dit quand vérifier — sans quoi personne ne sait quand regarder.
+          */}
+          {order.transferDeclaredAt && order.status === 'awaiting_transfer' ? (
+            <span className="rounded-full bg-[#eaf1f7] px-3 py-1 text-xs font-semibold text-[#1d3f63]">
+              Client : virement envoyé le {formatDate(order.transferDeclaredAt, 'fr')}
+            </span>
+          ) : null}
+          <span className={`rounded-full px-3 py-1 text-xs font-semibold ${état.ton}`}>
+            {état.label}
+          </span>
+        </div>
       </div>
 
       <div className="mt-4 grid gap-4 text-sm sm:grid-cols-[1fr_auto]">

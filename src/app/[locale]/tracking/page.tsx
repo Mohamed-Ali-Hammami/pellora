@@ -51,7 +51,13 @@ export default async function TrackingPage({ params }: { params: Promise<{ local
               trackingNumber: dict.tracking.trackingNumber,
               total: dict.common.total,
               shipping: dict.common.shipping,
-              statuses: dict.tracking.statuses,
+              declareCta: dict.checkout.declareCta,
+          declarePending: dict.checkout.declarePending,
+          declareDone: dict.checkout.declareDone,
+          declareHint: dict.checkout.declareHint,
+          declareError: dict.checkout.declareError,
+          declaredOn: dict.checkout.declaredOn,
+          statuses: dict.tracking.statuses,
             }}
           />
         </div>

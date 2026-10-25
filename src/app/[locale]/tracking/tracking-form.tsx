@@ -34,6 +34,12 @@ interface Props {
     trackingNumber: string;
     total: string;
     shipping: string;
+    declareCta: string;
+    declarePending: string;
+    declareDone: string;
+    declareHint: string;
+    declareError: string;
+    declaredOn: string;
     statuses: Record<string, string>;
   };
 }
@@ -43,6 +49,43 @@ export function TrackingForm({ locale, labels }: Props) {
   const [email, setEmail] = useState('');
   const [order, setOrder] = useState<PublicOrder | null>(null);
   const [state, setState] = useState<'idle' | 'loading' | 'missing'>('idle');
+  const [declaring, setDeclaring] = useState(false);
+  const [declareError, setDeclareError] = useState<string | null>(null);
+
+  /**
+   * Le client signale son virement depuis le suivi.
+   *
+   * C'est ICI que le bouton sert le plus : l'écran de commande disparaît dès
+   * qu'on ferme l'onglet, alors qu'un virement se fait souvent le lendemain.
+   * Sans ce second point d'entrée, la fonction ne servirait qu'aux clients
+   * qui paient dans la minute.
+   */
+  async function declare() {
+    if (!order || declaring) return;
+    setDeclaring(true);
+    setDeclareError(null);
+    try {
+      const response = await fetch('/api/orders/declare', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ ref: order.ref, email, locale }),
+      });
+      if (!response.ok) {
+        setDeclareError(labels.declareError);
+        return;
+      }
+      const payload: unknown = await response.json();
+      const declaredAt =
+        typeof payload === 'object' && payload !== null && 'declaredAt' in payload
+          ? String((payload as { declaredAt?: unknown }).declaredAt)
+          : new Date().toISOString();
+      setOrder({ ...order, transferDeclaredAt: declaredAt });
+    } catch {
+      setDeclareError(labels.declareError);
+    } finally {
+      setDeclaring(false);
+    }
+  }
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -128,6 +171,37 @@ export function TrackingForm({ locale, labels }: Props) {
               <Row label={labels.trackingNumber} value={order.trackingNumber} />
             ) : null}
           </dl>
+
+          {/* ── Déclaration du virement, tant qu'il est attendu ── */}
+          {order.status === 'awaiting_transfer' ? (
+            <div className="mt-6 rounded-xl border border-line bg-cream p-4">
+              {order.transferDeclaredAt ? (
+                <p role="status" className="text-sm leading-relaxed text-ink">
+                  {labels.declareDone}
+                  <span className="mt-1 block text-xs text-muted">
+                    {labels.declaredOn} {dateShort(order.transferDeclaredAt, locale)}
+                  </span>
+                </p>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={declare}
+                    disabled={declaring}
+                    className="btn-primary w-full disabled:opacity-60 sm:w-auto"
+                  >
+                    {declaring ? labels.declarePending : labels.declareCta}
+                  </button>
+                  <p className="mt-2.5 text-xs leading-relaxed text-muted">{labels.declareHint}</p>
+                  {declareError ? (
+                    <p role="alert" className="mt-2 text-sm text-ember">
+                      {declareError}
+                    </p>
+                  ) : null}
+                </>
+              )}
+            </div>
+          ) : null}
 
           <p className="eyebrow mt-6">{labels.items}</p>
           <ul className="mt-2 space-y-1.5 text-sm text-ink-soft">

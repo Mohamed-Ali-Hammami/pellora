@@ -71,6 +71,7 @@ export function createOrder(params: {
     shippingLabel: params.cart.shipping.label[params.cart.locale],
     address: params.address,
     transferHolder: params.transferHolder,
+    transferDeclaredAt: null,
     supplierOrders: [],
     trackingNumber: null,
     carrier: null,
@@ -90,6 +91,22 @@ export function withEvent(order: Order, type: string, détail?: string): Order {
 
 export function withStatus(order: Order, status: OrderStatus, détail?: string): Order {
   return { ...withEvent(order, `status:${status}`, détail), status };
+}
+
+/**
+ * Le client déclare avoir viré.
+ *
+ * L'état ne bouge pas, et c'est le point entier : une déclaration n'est pas un
+ * paiement. Si elle faisait passer la commande en `confirmed`, il suffirait de
+ * cliquer pour déclencher une expédition sans avoir rien payé.
+ *
+ * Idempotent : un double clic, ou un client qui revient sur la page de suivi,
+ * ne doit pas empiler les déclarations ni réalerter l'équipe.
+ */
+export function withTransferDeclared(order: Order): Order {
+  if (order.transferDeclaredAt !== null) return order;
+  const at = new Date().toISOString();
+  return { ...withEvent(order, 'transfer:declared'), transferDeclaredAt: at };
 }
 
 export function withAddress(order: Order, address: ShippingAddress): Order {
@@ -163,6 +180,7 @@ export function toPublicOrder(order: Order): PublicOrder {
     shippingLabel: order.shippingLabel,
     trackingNumber: order.trackingNumber,
     carrier: order.carrier,
+    transferDeclaredAt: order.transferDeclaredAt,
     city: order.address?.city ?? null,
     country: order.address?.country ?? null,
   };

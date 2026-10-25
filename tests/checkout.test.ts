@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { checkoutInputSchema, toShippingAddress } from '@/lib/checkout';
 import { bankDetails, isBankConfigured, formatIban } from '@/lib/bank';
 import { isAdminConfigured, isSignedIn, signIn } from '@/lib/admin';
-import { createOrder } from '@/lib/store/orders';
+import { createOrder, withTransferDeclared, toPublicOrder } from '@/lib/store/orders';
 import { CANCELLABLE } from '@/lib/store/types';
 import { priceCart } from '@/lib/cart';
 
@@ -193,5 +193,63 @@ describe('accès au back-office', () => {
     const ancien = signIn('un-mot-de-passe-assez-long')!;
     process.env['ADMIN_PASSWORD'] = 'un-autre-mot-de-passe-long';
     expect(isSignedIn(ancien)).toBe(false);
+  });
+});
+
+describe('déclaration du virement par le client', () => {
+  function commande() {
+    const cart = priceCart({
+      lines: [{ productId: 'aria-6', variantId: 'noir', quantity: 1 }],
+      shippingCountry: 'FR',
+      locale: 'fr',
+    });
+    return createOrder({
+      cart,
+      email: CLIENT.email,
+      address: toShippingAddress(checkoutInputSchema.parse(PANIER)),
+      transferHolder: null,
+    });
+  }
+
+  it('ne fait PAS avancer la commande', () => {
+    /*
+     * L'invariant qui protège la marchandise. Si déclarer faisait passer en
+     * « confirmée », il suffirait de cliquer sur un bouton pour déclencher
+     * l'expédition d'un poêle sans avoir rien payé. Seule l'équipe, relevé
+     * sous les yeux, confirme.
+     */
+    const après = withTransferDeclared(commande());
+    expect(après.status).toBe('awaiting_transfer');
+  });
+
+  it('horodate la déclaration', () => {
+    const après = withTransferDeclared(commande());
+    expect(après.transferDeclaredAt).not.toBeNull();
+    expect(Number.isNaN(Date.parse(après.transferDeclaredAt!))).toBe(false);
+  });
+
+  it('laisse une trace dans le journal', () => {
+    const après = withTransferDeclared(commande());
+    expect(après.events.some((e) => e.type === 'transfer:declared')).toBe(true);
+  });
+
+  it('est idempotente : un second clic ne réécrit rien', () => {
+    // Sinon un client qui revient sur son suivi réalerterait l'équipe à
+    // chaque visite.
+    const une = withTransferDeclared(commande());
+    const deux = withTransferDeclared(une);
+    expect(deux).toBe(une);
+    expect(deux.events.filter((e) => e.type === 'transfer:declared')).toHaveLength(1);
+  });
+
+  it('naît non déclarée', () => {
+    expect(commande().transferDeclaredAt).toBeNull();
+  });
+
+  it('expose la déclaration au suivi, sans les données personnelles', () => {
+    const vue = toPublicOrder(withTransferDeclared(commande()));
+    expect(vue.transferDeclaredAt).not.toBeNull();
+    expect(Object.keys(vue)).not.toContain('email');
+    expect(Object.keys(vue)).not.toContain('address');
   });
 });

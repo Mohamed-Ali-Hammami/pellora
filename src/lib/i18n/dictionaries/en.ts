@@ -319,6 +319,12 @@ const en: Dictionary = {
     bankMissing:
       'Bank details are not configured on this site yet: ordering is temporarily unavailable.',
 
+    declareCta: 'I have made the transfer',
+    declarePending: 'Recording…',
+    declareDone: 'Thank you. We are checking our account and will write as soon as it shows — usually within one working day.',
+    declareHint: 'Click once you have sent the transfer from your bank. It tells us when to look at the account.',
+    declareError: 'Your confirmation could not be recorded. Try again in a moment.',
+    declaredOn: 'Transfer declared on',
     placedEyebrow: 'Order recorded',
     placedTitle: 'All that is left is the transfer',
     placedLead:
@@ -353,13 +359,12 @@ const en: Dictionary = {
     carrierLabel: 'Carrier',
     trackingNumber: 'Tracking number',
     statuses: {
-      pending: 'Awaiting payment',
-      paid: 'Paid',
-      forwarded: 'Sent to the supplier',
-      fulfillment_failed: 'Transmission being retried',
-      shipped: 'Shipped',
+      awaiting_transfer: 'Awaiting your transfer',
+      confirmed: 'Transfer received',
+      forwarded: 'Passed to the supplier',
+      fulfillment_failed: 'Being re-sent to the supplier',
+      shipped: 'On its way',
       delivered: 'Delivered',
-      refunded: 'Refunded',
       cancelled: 'Cancelled',
     },
   },
@@ -669,6 +674,7 @@ const en: Dictionary = {
     noCheckoutUrl: 'The payment provider returned no checkout address.',
     checkoutFailed: 'Payment could not be opened. Please try again in a moment.',
     lookupMissingFields: 'Enter the order reference and the email address used.',
+    declareNotPending: 'This order is no longer awaiting a transfer.',
     lookupNotFound: 'No order matches these details.',
   },
 

@@ -88,6 +88,16 @@ export interface Order {
   transferHolder: string | null;
 
   /**
+   * Horodatage auquel le CLIENT a déclaré avoir effectué le virement.
+   *
+   * Ce n'est pas une preuve de paiement et ça ne fait avancer aucun état :
+   * seule l'équipe, relevé bancaire sous les yeux, peut confirmer. C'est un
+   * signal — « regardez le compte » — et c'est ce qui raccourcit le délai
+   * entre le virement réel et sa constatation.
+   */
+  transferDeclaredAt: string | null;
+
+  /**
    * État de transmission PAR FOURNISSEUR.
    *
    * Un tableau plat d’identifiants ne suffit pas : sur une commande éclatée
