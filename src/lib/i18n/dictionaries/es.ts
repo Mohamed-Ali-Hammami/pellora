@@ -360,9 +360,7 @@ const es: Dictionary = {
     trackingNumber: 'Número de seguimiento',
     statuses: {
       awaiting_transfer: 'A la espera de su transferencia',
-      confirmed: 'Transferencia recibida',
-      forwarded: 'Trasladado al proveedor',
-      fulfillment_failed: 'Reintentando el traslado',
+      confirmed: 'Transferencia recibida — pedido en preparación',
       shipped: 'En camino',
       delivered: 'Entregado',
       cancelled: 'Anulado',

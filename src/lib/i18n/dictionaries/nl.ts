@@ -360,9 +360,7 @@ const nl: Dictionary = {
     trackingNumber: 'Volgnummer',
     statuses: {
       awaiting_transfer: 'Wacht op uw overschrijving',
-      confirmed: 'Overschrijving ontvangen',
-      forwarded: 'Doorgegeven aan de leverancier',
-      fulfillment_failed: 'Wordt opnieuw doorgegeven',
+      confirmed: 'Overschrijving ontvangen — bestelling wordt voorbereid',
       shipped: 'Onderweg',
       delivered: 'Geleverd',
       cancelled: 'Geannuleerd',

@@ -12,7 +12,6 @@ import type { Order, OrderStore } from './types';
 const KEY_ORDER = (ref: string) => `order:${ref}`;
 /** Index chronologique, le plus récent en tête : alimente la page d'administration. */
 const KEY_RECENT = 'orders:recent';
-const KEY_FAILED = 'orders:failed';
 const KEY_LOCK = (key: string) => `lock:${key}`;
 
 /** Conservation : 3 ans, pour couvrir l’obligation comptable française. */
@@ -35,15 +34,11 @@ export function createRedisStore(): OrderStore {
       if (!existait) {
         await redis.lpush(KEY_RECENT, order.ref);
       }
-      // La file des échecs sert au travail de rattrapage planifie.
-      if (order.status === 'fulfillment_failed') {
-        await redis.lpush(KEY_FAILED, order.ref);
-      }
     },
 
     async acquireLock(key, ttlSeconds) {
-      // `SET key 1 NX EX ttl` : atomique, donc deux webhooks simultanés ne
-      // peuvent pas obtenir le verrou tous les deux.
+      // `SET key 1 NX EX ttl` : atomique, donc deux requêtes simultanées ne
+      // peuvent pas obtenir le verrou toutes les deux.
       const result = await redis.set(KEY_LOCK(key), '1', { nx: true, ex: ttlSeconds });
       return result === 'OK';
     },
@@ -54,10 +49,5 @@ export function createRedisStore(): OrderStore {
       return orders.filter((o): o is Order => o !== null);
     },
 
-    async listFailed(limit) {
-      const refs = await redis.lrange<string>(KEY_FAILED, 0, limit - 1);
-      const orders = await Promise.all(refs.map((ref) => this.get(ref)));
-      return orders.filter((o): o is Order => o !== null && o.status === 'fulfillment_failed');
-    },
   };
 }

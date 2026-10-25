@@ -42,7 +42,7 @@ export const brand = {
   email: {
     support: env('SUPPORT_EMAIL', 'contact@pellora.eu'),
     orders: env('ORDERS_EMAIL', 'commandes@pellora.eu'),
-    /** Expéditeur vérifié dans Resend : doit être un domaine dont vous tenez les DNS. */
+    /** Expéditeur. Avec Gmail, ce doit être l'adresse du compte SMTP, sinon le message est rejeté. */
     from: env('EMAIL_FROM', 'Pellora <contact@pellora.eu>'),
   },
 

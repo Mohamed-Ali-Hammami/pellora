@@ -7,9 +7,8 @@
  */
 
 import { randomBytes } from 'node:crypto';
-import type { Order, OrderLine, OrderStatus } from './types';
+import type { Order, OrderLine, OrderStatus, ShippingAddress } from './types';
 import type { PricedCart } from '../cart';
-import type { ShippingAddress } from '../suppliers/types';
 import { CURRENCY } from '../money';
 import type { PublicOrder } from '../order-view';
 
@@ -72,11 +71,9 @@ export function createOrder(params: {
     address: params.address,
     transferHolder: params.transferHolder,
     transferDeclaredAt: null,
-    supplierOrders: [],
     trackingNumber: null,
     carrier: null,
     events: [{ at: now, type: 'created' }],
-    fulfillmentAttempts: 0,
   };
 }
 
@@ -131,40 +128,12 @@ export function withTracking(
   };
 }
 
-/**
- * Vrai si CE fournisseur a déjà reçu la commande.
- * Garde-fou contre la double expédition, évalué fournisseur par fournisseur.
- */
-export function isSupplierDone(order: Order, supplier: string): boolean {
-  return order.supplierOrders.some((s) => s.supplier === supplier && s.status === 'ok');
-}
-
-/** Vrai si tous les fournisseurs sollicites ont confirme. */
-export function isFullyForwarded(order: Order, suppliers: readonly string[]): boolean {
-  return suppliers.length > 0 && suppliers.every((s) => isSupplierDone(order, s));
-}
-
 /** Vrai si un e-mail de ce type a déjà été envoyé (idempotence des notifications). */
 export function hasSentEmail(
   order: Order,
   kind: 'instructions' | 'confirmation' | 'shipping',
 ): boolean {
   return order.events.some((e) => e.type === `email:${kind}_sent`);
-}
-
-export function recordSupplierResult(
-  order: Order,
-  record: import('./types').SupplierOrderRecord,
-): Order {
-  const others = order.supplierOrders.filter((s) => s.supplier !== record.supplier);
-  const previous = order.supplierOrders.find((s) => s.supplier === record.supplier);
-  return {
-    ...order,
-    supplierOrders: [
-      ...others,
-      { ...record, attempts: (previous?.attempts ?? 0) + 1 },
-    ],
-  };
 }
 
 /** Masque les données personnelles pour la page de suivi publique. */

@@ -104,6 +104,7 @@ describe('cycle de vie en paiement par virement', () => {
 
   it('ne garde aucune trace d’un prestataire de paiement', () => {
     expect(Object.keys(commande())).not.toContain('stripeSessionId');
+    expect(Object.keys(commande())).not.toContain('supplierOrders');
   });
 
   it('n’autorise l’annulation que tant que rien n’est parti', () => {

@@ -1,11 +1,12 @@
 # Pellora — boutique dropshipping poêles à granulés, en quatre langues
 
-Boutique e-commerce complète pour la niche **poêles à granulés** — deux
-familles, **hydro** et **air ventilé** — en **français, anglais, néerlandais et
-espagnol**, conçue pour qu'aucune intervention humaine ne soit nécessaire entre
-le paiement du client et l'expédition par le fournisseur.
+Boutique e-commerce en **français, anglais, néerlandais et espagnol**, pour
+huit familles de chauffage — granulés, bois, cuisinières, chaudières, inserts,
+conduits, pompes à chaleur, accessoires. Paiement par **virement bancaire**,
+confirmé à la main dans un back-office : c'est vous qui vendez, et c'est vous
+qui faites avancer chaque commande.
 
-Next.js 16 · TypeScript · Tailwind 4 · Resend · Redis
+Next.js 16 · TypeScript · Tailwind 4 · SMTP · Redis
 
 ---
 
@@ -13,16 +14,14 @@ Next.js 16 · TypeScript · Tailwind 4 · Resend · Redis
 
 **Il contient** une boutique fonctionnelle et testée : catalogue traduit,
 calculateur de puissance, panier, commande payée par virement, back-office de
-validation, transmission automatique des
-commandes au fournisseur, e-mails transactionnels dans la langue du client,
-suivi de commande, pages légales, contenu éditorial, et un modèle économique
-chiffré.
+validation, e-mails transactionnels dans la langue du client, suivi de
+commande, pages légales, contenu éditorial, et un modèle économique chiffré.
 
 **Il ne contient pas** ce qui ne peut pas être écrit depuis un clavier :
 
 | Ce qui manque | Pourquoi |
 |---|---|
-| Un vrai fournisseur | À négocier. Les coûts d'achat de `src/lib/sourcing.ts` sont des **hypothèses de travail**, pas des tarifs obtenus. |
+| Un vrai grossiste | À négocier. Les coûts d'achat de `src/lib/sourcing.ts` sont des **hypothèses de travail**, pas des tarifs obtenus. Le site ne commande rien à personne : vous passez vos commandes vous-même. |
 | De vraies fiches techniques | Les modèles, puissances, rendements et classes énergétiques du catalogue sont **plausibles mais fictifs**. Voir l'avertissement ci-dessous : ce point n'est pas cosmétique. |
 | De vraies photos produit | Les visuels sont des illustrations vectorielles, signalées comme telles sur chaque fiche. Voir [Ajouter vos photos](#ajouter-vos-photos). |
 | Les mentions légales réelles | Renseignées par variables d'environnement. Tant qu'elles manquent, les pages concernées affichent un avertissement visible. |
@@ -106,7 +105,7 @@ répond pas sous le préfixe espagnol, ce qui évite le contenu dupliqué.
 ### Ajouter une cinquième langue
 
 1. ajouter le code dans `locales` (`src/lib/i18n/config.ts`) et renseigner
-   `localeNames`, `intlLocales`, `htmlLangs`, `ogLocales`, `stripeLocales` ;
+   `localeNames`, `intlLocales`, `htmlLangs`, `ogLocales` ;
 2. créer `src/lib/i18n/dictionaries/<code>.ts` typé `Dictionary` et le déclarer
    dans `dictionaries/index.ts` ;
 3. compléter la colonne de la langue dans `localizedPaths` (`routes.ts`) ;
@@ -181,16 +180,18 @@ panier → /commande → le client saisit ses coordonnées
                    → e-mail au client : RIB, montant, référence
                    → e-mail à l'équipe : nouvelle commande
 
-/admin → l'équipe constate le virement sur le relevé
+/admin → vous constatez le virement sur le relevé
        → « Virement reçu » → état « confirmée »
-       → transmission automatique au fournisseur
-       → numéro de suivi → « en route » → « livrée »
+          → e-mail de confirmation au client
+       → « Marquer en route » (+ suivi facultatif) → « en route »
+          → avis d'expédition au client
+       → « Marquer livrée »
 ```
 
-**Rien n'est automatique entre le virement et la confirmation**, et c'est
-délibéré : seule une personne qui a vu la ligne sur le relevé peut faire
-avancer une commande. Une commande transmise au fournisseur sans virement reçu
-est une perte sèche.
+**Aucun état n'avance tout seul**, et c'est délibéré : chaque transition est
+un geste de votre part, parce que vous savez avant le logiciel que l'argent
+est arrivé et que le colis est parti. Une commande expédiée sans virement reçu
+est une perte sèche, et c'est le seul risque qu'un automatisme aurait ajouté.
 
 La référence de commande (`PEL-XXXXXX`) est ce qui rattache un virement à une
 commande. Elle est répétée trois fois dans l'e-mail client — objet, corps,
@@ -201,7 +202,7 @@ un relevé.
 
 | | À faire | Où |
 |---|---|---|
-| ☐ | Remplacer les fiches techniques par celles du fournisseur | `src/lib/catalog.ts` |
+| ☐ | Remplacer les fiches techniques par celles du grossiste | `src/lib/catalog.ts` |
 | ☐ | Remplacer les coûts d'achat par vos tarifs négociés | `src/lib/sourcing.ts` |
 | ☐ | Déposer les vraies photos | `public/img/products/` |
 | ☐ | Renseigner l'identité de l'exploitant | `LEGAL_*` dans `.env.local` |
@@ -226,7 +227,7 @@ src/
 ├─ proxy.ts                  Routage des langues (redirection, réécriture, cookie)
 ├─ app/
 │  ├─ [locale]/              Toutes les pages, un dossier par page et non par langue
-│  └─ api/                   Commandes, webhook fournisseur, suivi, reprise
+│  └─ api/                   Commandes, déclaration de virement, suivi
 ├─ components/               Composants serveur, et îlots client là où c'est nécessaire
 └─ lib/
    ├─ i18n/                  Langues, dictionnaires, table des URL, équivalences
@@ -235,10 +236,10 @@ src/
    ├─ cart.ts                Tarification du panier — le seul endroit qui calcule un total
    ├─ shipping.ts            Grille de port palette / colis
    ├─ sizing.ts              Pré-dimensionnement de la puissance
-   ├─ stripe.ts              Sessions de paiement — SERVEUR UNIQUEMENT
+   ├─ bank.ts                Coordonnées du compte à créditer — SERVEUR UNIQUEMENT
+   ├─ admin.ts               Session du back-office — SERVEUR UNIQUEMENT
    ├─ store/                 Commandes : cycle de vie, persistance, idempotence
-   ├─ suppliers/             Adaptateurs fournisseur (API REST ou bon de commande e-mail)
-   └─ email/                 Gabarits transactionnels, traduits
+   └─ email/                 Transport SMTP et gabarits traduits — SERVEUR UNIQUEMENT
 ```
 
 ### Trois frontières qui ne doivent pas bouger
@@ -260,7 +261,7 @@ src/
 
 - [docs/ECONOMICS.md](docs/ECONOMICS.md) — le modèle économique, et ce qu'il
   faut que la publicité coûte pour que la boutique soit rentable
-- [docs/AUTOMATION.md](docs/AUTOMATION.md) — ce qui tourne sans vous, et ce qui
+- [docs/COMMANDES.md](docs/COMMANDES.md) — le parcours d’une commande, et ce qui
   reste manuel
 - [docs/LANCEMENT.md](docs/LANCEMENT.md) — la mise en ligne, étape par étape
 

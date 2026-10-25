@@ -27,18 +27,18 @@ export const metadata: Metadata = {
 const ÉTATS: Record<OrderStatus, { label: string; ton: string }> = {
   awaiting_transfer: { label: 'En attente de virement', ton: 'bg-[#fdf6e7] text-[#6b4205]' },
   confirmed: { label: 'Virement reçu', ton: 'bg-[#eaf4ec] text-[#1f5130]' },
-  forwarded: { label: 'Transmise au fournisseur', ton: 'bg-[#eaf1f7] text-[#1d3f63]' },
-  fulfillment_failed: { label: 'Transmission en échec', ton: 'bg-[#fdf1ec] text-[#7a2d12]' },
   shipped: { label: 'En route', ton: 'bg-[#eaf1f7] text-[#1d3f63]' },
   delivered: { label: 'Livrée', ton: 'bg-[#eef0ee] text-[#3c403c]' },
   cancelled: { label: 'Annulée', ton: 'bg-[#eef0ee] text-[#6b6b6b]' },
 };
 
 const MESSAGES: Record<string, string> = {
-  confirmed: 'Virement constaté. La commande part chez le fournisseur.',
-  'confirmed-not-forwarded':
-    'Virement constaté, mais la transmission au fournisseur a échoué. Le rattrapage réessaiera ; une alerte a été envoyée.',
-  shipped: 'Commande marquée en route.',
+  confirmed: 'Virement constaté. Le client a reçu sa confirmation de commande.',
+  'confirmed-no-email':
+    'Virement constaté, mais la confirmation n’a pas pu être envoyée au client. Écrivez-lui, ou vérifiez la configuration SMTP.',
+  shipped: 'Commande marquée en route. Le client a reçu son avis d’expédition.',
+  'shipped-no-email':
+    'Commande marquée en route, mais l’avis d’expédition n’a pas pu partir. Prévenez le client, ou vérifiez la configuration SMTP.',
   delivered: 'Commande marquée livrée.',
   cancelled: 'Commande annulée.',
   'bad-password': 'Mot de passe incorrect.',
@@ -254,7 +254,7 @@ function Ligne({
                   ref_={order.ref}
                   action="confirm"
                   question={`Vous avez bien vu ${price(order.total, 'fr')} arriver sur le compte, avec la référence ${order.ref} ?`}
-                  consequence="La commande part chez le fournisseur, donc à l’expédition."
+                  consequence="Le client reçoit sa confirmation de commande et attend son colis."
                   label="Oui, virement constaté"
                   classe="btn-ember"
                 />
@@ -264,10 +264,8 @@ function Ligne({
                 </a>
               )
             ) : null}
-            {order.status === 'confirmed' ||
-            order.status === 'forwarded' ||
-            order.status === 'fulfillment_failed' ? (
-              <Action ref_={order.ref} action="ship" label="Marquer en route" classe="btn-primary" />
+            {order.status === 'confirmed' ? (
+              <Expédier ref_={order.ref} />
             ) : null}
             {order.status === 'shipped' ? (
               <Action ref_={order.ref} action="deliver" label="Marquer livrée" classe="btn-primary" />
@@ -298,6 +296,39 @@ function Ligne({
 /**
  * Bouton d'action simple, pour ce qui ne prête pas à conséquence.
  */
+/**
+ * Marquer en route, avec le suivi s'il est connu.
+ *
+ * Les deux champs sont FACULTATIFS, et c'est voulu : le colis part parfois
+ * avant que le transporteur n'ait émis son numéro, et exiger le suivi
+ * laisserait la commande affichée « virement reçu » alors qu'elle roule. Le
+ * client reçoit son avis d'expédition dans tous les cas ; sans numéro,
+ * l'e-mail renvoie simplement vers la page de suivi.
+ */
+function Expédier({ ref_ }: { ref_: string }) {
+  return (
+    <form method="post" action="/admin/actions" className="flex flex-col gap-1.5">
+      <input type="hidden" name="action" value="ship" />
+      <input type="hidden" name="ref" value={ref_} />
+      <input
+        type="text"
+        name="carrier"
+        placeholder="Transporteur (facultatif)"
+        className="w-full rounded-md border border-[#d9d4cc] px-2 py-1.5 text-sm"
+      />
+      <input
+        type="text"
+        name="tracking"
+        placeholder="N° de suivi (facultatif)"
+        className="w-full rounded-md border border-[#d9d4cc] px-2 py-1.5 text-sm"
+      />
+      <button type="submit" className="btn-primary w-full whitespace-nowrap text-sm">
+        Marquer en route
+      </button>
+    </form>
+  );
+}
+
 function Action({
   ref_,
   action,

@@ -21,10 +21,8 @@ const FORBIDDEN_IN_CLIENT = [
   'lib/bank',
   // Le mot de passe du back-office, lui, l'est.
   'lib/admin',
-  'lib/fulfillment',
   'lib/store',
   'lib/email',
-  'lib/suppliers',
 ];
 
 function walk(dir: string): string[] {

@@ -3,7 +3,6 @@ import {
   costOf,
   landedCostOf,
   grossMarginOf,
-  explodeToSupplierLines,
   maxLeadTimeDays,
   assertSourcingComplete,
   sourcing,
@@ -78,13 +77,6 @@ describe('approvisionnement', () => {
     }
   });
 
-  it('transmet une ligne fournisseur par unité commandée', () => {
-    const lines = explodeToSupplierLines('aria-6', 2);
-    expect(lines).toHaveLength(1);
-    expect(lines[0]?.quantity).toBe(2);
-    expect(lines[0]?.supplierSku).toBe(sourcing['aria-6']?.supplierSku);
-  });
-
   it('retient le délai de préparation le plus long de la commande', () => {
     // Une commande part en une seule expédition : c'est la ligne la plus
     // lente qui fixe la date annoncée au client.
@@ -97,8 +89,8 @@ describe('approvisionnement', () => {
     expect(maxLeadTimeDays([])).toBeGreaterThan(0);
   });
 
-  it('a une référence fournisseur unique par produit', () => {
-    // Deux produits partageant un SKU seraient expédiés à l'identique.
+  it('a une référence grossiste unique par produit', () => {
+    // Deux produits partageant une référence se commanderaient à l'identique.
     const skus = Object.values(sourcing).map((line) => line.supplierSku);
     expect(new Set(skus).size).toBe(skus.length);
   });

@@ -365,9 +365,7 @@ const fr = {
     trackingNumber: 'Numéro de suivi',
     statuses: {
       awaiting_transfer: 'En attente de votre virement',
-      confirmed: 'Virement reçu',
-      forwarded: 'Transmise au fournisseur',
-      fulfillment_failed: 'Transmission en cours de reprise',
+      confirmed: 'Virement reçu — commande en préparation',
       shipped: 'En route',
       delivered: 'Livrée',
       cancelled: 'Annulée',

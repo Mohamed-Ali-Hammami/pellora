@@ -1,29 +1,39 @@
 import type { Cents } from '../money';
 import type { Locale } from '../i18n/config';
-import type { ShippingAddress } from '../suppliers/types';
+/**
+ * Adresse de livraison.
+ *
+ * Définie ici, avec la commande, et non dans un module tiers : c'est la
+ * commande qui la porte, et plus rien d'autre dans le site n'en a besoin.
+ */
+export interface ShippingAddress {
+  name: string;
+  line1: string;
+  line2: string | null;
+  postalCode: string;
+  city: string;
+  country: string;
+  phone: string | null;
+}
 
 /**
  * Cycle de vie d’une commande, en paiement par virement.
  *
- *   awaiting_transfer ──l'équipe constate le virement──> confirmed
- *        │                                                   │
- *        └──> cancelled                          transmission au fournisseur
- *                                                            ↓
- *                                   forwarded ──suivi──> shipped ──> delivered
- *                                        └──> fulfillment_failed (réessai)
+ *   awaiting_transfer ──virement constaté──> confirmed ──> shipped ──> delivered
+ *        │                                       │
+ *        └──────────────> cancelled <────────────┘
  *
- * `awaiting_transfer` est l'état d'entrée : la commande existe, le client a
- * ses coordonnées bancaires et sa référence, mais rien n'est engagé tant que
- * l'argent n'est pas arrivé. Le passage à `confirmed` est MANUEL — c'est une
- * personne qui a vu la ligne sur le relevé. Aucun automatisme ne doit le
- * faire : une commande transmise au fournisseur sans virement reçu est une
- * perte sèche.
+ * QUATRE ÉTATS, ET CHACUN CORRESPOND À UN GESTE HUMAIN. `awaiting_transfer`
+ * est l'état d'entrée : la commande existe, le client a le RIB et sa
+ * référence, mais rien n'est engagé tant que l'argent n'est pas arrivé.
+ * Chaque transition suivante est saisie par une personne — celle qui a vu la
+ * ligne sur le relevé, celle qui a déposé le colis, celle qui a eu le client
+ * au téléphone. Aucun automatisme ne fait avancer une commande : c'est nous
+ * qui vendons, et nous le savons avant le logiciel.
  */
 export type OrderStatus =
   | 'awaiting_transfer'
   | 'confirmed'
-  | 'forwarded'
-  | 'fulfillment_failed'
   | 'shipped'
   | 'delivered'
   | 'cancelled';
@@ -38,17 +48,6 @@ export interface OrderLine {
   quantity: number;
   unitPrice: Cents;
   lineTotal: Cents;
-}
-
-export interface SupplierOrderRecord {
-  supplier: string;
-  /** Référence transmise au fournisseur — clé d’idempotence de son cote. */
-  orderRef: string;
-  supplierOrderId: string | null;
-  status: 'ok' | 'failed';
-  error: string | null;
-  attempts: number;
-  lastAttemptAt: string;
 }
 
 export interface Order {
@@ -97,32 +96,20 @@ export interface Order {
    */
   transferDeclaredAt: string | null;
 
-  /**
-   * État de transmission PAR FOURNISSEUR.
-   *
-   * Un tableau plat d’identifiants ne suffit pas : sur une commande éclatée
-   * entre deux grossistes, si l’un réussit et l’autre échoué, il faut pouvoir
-   * réessayer uniquement celui qui a échoué. Sinon le rattrapage considère la
-   * commande comme transmise et l’article manquant n’est jamais commande.
-   */
-  supplierOrders: SupplierOrderRecord[];
   trackingNumber: string | null;
   carrier: string | null;
 
   /** Journal d’événements : indispensable pour diagnostiquer sans base de données. */
   events: { at: string; type: string; détail?: string }[];
-  /** Nombre de tentatives de transmission au fournisseur. */
-  fulfillmentAttempts: number;
 }
 
 export interface OrderStore {
   get(ref: string): Promise<Order | null>;
   save(order: Order): Promise<void>;
   /**
-   * Verrou d’idempotence. Renvoie `true` si le verrou est obtenu,
-   * `false` s’il était déjà pris. Protège la transmission au fournisseur :
-   * un double clic sur « virement reçu », ou un rattrapage qui croise une
-   * confirmation manuelle, expédierait la commande deux fois.
+   * Verrou d’idempotence. Renvoie `true` si le verrou est obtenu, `false`
+   * s’il était déjà pris. Sert aux envois d’e-mails : un double clic sur
+   * « virement reçu » ne doit pas écrire deux fois au client.
    */
   acquireLock(key: string, ttlSeconds: number): Promise<boolean>;
   /**
@@ -130,6 +117,4 @@ export interface OrderStore {
    * plus récente à la plus ancienne.
    */
   listRecent(limit: number): Promise<Order[]>;
-  /** Commandes à réessayer (transmission en échec). */
-  listFailed(limit: number): Promise<Order[]>;
 }

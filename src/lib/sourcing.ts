@@ -1,7 +1,7 @@
 /**
  * Données d'approvisionnement — SERVEUR UNIQUEMENT.
  *
- * Contient les prix d'achat et les références fournisseur. Ces informations
+ * Contient les prix d'achat et les références grossiste. Ces informations
  * ne doivent jamais arriver dans le bundle navigateur : un concurrent qui lit
  * vos coûts d'achat connaît votre marge et votre fournisseur.
  *
@@ -23,12 +23,10 @@ import { euros, type Cents } from './money';
 import { products, getProductById } from './catalog';
 
 export interface SourcingLine {
-  /** Référence du produit chez le fournisseur, transmise telle quelle à sa commande. */
+  /** Référence du produit chez le grossiste : ce qu'on écrit sur le bon de commande. */
   supplierSku: string;
   /** Prix d'achat unitaire HT, port exclu. */
   costNet: Cents;
-  /** Identifiant du fournisseur (cf. `suppliers/`). */
-  supplier: string;
   /** Délai de préparation annoncé par le fournisseur, en jours ouvrés. */
   leadTimeDays: number;
   /** Coût du transport amont payé au fournisseur, par unité. */
@@ -49,27 +47,27 @@ export interface SourcingLine {
  * prix d'achat moyen.
  */
 export const sourcing: Record<string, SourcingLine> = {
-  // PROVISOIRE — ETNA Luxe Anna 12EC. Ni la référence fournisseur, ni le prix
+  // PROVISOIRE — ETNA Luxe Anna 12EC. Ni la référence grossiste, ni le prix
   // d'achat, ni le transport amont ne sont négociés : ces trois nombres
   // doivent venir de votre tarif ETNA avant la première vente.
-  'anna-12': { supplierSku: 'ETNA-ANNA-12EC', costNet: euros(1450), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(62) },
+  'anna-12': { supplierSku: 'ETNA-ANNA-12EC', costNet: euros(1450), leadTimeDays: 3, inboundShipping: euros(62) },
   // PROVISOIRE — ETNA Vertigo Up. Même réserve que pour l'Anna : référence
-  // fournisseur, prix d'achat et transport amont restent à négocier.
-  'vertigo-up': { supplierSku: 'ETNA-VERTIGO-UP', costNet: euros(1520), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(64) },
+  // grossiste, prix d'achat et transport amont restent à négocier.
+  'vertigo-up': { supplierSku: 'ETNA-VERTIGO-UP', costNet: euros(1520), leadTimeDays: 3, inboundShipping: euros(64) },
   // PROVISOIRE — ETNA Vulcano Silenzio Up.
-  'vulcano-silenzio-up': { supplierSku: 'ETNA-VULCANO-SIL-UP', costNet: euros(1460), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(62) },
-  'aria-6': { supplierSku: 'IT-ARIA-06N', costNet: euros(742), supplier: 'eu-stoves', leadTimeDays: 2, inboundShipping: euros(48) },
-  'aria-9-canal': { supplierSku: 'IT-ARIA-09C', costNet: euros(1118), supplier: 'eu-stoves', leadTimeDays: 2, inboundShipping: euros(56) },
-  'vela-8-slim': { supplierSku: 'IT-VELA-08S', costNet: euros(1205), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(52) },
-  'aria-12-duo': { supplierSku: 'IT-ARIA-12D', costNet: euros(1376), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(64) },
-  'idro-12-compact': { supplierSku: 'IT-IDRO-12C', costNet: euros(1592), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(72) },
-  'idro-15': { supplierSku: 'IT-IDRO-15', costNet: euros(1854), supplier: 'eu-stoves', leadTimeDays: 3, inboundShipping: euros(78) },
-  'idro-20-ecs': { supplierSku: 'IT-IDRO-20S', costNet: euros(2310), supplier: 'eu-stoves', leadTimeDays: 4, inboundShipping: euros(88) },
-  'idro-24-plus': { supplierSku: 'IT-IDRO-24P', costNet: euros(2584), supplier: 'eu-stoves', leadTimeDays: 5, inboundShipping: euros(96) },
-  'kit-conduit-80': { supplierSku: 'PL-FLUE-80K4', costNet: euros(152), supplier: 'eu-flues', leadTimeDays: 2, inboundShipping: euros(18) },
-  'thermostat-wifi': { supplierSku: 'CN-THW-210', costNet: euros(52), supplier: 'eu-flues', leadTimeDays: 1, inboundShipping: euros(4) },
-  'aspirateur-cendres': { supplierSku: 'PL-ASH-20L', costNet: euros(34), supplier: 'eu-flues', leadTimeDays: 1, inboundShipping: euros(7) },
-  'granules-palette': { supplierSku: 'FR-PEL-DIN1T', costNet: euros(286), supplier: 'eu-pellets', leadTimeDays: 3, inboundShipping: euros(42) },
+  'vulcano-silenzio-up': { supplierSku: 'ETNA-VULCANO-SIL-UP', costNet: euros(1460), leadTimeDays: 3, inboundShipping: euros(62) },
+  'aria-6': { supplierSku: 'IT-ARIA-06N', costNet: euros(742), leadTimeDays: 2, inboundShipping: euros(48) },
+  'aria-9-canal': { supplierSku: 'IT-ARIA-09C', costNet: euros(1118), leadTimeDays: 2, inboundShipping: euros(56) },
+  'vela-8-slim': { supplierSku: 'IT-VELA-08S', costNet: euros(1205), leadTimeDays: 3, inboundShipping: euros(52) },
+  'aria-12-duo': { supplierSku: 'IT-ARIA-12D', costNet: euros(1376), leadTimeDays: 3, inboundShipping: euros(64) },
+  'idro-12-compact': { supplierSku: 'IT-IDRO-12C', costNet: euros(1592), leadTimeDays: 3, inboundShipping: euros(72) },
+  'idro-15': { supplierSku: 'IT-IDRO-15', costNet: euros(1854), leadTimeDays: 3, inboundShipping: euros(78) },
+  'idro-20-ecs': { supplierSku: 'IT-IDRO-20S', costNet: euros(2310), leadTimeDays: 4, inboundShipping: euros(88) },
+  'idro-24-plus': { supplierSku: 'IT-IDRO-24P', costNet: euros(2584), leadTimeDays: 5, inboundShipping: euros(96) },
+  'kit-conduit-80': { supplierSku: 'PL-FLUE-80K4', costNet: euros(152), leadTimeDays: 2, inboundShipping: euros(18) },
+  'thermostat-wifi': { supplierSku: 'CN-THW-210', costNet: euros(52), leadTimeDays: 1, inboundShipping: euros(4) },
+  'aspirateur-cendres': { supplierSku: 'PL-ASH-20L', costNet: euros(34), leadTimeDays: 1, inboundShipping: euros(7) },
+  'granules-palette': { supplierSku: 'FR-PEL-DIN1T', costNet: euros(286), leadTimeDays: 3, inboundShipping: euros(42) },
 };
 
 /** Coût d'achat marchandise d'un produit, HT, transport amont exclu. */
@@ -99,16 +97,6 @@ export function grossMarginOf(productId: string, vatRate = 0.2): Cents {
   if (!product) throw new Error(`produit inconnu : ${productId}`);
   const netRevenue = Math.round(product.price / (1 + vatRate));
   return netRevenue - landedCostOf(productId);
-}
-
-/** Lignes à transmettre au fournisseur pour une quantité donnée. */
-export function explodeToSupplierLines(
-  productId: string,
-  quantity: number,
-): { supplierSku: string; supplier: string; quantity: number; productId: string }[] {
-  const line = sourcing[productId];
-  if (!line) throw new Error(`aucun coût d’achat défini pour « ${productId} »`);
-  return [{ supplierSku: line.supplierSku, supplier: line.supplier, quantity, productId }];
 }
 
 /** Délai de préparation le plus long de la commande — base de la date annoncée. */

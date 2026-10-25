@@ -36,7 +36,7 @@ sanction ou à une perte d'argent s'ils sont ignorés.
       puissances et des classes énergétiques inventés, et le signalent en tête
       de page. Vendre un appareil de chauffage sur des caractéristiques
       inventées est une pratique commerciale trompeuse.
-- [ ] **Bloquant — Trouver un vrai fournisseur.** Les coûts dans
+- [ ] **Bloquant — Trouver un vrai grossiste.** Les coûts dans
       `src/lib/sourcing.ts` sont des hypothèses. Toute la rentabilité dépend de
       ces nombres : remplacez-les par vos tarifs négociés.
 - [ ] **Exiger un entrepôt européen.** C'est ce qui permet 2 à 4 jours de
@@ -70,21 +70,30 @@ sanction ou à une perte d'argent s'ils sont ignorés.
       virement » à « confirmée » est manuel, par construction. Une commande
       payée que personne ne regarde est une vente perdue, et un client qui a
       viré son argent sans nouvelle devient un litige.
-- [ ] **Vérifier le domaine dans Resend** (SPF, DKIM). Sans cela, les
-      confirmations partent en courrier indésirable.
-- [ ] **Renseigner `OPS_ALERT_EMAIL`.** C'est par là qu'arrivent les incidents.
-- [ ] **Générer `CRON_SECRET` et `SUPPLIER_WEBHOOK_SECRET`**
-      (`openssl rand -hex 32`).
+- [ ] **Bloquant — Configurer le SMTP** (`SMTP_HOST`, `SMTP_USER`,
+      `SMTP_PASSWORD`). Sans cela, aucun e-mail ne part : le client n'a ni RIB
+      ni référence, et il paie sans que vous puissiez rapprocher le virement.
+      Avec Gmail, il faut un **mot de passe d'application**, pas le mot de
+      passe du compte.
+- [ ] **Faire en sorte que `EMAIL_FROM` soit acceptée par le serveur SMTP.**
+      Avec Gmail, ce doit être l'adresse de `SMTP_USER`. Avec un domaine à
+      vous, publiez SPF et DKIM, sinon les messages partent en courrier
+      indésirable.
+- [ ] **Renseigner `OPS_ALERT_EMAIL`.** C'est par là qu'arrivent les nouvelles
+      commandes et les virements déclarés par les clients.
 - [ ] **Remplacer les visuels.** Déposez les photos dans
       `public/img/products/<id-produit>/` puis lancez `npm run media:scan` ;
       les illustrations vectorielles s'effacent d'elles-mêmes. Minimum 600 px
       de côté, sinon le fichier est écarté et signalé. État actuel : **1 fiche
       sur 13** a ses photographies (ETNA Luxe Anna 12EC).
-- [ ] **Faire une commande de test réelle**, en cartes de test puis en
-      conditions réelles avec un petit montant. Vérifiez : confirmation reçue,
-      commande transmise, suivi affiché.
-- [ ] **Tester un échec fournisseur** (clé d'API invalide) et vérifier que
-      l'alerte arrive et que le rattrapage reprend la commande.
+- [ ] **Faire une commande de test réelle**, avec un vrai virement de petit
+      montant depuis un autre compte. Vérifiez les quatre étapes : e-mail avec
+      le RIB reçu, commande visible dans /admin, confirmation reçue après le
+      clic « virement reçu », avis d'expédition reçu après « marquer en
+      route ».
+- [ ] **Tester un échec d'envoi d'e-mail** (mot de passe SMTP volontairement
+      faux) et vérifier que /admin affiche « la confirmation n'a pas pu être
+      envoyée » au lieu de laisser croire le client prévenu.
 - [ ] **Passer `NEXT_PUBLIC_ALLOW_INDEXING` à `true`** — en dernier, une fois
       tout le reste fait.
 

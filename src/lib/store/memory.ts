@@ -31,10 +31,5 @@ export function createMemoryStore(): OrderStore {
         .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
         .slice(0, limit);
     },
-    async listFailed(limit) {
-      return [...orders.values()]
-        .filter((o) => o.status === 'fulfillment_failed')
-        .slice(0, limit);
-    },
   };
 }
