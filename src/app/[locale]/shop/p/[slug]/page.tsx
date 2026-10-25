@@ -207,7 +207,11 @@ export default async function ProductPage({
                 quantity: dict.common.quantity,
                 add: dict.common.addToCart,
                 added: dict.common.added,
+                capped: dict.common.addedCapped,
+                atMax: dict.common.atMaxQuantity,
                 viewCart: dict.common.viewCart,
+                increase: dict.common.increaseQuantity,
+                decrease: dict.common.decreaseQuantity,
               }}
               variantPrices={variantPrices}
             />

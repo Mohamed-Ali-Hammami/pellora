@@ -9,7 +9,8 @@
  */
 
 import { useState } from 'react';
-import { useCart } from './cart-provider';
+import { useCart, type AddOutcome } from './cart-provider';
+import { interpolate } from '@/lib/format';
 import type { Product } from '@/lib/catalog.types';
 import type { Locale } from '@/lib/i18n/config';
 
@@ -21,25 +22,41 @@ interface Props {
     variant: string;
     quantity: string;
     add: string;
+    /** « {count} dans votre panier » — confirme la quantité RÉELLE. */
     added: string;
+    /** « Seulement {added} ajouté(s) : {max} au maximum par article. » */
+    capped: string;
+    /** « Maximum atteint : {max} par article. » */
+    atMax: string;
     viewCart: string;
+    increase: string;
+    decrease: string;
   };
   /** Prix unitaires déjà formatés par le serveur, indexés par id de variante. */
   variantPrices: Record<string, string>;
 }
 
 export function AddToCart({ product, locale, cartHref, labels, variantPrices }: Props) {
-  const { add } = useCart();
+  const { add, quantityOf, maxPerLine } = useCart();
   const [variantId, setVariantId] = useState<string | null>(product.variants[0]?.id ?? null);
   const [quantity, setQuantity] = useState(1);
-  const [justAdded, setJustAdded] = useState(false);
+  const [outcome, setOutcome] = useState<AddOutcome | null>(null);
+
+  const déjà = quantityOf(product.id, variantId);
+  const reste = Math.max(0, maxPerLine - déjà);
+  const plein = reste === 0;
 
   function onAdd() {
-    add(product.id, variantId, quantity);
-    setJustAdded(true);
-    // Le retour visuel s'efface de lui-même : un bouton qui reste « Ajouté »
-    // empêche de comprendre qu'on peut ajouter à nouveau.
-    window.setTimeout(() => setJustAdded(false), 2600);
+    /*
+     * On affiche ce que l'ajout a RÉELLEMENT produit, pas ce qui a été
+     * demandé. Demander trois exemplaires quand il n'en reste que deux en
+     * ajoutait deux, et le bouton répondait « Ajouté » : le client repartait
+     * en croyant en avoir trois.
+     */
+    setOutcome(add(product.id, variantId, quantity));
+    // Le retour s'efface de lui-même : un bouton qui reste figé sur sa
+    // confirmation empêche de comprendre qu'on peut ajouter à nouveau.
+    window.setTimeout(() => setOutcome(null), 5000);
   }
 
   return (
@@ -93,7 +110,7 @@ export function AddToCart({ product, locale, cartHref, labels, variantPrices }: 
               type="button"
               onClick={() => setQuantity((value) => Math.max(1, value - 1))}
               disabled={quantity <= 1}
-              aria-label="−"
+              aria-label={labels.decrease}
               className="px-3 py-2.5 text-lg leading-none text-ink-soft transition-colors hover:text-ink disabled:opacity-35"
             >
               −
@@ -102,19 +119,21 @@ export function AddToCart({ product, locale, cartHref, labels, variantPrices }: 
               id={`qty-${product.id}`}
               type="number"
               min={1}
-              max={5}
+              max={Math.max(1, reste)}
               value={quantity}
               onChange={(event) => {
                 const next = Number.parseInt(event.target.value, 10);
-                setQuantity(Number.isNaN(next) ? 1 : Math.min(5, Math.max(1, next)));
+                setQuantity(
+                  Number.isNaN(next) ? 1 : Math.min(Math.max(1, reste), Math.max(1, next)),
+                );
               }}
               className="tabular w-12 border-x border-line py-2.5 text-center text-sm font-semibold focus:outline-none"
             />
             <button
               type="button"
-              onClick={() => setQuantity((value) => Math.min(5, value + 1))}
-              disabled={quantity >= 5}
-              aria-label="+"
+              onClick={() => setQuantity((value) => Math.min(Math.max(1, reste), value + 1))}
+              disabled={quantity >= reste}
+              aria-label={labels.increase}
               className="px-3 py-2.5 text-lg leading-none text-ink-soft transition-colors hover:text-ink disabled:opacity-35"
             >
               +
@@ -122,18 +141,42 @@ export function AddToCart({ product, locale, cartHref, labels, variantPrices }: 
           </div>
         </div>
 
-        <button type="button" onClick={onAdd} className="btn-ember flex-1 min-w-[12rem]">
-          {justAdded ? labels.added : labels.add}
+        <button
+          type="button"
+          onClick={onAdd}
+          disabled={plein}
+          className="btn-ember flex-1 min-w-[12rem] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {labels.add}
         </button>
       </div>
 
-      {justAdded ? (
-        <p role="status" className="text-sm">
-          <a href={cartHref} className="font-semibold text-ember underline underline-offset-4">
-            {labels.viewCart}
-          </a>
-        </p>
-      ) : null}
+      {/*
+        Une seule zone de message, toujours au même endroit, annoncée aux
+        lecteurs d'écran. Trois cas, par ordre de priorité : ce qui vient de se
+        passer, puis l'impossibilité d'ajouter davantage.
+      */}
+      <div role="status" aria-live="polite" className="min-h-[2.75rem]">
+        {outcome ? (
+          <p className="rounded-lg border border-line bg-cream px-3 py-2 text-sm">
+            <span className={outcome.capped ? 'font-semibold text-[#6b4205]' : 'font-semibold'}>
+              {outcome.capped
+                ? interpolate(labels.capped, { added: outcome.added, max: outcome.max })
+                : interpolate(labels.added, { count: outcome.quantity })}
+            </span>{' '}
+            <a href={cartHref} className="text-ember underline underline-offset-4">
+              {labels.viewCart}
+            </a>
+          </p>
+        ) : plein ? (
+          <p className="rounded-lg border border-line bg-cream px-3 py-2 text-sm text-ink-soft">
+            {interpolate(labels.atMax, { max: maxPerLine })}{' '}
+            <a href={cartHref} className="text-ember underline underline-offset-4">
+              {labels.viewCart}
+            </a>
+          </p>
+        ) : null}
+      </div>
     </div>
   );
 }

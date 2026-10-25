@@ -29,7 +29,11 @@ const nl: Dictionary = {
 
   common: {
     addToCart: 'In winkelwagen',
-    added: 'Toegevoegd',
+    added: '{count} in uw winkelwagen',
+    addedCapped: 'Slechts {added} toegevoegd: het maximum is {max} per artikel.',
+    atMaxQuantity: 'Maximum bereikt: {max} per artikel.',
+    increaseQuantity: 'Aantal verhogen',
+    decreaseQuantity: 'Aantal verlagen',
     viewCart: 'Winkelwagen bekijken',
     continueShopping: 'Verder winkelen',
     from: 'Vanaf',

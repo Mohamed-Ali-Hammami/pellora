@@ -34,7 +34,11 @@ const fr = {
 
   common: {
     addToCart: 'Ajouter au panier',
-    added: 'Ajouté',
+    added: '{count} dans votre panier',
+    addedCapped: 'Nous n’en avons ajouté que {added} : le maximum est de {max} par article.',
+    atMaxQuantity: 'Maximum atteint : {max} par article.',
+    increaseQuantity: 'Augmenter la quantité',
+    decreaseQuantity: 'Diminuer la quantité',
     viewCart: 'Voir le panier',
     continueShopping: 'Continuer mes achats',
     from: 'À partir de',

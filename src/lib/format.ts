@@ -85,6 +85,15 @@ export function rangeOrMax(
 }
 
 /** Remplace les jetons `{clef}` d'un texte du dictionnaire. */
-export function interpolate(template: string, values: Record<string, string>): string {
-  return template.replace(/\{(\w+)\}/g, (match, key: string) => values[key] ?? match);
+export function interpolate(
+  template: string,
+  values: Record<string, string | number>,
+): string {
+  // Les nombres sont acceptés tels quels : obliger chaque appelant à les
+  // convertir n'ajoutait rien et finissait par produire des `String(x)`
+  // dispersés, dont certains oubliés.
+  return template.replace(/\{(\w+)\}/g, (match, key: string) => {
+    const value = values[key];
+    return value === undefined ? match : String(value);
+  });
 }

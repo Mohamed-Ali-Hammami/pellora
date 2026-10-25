@@ -29,7 +29,11 @@ const es: Dictionary = {
 
   common: {
     addToCart: 'Añadir al carrito',
-    added: 'Añadido',
+    added: '{count} en su carrito',
+    addedCapped: 'Solo hemos añadido {added}: el máximo es {max} por artículo.',
+    atMaxQuantity: 'Máximo alcanzado: {max} por artículo.',
+    increaseQuantity: 'Aumentar la cantidad',
+    decreaseQuantity: 'Disminuir la cantidad',
     viewCart: 'Ver el carrito',
     continueShopping: 'Seguir comprando',
     from: 'Desde',

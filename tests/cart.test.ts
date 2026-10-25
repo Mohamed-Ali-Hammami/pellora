@@ -1,13 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import {
-  priceCart,
-  profileFor,
-  deliveryWindow,
-  addBusinessDays,
-  CartError,
-  cartInputSchema,
-  MAX_QUANTITY_PER_LINE,
-} from '@/lib/cart';
+import { CartError, MAX_QUANTITY_PER_LINE, addBusinessDays, cartInputSchema, deliveryWindow, priceCart, profileFor, resultOfAdding } from '@/lib/cart';
 import { getProductById, unitPrice } from '@/lib/catalog';
 import { euros, splitVatInclusive } from '@/lib/money';
 import { amountToFreeShipping, freeShippingThreshold, ratesFor, zoneForCountry } from '@/lib/shipping';
@@ -229,5 +221,53 @@ describe('fenêtre de livraison', () => {
   it('ne bouge pas pour zéro jour', () => {
     const date = new Date('2026-01-05T10:00:00Z');
     expect(addBusinessDays(date, 0).getTime()).toBe(date.getTime());
+  });
+});
+
+describe('ce qu’un ajout produit réellement', () => {
+  /*
+   * Le défaut que ces contrôles verrouillent : le plafond par ligne écrêtait
+   * en silence. Demander trois exemplaires quand il en reste deux en ajoutait
+   * deux, et le bouton répondait « Ajouté » — le client repartait en croyant
+   * en avoir trois, et le découvrait au panier, ou pas du tout.
+   */
+  it('ajoute tout ce qui est demandé quand le plafond le permet', () => {
+    const r = resultOfAdding(0, 3);
+    expect(r.added).toBe(3);
+    expect(r.quantity).toBe(3);
+    expect(r.capped).toBe(false);
+  });
+
+  it('signale l’écrêtage et dit combien ont vraiment été ajoutés', () => {
+    const r = resultOfAdding(3, 3);
+    expect(r.quantity).toBe(MAX_QUANTITY_PER_LINE);
+    expect(r.added).toBe(MAX_QUANTITY_PER_LINE - 3);
+    expect(r.capped).toBe(true);
+  });
+
+  it('signale l’écrêtage même quand rien ne peut plus être ajouté', () => {
+    const r = resultOfAdding(MAX_QUANTITY_PER_LINE, 1);
+    expect(r.added).toBe(0);
+    expect(r.capped).toBe(true);
+  });
+
+  it('ne descend jamais sous un exemplaire demandé', () => {
+    expect(resultOfAdding(0, 0).requested).toBe(1);
+    expect(resultOfAdding(0, -4).requested).toBe(1);
+  });
+
+  it('ignore les fractions de quantité', () => {
+    expect(resultOfAdding(0, 2.7).added).toBe(2);
+  });
+
+  it('respecte le même plafond que le repricing serveur', () => {
+    // Si les deux divergent, le client voit une quantité que le serveur
+    // refuse, et la commande échoue au dernier écran.
+    const cart = priceCart({
+      lines: [{ productId: 'aria-6', variantId: 'noir', quantity: MAX_QUANTITY_PER_LINE }],
+      shippingCountry: 'FR',
+      locale: 'fr',
+    });
+    expect(cart.lines[0]?.quantity).toBe(resultOfAdding(0, 99).quantity);
   });
 });

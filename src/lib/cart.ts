@@ -24,6 +24,39 @@ import type { Product, ProductVariant } from './catalog.types';
 
 /** Quantité maximale par ligne — limite les tests de fraude à la carte. */
 export const MAX_QUANTITY_PER_LINE = 5;
+
+/**
+ * Ce qu'un ajout au panier produit réellement.
+ *
+ * Règle pure, extraite du composant pour deux raisons : elle est testable
+ * sans navigateur, et elle vit à côté de `priceCart`, qui applique le même
+ * plafond côté serveur. Les deux doivent dire la même chose — sinon le client
+ * voit une quantité que le serveur refuse.
+ */
+export interface AddResult {
+  requested: number;
+  added: number;
+  quantity: number;
+  capped: boolean;
+  max: number;
+}
+
+export function resultOfAdding(current: number, requested: number): AddResult {
+  const demandé = Math.max(1, Math.floor(requested));
+  const après = Math.min(MAX_QUANTITY_PER_LINE, current + demandé);
+  const ajouté = après - current;
+
+  return {
+    requested: demandé,
+    added: ajouté,
+    quantity: après,
+    // Écrêté dès qu'on obtient moins que demandé, y compris zéro quand la
+    // ligne est déjà pleine.
+    capped: ajouté < demandé,
+    max: MAX_QUANTITY_PER_LINE,
+  };
+}
+
 export const MAX_LINES = 20;
 
 /** Ce que le client est autorisé à envoyer : des ids et des quantités, rien de plus. */

@@ -39,6 +39,9 @@ interface Props {
     emptyCta: string;
     quantity: string;
     remove: string;
+    increase: string;
+    decrease: string;
+    atMax: string;
     country: string;
     rate: string;
     subtotal: string;
@@ -57,7 +60,7 @@ interface Props {
 }
 
 export function CartView({ locale, shopHref, checkoutHref, canceled, countryNames, labels }: Props) {
-  const { resolved, subtotal, profile, setQuantity, remove, loading } = useCart();
+  const { resolved, subtotal, profile, setQuantity, remove, loading, maxPerLine } = useCart();
   const [country, setCountry] = useState('FR');
   const [rateId, setRateId] = useState<string | null>(null);
 
@@ -132,11 +135,20 @@ export function CartView({ locale, shopHref, checkoutHref, canceled, countryName
 
                   <div className="mt-3 flex items-center gap-4">
                     <div className="flex items-center rounded-lg border border-line">
+                      {/*
+                        Désactivé à 1 plutôt que de supprimer la ligne. Un
+                        « − » qui fait disparaître l'article sans prévenir est
+                        une suppression déguisée en décrément ; « Retirer », à
+                        côté, le fait explicitement. La fiche produit désactive
+                        déjà son « − » à 1 : les deux se comportent enfin
+                        pareil.
+                      */}
                       <button
                         type="button"
                         onClick={() => setQuantity(item.productId, item.variantId, item.quantity - 1)}
-                        aria-label="−"
-                        className="px-2.5 py-1.5 text-ink-soft transition-colors hover:text-ink"
+                        disabled={item.quantity <= 1}
+                        aria-label={labels.decrease}
+                        className="px-2.5 py-1.5 text-ink-soft transition-colors hover:text-ink disabled:opacity-35"
                       >
                         −
                       </button>
@@ -144,13 +156,19 @@ export function CartView({ locale, shopHref, checkoutHref, canceled, countryName
                       <button
                         type="button"
                         onClick={() => setQuantity(item.productId, item.variantId, item.quantity + 1)}
-                        disabled={item.quantity >= 5}
-                        aria-label="+"
+                        disabled={item.quantity >= maxPerLine}
+                        aria-label={labels.increase}
                         className="px-2.5 py-1.5 text-ink-soft transition-colors hover:text-ink disabled:opacity-35"
                       >
                         +
                       </button>
                     </div>
+
+                    {item.quantity >= maxPerLine ? (
+                      <span className="text-xs text-ink-soft">
+                        {interpolate(labels.atMax, { max: maxPerLine })}
+                      </span>
+                    ) : null}
 
                     <button
                       type="button"
