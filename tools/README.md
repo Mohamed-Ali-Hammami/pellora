@@ -141,3 +141,60 @@ python3 tools/tests/test_collect.py
 24 vérifications, dont la cadence **mesurée au chronomètre** contre un vrai
 serveur HTTP local : un régulateur qu'on n'a pas chronométré n'est pas un
 régulateur, c'est une intention.
+
+## Rendu navigateur — `render.mjs` + `browser.py`
+
+Quand `scrape.py` ne rend que `titre : Chargement…` et aucun prix, c'est que la
+page ne contient **vraiment rien** avant l'exécution du JavaScript.
+
+### Installation, une fois
+
+```bash
+npm install playwright
+npx playwright install chromium
+```
+
+### Usage
+
+```bash
+python3 tools/browser.py "https://…"                              # vérifier une page
+python3 tools/collect.py --urls urls/…txt --navigateur --rps 1    # toute la collecte
+python3 tools/collect.py --urls … --navigateur --selecteur '[data-testid="price"]'
+python3 tools/collect.py --urls … --navigateur --fenetre          # voir ce qui se passe
+```
+
+### Ce que ça fait, et ce que ça ne fait pas
+
+Ça exécute le JavaScript, accepte la bannière de consentement (Didomi,
+OneTrust et les formes courantes) et garde une session d'une page à l'autre.
+
+**Ce n'est pas un outil pour contourner une protection anti-robot.** Si un site
+refuse délibérément le trafic automatisé, un navigateur piloté n'y change
+rien : il s'annonce comme tel. Le script exécute la page, il ne se déguise pas.
+
+### Trois choix qui changent le résultat
+
+- **profil persistant** — cookies et consentement survivent d'une exécution à
+  l'autre : moins de requêtes, pas de bannière à recliquer ;
+- **images, polices et vidéos bloquées** — on cherche le HTML, pas les octets
+  des visuels dont on garde les URL. Rendu 3× plus rapide, 10× moins de trafic ;
+- **un seul navigateur pour toute la collecte** — l'ouvrir coûte 1 à 2 s et
+  100 Mo ; le faire par page serait plus lent que le réseau.
+
+### La limite de débit s'applique quand même
+
+Le piège à connaître. Le régulateur de `collect.py` fonctionne en remplaçant
+`urllib.request.urlopen`, et **Playwright ne passe pas par urllib**. Un rendu
+navigateur échapperait donc à la limite. `browser.py` appelle donc
+`regulateur.attends(url)` explicitement avant chaque navigation.
+
+Mesuré, sur 6 pages JS à 1 req/s :
+
+```
+127.0.0.1:8097    7 nav en 6.1 s  (7 autorisées : rafale 1 + 1.00/s)  conforme
+               +  6 requête(s) émise(s) par les pages → 13 au total, 2.13/s réel
+```
+
+**Lis la deuxième ligne.** Le seau régule les *navigations* ; ce que la page
+demande ensuite d'elle-même s'y ajoute. Ici le trafic réel est le double du
+débit réglé. Règle `--rps` en conséquence.

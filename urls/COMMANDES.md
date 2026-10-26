@@ -25,9 +25,22 @@ Coupe au bout de 3 lignes avec Ctrl-C. Le journal garde ce qui est fait.
 Regarde `collect/donnees.json` : si `titre`, `prix` et `images` sont remplis,
 c'est bon.
 
-**Si tout échoue en 403**, leur protection anti-robot bloque. Baisse à
-`--rps 0.3` et réessaie ; si ça bloque encore, il faut un navigateur — dis-le
-moi.
+**Si ça échoue, deux causes différentes :**
+
+- **pages vides** (`titre : Chargement…`, pas de prix) → le contenu n'arrive
+  qu'après le JavaScript. Ajoute `--navigateur` :
+
+  ```powershell
+  npm install playwright
+  npx playwright install chromium
+
+  python tools/browser.py "<une-url>"
+  python tools/collect.py --urls urls/manomano-catalogue-12.txt --navigateur --rps 1 --dossier collect
+  ```
+
+- **403 systématique** → le site refuse le trafic automatisé. Baisse à
+  `--rps 0.3`. Un navigateur piloté n'y changera rien : il s'annonce comme
+  tel, et je ne le déguise pas. À ce stade, c'est le site qui dit non.
 
 ## 2. Les 12 fiches du catalogue — à faire en premier
 

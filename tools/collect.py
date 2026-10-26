@@ -95,6 +95,11 @@ class Hote:
         # melangerait les hotes et les periodes d'inactivite.
         self.premiere: float | None = None
         self.derniere: float = 0.0
+        # Requetes emises par les PAGES elles-memes lors d'un rendu
+        # navigateur. Comptees a part : le seau ne les regule pas, mais les
+        # cacher laisserait croire a un debit quatre fois plus faible que le
+        # debit reel.
+        self.sous_requetes = 0
 
 
 class Regulateur:
@@ -228,6 +233,13 @@ class Regulateur:
     def pardonne(self, h: Hote) -> None:
         h.refus_consecutifs = 0
 
+    def note_sous_requetes(self, h: Hote, combien: int) -> None:
+        """Requetes qu'une page a emises d'elle-meme pendant son rendu."""
+        if combien > 1:
+            # La navigation elle-meme est deja comptee dans `requetes` : on
+            # n'ajoute que ce qui s'y ajoute.
+            h.sous_requetes += combien - 1
+
     def rapport(self) -> list[str]:
         """Pour chaque hote : ce qui a ete envoye, et ce qui etait autorise.
 
@@ -251,10 +263,16 @@ class Regulateur:
             autorise = int(h.burst + h.rps * fenetre)
             verdict = "conforme" if h.requetes <= autorise else "DÉPASSEMENT"
             lignes.append(
-                f"  {nom[:34]:34} {h.requetes:4} req en {fenetre:5.1f} s  "
+                f"  {nom[:34]:34} {h.requetes:4} nav en {fenetre:5.1f} s  "
                 f"({autorise} autorisées : rafale {h.burst:.0f} + {h.rps:.2f}/s)  "
                 f"{h.refus} refus  {verdict}"
             )
+            if h.sous_requetes:
+                total = h.requetes + h.sous_requetes
+                lignes.append(
+                    f"  {'':34} + {h.sous_requetes:4} requête(s) émise(s) par les pages "
+                    f"→ {total} au total, soit {total / max(fenetre, 0.001):.2f}/s réel"
+                )
         return lignes
 
 
@@ -370,16 +388,35 @@ def moissonne(scrape, url: str, motif: re.Pattern[str]) -> dict:
     return {"ok": True, "url": url, "liens": trouves}
 
 
-def une_page(scrape, url: str, dossier_images: Path | None, max_images: int) -> dict:
-    """Une page : extraction, puis visuels si demandes."""
-    page, raison = scrape.recupere(url, essais=2)
+def une_page(
+    scrape,
+    url: str,
+    dossier_images: Path | None,
+    max_images: int,
+    navigateur=None,  # noqa: ANN001 — browser.Navigateur
+) -> dict:
+    """Une page : extraction, puis visuels si demandes.
+
+    Avec un navigateur, le HTML vient du rendu ; sans, de la lecture directe.
+    La suite est identique — c'est tout l'interet : `analyse()` ne sait pas
+    d'ou vient le HTML qu'on lui donne.
+    """
+    if navigateur is not None:
+        page, info = navigateur.recupere(url)
+        raison = info.get("raison")
+        rendu = {"rendu": "navigateur", "ms": info.get("ms"), "statut": info.get("statut")}
+    else:
+        page, raison = scrape.recupere(url, essais=2)
+        rendu = {"rendu": "html"}
+
     if page is None:
-        return {"ok": False, "url": url, "raison": raison or "inconnu"}
+        return {"ok": False, "url": url, "raison": raison or "inconnu", **rendu}
 
     res = scrape.analyse(page, url)
     sortie: dict = {
         "ok": True,
         "url": url,
+        **rendu,
         "titre": res.get("titre"),
         "prix": res.get("prix"),
         "devise": res.get("devise"),
@@ -442,6 +479,15 @@ def main() -> int:
     debit.add_argument("--ignore-robots", action="store_true",
                        help="ne pas lire robots.txt (déconseillé)")
 
+    nav = p.add_argument_group("rendu navigateur")
+    nav.add_argument("--navigateur", action="store_true",
+                     help="rendre les pages dans un vrai navigateur (Playwright). "
+                          "Nécessaire quand le contenu n'arrive qu'après le JavaScript.")
+    nav.add_argument("--attente", default="reseau", choices=("dom", "reseau"),
+                     help="jusqu'où attendre : « dom » plus rapide, « reseau » plus sûr (défaut)")
+    nav.add_argument("--selecteur", help="attendre l'apparition de cet élément CSS avant de lire")
+    nav.add_argument("--fenetre", action="store_true", help="afficher le navigateur (diagnostic)")
+
     ou = p.add_argument_group("sortie")
     ou.add_argument("--dossier", default="collect", help="dossier de travail (défaut « collect »)")
     ou.add_argument("--reprendre", action="store_true", help="sauter ce qui est déjà au journal")
@@ -475,8 +521,29 @@ def main() -> int:
 
     signal.signal(signal.SIGINT, sur_interruption)
 
+    # Le navigateur est ouvert UNE fois, avec le regulateur : Playwright ne
+    # passant pas par urllib, c'est `browser.Navigateur` qui le consulte
+    # explicitement. Sans cela, le rendu echapperait a la limite de debit.
+    navigateur = None
+    if args.navigateur:
+        browser = importe("browser")
+        try:
+            navigateur = browser.Navigateur(
+                regulateur=regulateur,
+                attente=args.attente,
+                selecteur=args.selecteur,
+                fenetre=args.fenetre,
+            )
+            navigateur.ouvre()
+        except browser.NavigateurIndisponible as erreur:
+            print(f"Navigateur indisponible : {erreur}")
+            return 1
+
     print()
     print(f"  débit        {args.rps} req/s par hôte, rafale {args.burst}")
+    if navigateur is not None:
+        print(f"  rendu        navigateur, attente « {args.attente} »"
+              + (f", sélecteur {args.selecteur}" if args.selecteur else ""))
     print(f"  concurrence  {args.concurrence} hôte(s) en parallèle, 1 appel à la fois par hôte")
     print(f"  robots.txt   {'ignoré' if args.ignore_robots else 'respecté'}")
     print(f"  journal      {journal.chemin}" + (f" ({len(journal.deja)} déjà fait)" if journal.deja else ""))
@@ -553,7 +620,7 @@ def main() -> int:
         faits = 0
         with ThreadPoolExecutor(max_workers=args.concurrence) as pool:
             taches = {
-                pool.submit(une_page, scrape, u, dossier_images, args.max_images): u
+                pool.submit(une_page, scrape, u, dossier_images, args.max_images, navigateur): u
                 for u in a_faire
             }
             for tache in as_completed(taches):
@@ -641,6 +708,9 @@ def main() -> int:
         + "\n",
         encoding="utf-8",
     )
+
+    if navigateur is not None:
+        navigateur.ferme()
 
     echecs = [l for l in pages if not l.get("ok")]
     print()
