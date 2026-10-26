@@ -95,3 +95,49 @@ python3 tools/tests/test_images.py
 octet par octet), parseurs des quatre moteurs sur réponses enregistrées, et
 l'enchaînement automatique. A trouvé un bug : l'en-tête WebP VP8X fait
 exactement 30 octets, et la borne était `> 30`.
+
+## `collect.py` — l'orchestrateur
+
+```bash
+python3 tools/collect.py --urls urls.txt
+python3 tools/collect.py --urls urls.txt --images-manquantes
+python3 tools/collect.py --requetes mots-cles.txt --rps 0.5
+python3 tools/collect.py --urls urls.txt --rps 1 --concurrence 4 --reprendre
+```
+
+Pilote `scrape.py` et `images.py`, écrit `collect/donnees.json`, les visuels
+dans `collect/images/<sku>/`, et un journal reprenable.
+
+### Comment la limite de débit est réellement tenue
+
+Le point de passage obligé de tout le trafic des deux scripts est
+`urllib.request.urlopen`. L'orchestrateur le **remplace une fois** au démarrage
+par une version régulée. Les deux scripts restent inchangés et ne savent rien
+de tout ça : il n'existe donc **aucun chemin** par lequel une requête pourrait
+échapper à la limite — pas même une requête ajoutée plus tard dans `scrape.py`.
+
+Ce qui est appliqué, **par hôte** et non globalement :
+
+| | |
+| - | - |
+| **Seau à jetons** | `--rps` en régime établi, `--burst` d'avance au démarrage. Un seau, pas un `sleep` : ça autorise une rafale courte après une période calme, ce qu'un serveur tolère le mieux. |
+| **Un appel à la fois** | un verrou par hôte. La concurrence joue **entre** hôtes, jamais sur un seul. |
+| **robots.txt** | lu une fois par hôte. `Disallow` écarte l'URL ; `Crawl-delay` **écrase** `--rps` s'il est plus lent — le site a le dernier mot, mais un `Crawl-delay` plus rapide ne nous accélère pas. |
+| **429 / 503** | `Retry-After` lu et respecté. Sans en-tête, la pause double à chaque refus consécutif, plafonnée à 5 min. Un succès remet le compteur à zéro. |
+
+### Reprise
+
+Chaque résultat est ajouté au journal JSONL **dès qu'il arrive**. Une
+interruption — Ctrl-C, coupure, machine éteinte — ne perd que la page en cours,
+et `--reprendre` saute tout ce qui est déjà au journal. Une ligne tronquée par
+une coupure est ignorée sans casser la reprise.
+
+### Test
+
+```bash
+python3 tools/tests/test_collect.py
+```
+
+24 vérifications, dont la cadence **mesurée au chronomètre** contre un vrai
+serveur HTTP local : un régulateur qu'on n'a pas chronométré n'est pas un
+régulateur, c'est une intention.

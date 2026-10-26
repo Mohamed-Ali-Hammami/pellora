@@ -10,3 +10,9 @@ next-env.d.ts
 .DS_Store
 coverage/
 .vercel
+
+# Python (tools/)
+__pycache__/
+*.pyc
+scraped/
+collect/
