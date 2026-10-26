@@ -97,6 +97,16 @@ class Navigateur:
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
+                # UTF-8 EXPLICITE, et ce n'est pas un detail de confort.
+                #
+                # Sans cette ligne, Python decode la sortie de l'enfant avec
+                # l'encodage de la machine : cp1252 sous Windows. Le JSON qui
+                # transporte le HTML est en UTF-8, et la premiere page
+                # contenant un caractere accentue leve UnicodeDecodeError —
+                # « charmap codec can't decode byte 0x8d ». La page est perdue
+                # pour une raison qui n'a rien a voir avec le site.
+                encoding="utf-8",
+                errors="replace",
                 bufsize=1,
                 cwd=str(ICI.parent),
                 env={**os.environ},
@@ -169,8 +179,13 @@ class Navigateur:
         # que le rendu entre dans le budget de l'hote.
         hote = None
         if self.regulateur is not None:
-            if not self.regulateur.autorise(url):
-                return None, {"ok": False, "url": url, "raison": "robots.txt interdit"}
+            permis, raison = (
+                self.regulateur.verdict(url)
+                if hasattr(self.regulateur, "verdict")
+                else (self.regulateur.autorise(url), None)
+            )
+            if not permis:
+                return None, {"ok": False, "url": url, "raison": raison or "robots.txt interdit"}
             hote = self.regulateur.attends(url)
 
         with self._verrou:

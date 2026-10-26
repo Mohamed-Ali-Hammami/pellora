@@ -38,9 +38,25 @@ c'est bon.
   python tools/collect.py --urls urls/manomano-catalogue-12.txt --navigateur --rps 1 --dossier collect
   ```
 
-- **403 systématique** → le site refuse le trafic automatisé. Baisse à
-  `--rps 0.3`. Un navigateur piloté n'y changera rien : il s'annonce comme
-  tel, et je ne le déguise pas. À ce stade, c'est le site qui dit non.
+- **403 systématique, ou `robots.txt inaccessible (HTTP 403)`** → le site
+  refuse le trafic automatisé, et il le refuse **jusque sur son robots.txt**.
+  Un navigateur piloté n'y changera rien : il s'annonce comme tel.
+
+  Si la réponse contient `_cf_chl_opt`, c'est une page de défi Cloudflare,
+  conçue pour n'être franchie que par un vrai visiteur. Je ne fabrique pas
+  d'outil pour la contourner.
+
+  **Ce qui reste et qui marche** : enregistre les pages depuis ton propre
+  navigateur (Ctrl-S, « page web complète ») dans un dossier, puis analyse-les
+  hors ligne — aucune requête, aucun blocage possible :
+
+  ```powershell
+  python tools/scrape.py --html-dir mes-pages --images
+  python scripts/scrape_manomano.py --html-dir mes-pages
+  ```
+
+  Le second lit le bloc `__NEXT_DATA__` et sort en plus le **poids réel**,
+  l'**EAN** et la référence fabricant.
 
 ## 2. Les 12 fiches du catalogue — à faire en premier
 

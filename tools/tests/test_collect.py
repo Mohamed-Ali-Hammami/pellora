@@ -247,6 +247,43 @@ h = r.hote(base.replace("http://", ""))
 verifie("un Crawl-delay plus RAPIDE ne nous accélère pas", abs(h.rps - 0.2) < 0.01,
         f"{h.rps:.2f} req/s, --rps conservé")
 
+print("\nrobots.txt refusé : règle ou illisible ?")
+Serveur.robots = "User-agent: *\nAllow: /\n"
+serveur3, base3 = demarre()
+
+
+class Refus(Serveur):
+    """Un hôte qui refuse jusqu'à son robots.txt, comme derrière un filtre."""
+
+    def do_GET(self) -> None:  # noqa: N802
+        self.send_response(403)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
+
+
+serveur4 = ThreadingHTTPServer(("127.0.0.1", 0), Refus)
+threading.Thread(target=serveur4.serve_forever, daemon=True).start()
+base4 = f"http://127.0.0.1:{serveur4.server_address[1]}"
+
+r = neuf(rps=100.0, burst=100.0, robots=True)
+permis, raison = r.verdict(f"{base4}/p/1")
+verifie("un 403 sur robots.txt bloque quand même", permis is False)
+verifie(
+    "et la raison dit « inaccessible », pas « interdit ce chemin »",
+    raison is not None and "inaccessible" in raison and "403" in raison,
+    str(raison),
+)
+
+Serveur.robots = "User-agent: *\nDisallow: /prive/\n"
+r = neuf(rps=100.0, burst=100.0, robots=True)
+permis, raison = r.verdict(f"{base3}/prive/x")
+verifie("une vraie règle bloque aussi", permis is False)
+verifie(
+    "et la raison dit « ce chemin »",
+    raison is not None and "ce chemin" in raison,
+    str(raison),
+)
+
 Serveur.robots = "User-agent: *\nAllow: /\n"
 
 # ═════════════ la greffe attrape aussi scrape.py ═════════════
@@ -288,6 +325,8 @@ with tempfile.TemporaryDirectory() as tmp:
 urllib.request.urlopen = _ORIGINAL  # type: ignore[assignment]
 serveur.shutdown()
 serveur2.shutdown()
+serveur3.shutdown()
+serveur4.shutdown()
 
 print()
 if echecs:

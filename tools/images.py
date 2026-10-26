@@ -342,6 +342,15 @@ def nom_dossier(requete: str) -> str:
     return re.sub(r"[^A-Za-z0-9._-]+", "-", requete).strip("-").lower()[:80] or "recherche"
 
 
+def console_en_utf8() -> None:
+    """La console Windows est en cp1252 : un accent la ferait planter."""
+    for flux in (sys.stdout, sys.stderr):
+        try:
+            flux.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+        except (AttributeError, ValueError, OSError):
+            pass
+
+
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("requete", nargs="*", help="les mots-clés à chercher")
@@ -355,6 +364,7 @@ def main() -> int:
     p.add_argument("--sans-telechargement", action="store_true", help="lister les URL sans rien écrire")
     p.add_argument("--json", action="store_true", help="JSON sur la sortie standard")
     args = p.parse_args()
+    console_en_utf8()
 
     requetes: list[str] = [" ".join(args.requete)] if args.requete else []
     if args.depuis_json:

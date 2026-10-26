@@ -703,6 +703,15 @@ def telecharge(urls: list[str], dossier: Path, maximum: int, delai: float) -> in
 # ═══════════════════════════ principal ═══════════════════════════
 
 
+def console_en_utf8() -> None:
+    """La console Windows est en cp1252 : un accent la ferait planter."""
+    for flux in (sys.stdout, sys.stderr):
+        try:
+            flux.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+        except (AttributeError, ValueError, OSError):
+            pass
+
+
 def main() -> int:
     p = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
@@ -716,6 +725,7 @@ def main() -> int:
     p.add_argument("--delai", type=float, default=1.5, help="secondes entre deux pages")
     p.add_argument("--json", action="store_true", help="afficher le JSON brut sur la sortie standard")
     args = p.parse_args()
+    console_en_utf8()
 
     cibles: list[tuple[str, str | None]] = [(u, None) for u in args.url]
     if args.fichier:

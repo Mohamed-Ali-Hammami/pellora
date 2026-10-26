@@ -62,6 +62,25 @@ from pathlib import Path
 ICI = Path(__file__).resolve().parent
 
 
+def console_en_utf8() -> None:
+    """Force la sortie en UTF-8, sans jamais faire echouer l'execution.
+
+    La console Windows est en cp1252 par defaut. Un « ✓ », un « é » ou un
+    nom de produit espagnol y leve UnicodeEncodeError, et le programme meurt
+    sur l'affichage d'un resultat qu'il avait pourtant obtenu. `errors` a
+    « replace » vaut mieux que ca : un caractere remplace par « ? » se lit
+    encore, un plantage non.
+    """
+    for flux in (sys.stdout, sys.stderr):
+        try:
+            flux.reconfigure(encoding="utf-8", errors="replace")  # type: ignore[union-attr]
+        except (AttributeError, ValueError, OSError):
+            pass
+
+
+console_en_utf8()
+
+
 def importe(nom: str):
     """Charge un script voisin comme module, sans paquet ni installation."""
     spec = importlib.util.spec_from_file_location(nom, ICI / f"{nom}.py")
@@ -88,6 +107,12 @@ class Hote:
         self.refus_consecutifs = 0
         self.robots: urllib.robotparser.RobotFileParser | None = None
         self.robots_lus = False
+        # Pourquoi robots.txt bloque, le cas echeant. La distinction compte
+        # pour le diagnostic : une REGLE qui interdit un chemin et un
+        # robots.txt ILLISIBLE ne disent pas la meme chose, et Python les
+        # confond — `RobotFileParser.read()` met tout en interdit quand la
+        # lecture rend 401 ou 403.
+        self.robots_raison: str | None = None
         self.requetes = 0
         self.refus = 0
         # Fenetre d'activite propre a cet hote, pour un debit moyen honnete :
@@ -122,6 +147,11 @@ class Regulateur:
         self.bavard = bavard
         self._hotes: dict[str, Hote] = {}
         self._creation = threading.Lock()
+        # `greffe()` y depose le urlopen d'origine. Le diagnostic de
+        # robots.txt doit l'utiliser : passer par la version greffee le ferait
+        # refuser par notre propre controle robots — qui vient justement de
+        # tout interdire — et on n'apprendrait jamais le code HTTP.
+        self.urlopen_direct = urllib.request.urlopen
         self.attente_totale = 0.0
         self.debut = time.monotonic()
 
@@ -151,10 +181,31 @@ class Regulateur:
             return
         h.robots_lus = True
         lecteur = urllib.robotparser.RobotFileParser()
-        lecteur.set_url(f"{schema}://{nom}/robots.txt")
+        adresse = f"{schema}://{nom}/robots.txt"
+        lecteur.set_url(adresse)
         try:
             lecteur.read()
             h.robots = lecteur
+            if getattr(lecteur, "disallow_all", False):
+                # `read()` avale l'erreur HTTP et pose `disallow_all`. On
+                # refait donc la demande pour connaitre le code, sinon le
+                # rapport dirait « robots.txt interdit » alors que le vrai
+                # probleme est qu'on n'a pas pu le lire.
+                h.robots_raison = "robots.txt illisible (tout est donc considéré interdit)"
+                try:
+                    self.urlopen_direct(
+                        urllib.request.Request(adresse, headers={"User-Agent": self.agent}),
+                        timeout=15,
+                    ).close()
+                except urllib.error.HTTPError as erreur:
+                    h.robots_raison = (
+                        f"robots.txt inaccessible (HTTP {erreur.code}) — "
+                        "tout est donc considéré interdit"
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+                if self.bavard:
+                    print(f"  [{nom}] {h.robots_raison}")
             delai = lecteur.crawl_delay(self.agent)
             if delai:
                 # Le site impose sa cadence quand elle est plus lente que la
@@ -169,17 +220,23 @@ class Regulateur:
             h.robots = None
 
     def autorise(self, url: str) -> bool:
+        return self.verdict(url)[0]
+
+    def verdict(self, url: str) -> tuple[bool, str | None]:
+        """(autorise, raison du refus). La raison sert au diagnostic."""
         if not self.respecte_robots:
-            return True
+            return True, None
         morceaux = urllib.parse.urlsplit(url)
         h = self.hote(morceaux.netloc)
         self._charge_robots(h, morceaux.scheme or "https", morceaux.netloc)
         if h.robots is None:
-            return True
+            return True, None
         try:
-            return h.robots.can_fetch(self.agent, url)
+            if h.robots.can_fetch(self.agent, url):
+                return True, None
         except Exception:  # noqa: BLE001
-            return True
+            return True, None
+        return False, h.robots_raison or "robots.txt interdit ce chemin"
 
     # ─────────────────────────── le passage ───────────────────────────
 
@@ -280,7 +337,7 @@ class Regulateur:
 
 
 class Interdit(Exception):
-    """robots.txt refuse cette URL."""
+    """robots.txt refuse cette URL — le message dit pourquoi."""
 
 
 def greffe(regulateur: Regulateur) -> None:
@@ -292,12 +349,14 @@ def greffe(regulateur: Regulateur) -> None:
     porte de sortie.
     """
     original = urllib.request.urlopen
+    regulateur.urlopen_direct = original
 
     def regule(requete, *args, **kwargs):  # noqa: ANN001, ANN002, ANN003
         url = requete.full_url if hasattr(requete, "full_url") else str(requete)
 
-        if not regulateur.autorise(url):
-            raise Interdit(url)
+        permis, raison = regulateur.verdict(url)
+        if not permis:
+            raise Interdit(raison or "robots.txt interdit")
 
         h = regulateur.attends(url)
         try:
@@ -340,15 +399,27 @@ class Journal:
             self.deja.add(clef)
 
     def tout(self) -> list[dict]:
+        """Un enregistrement par clef, le DERNIER ecrit.
+
+        Le journal est un fichier en ajout : relancer la collecte sur la meme
+        URL y ajoute une ligne de plus, sans effacer la precedente — c'est
+        voulu, on garde l'historique. Mais la consolidation doit rendre un
+        resultat par page, et le plus recent : sinon « 12 pages collectees »
+        devient « 0 / 36 » apres trois essais, et donnees.json contient trois
+        fois chaque produit.
+        """
         if not self.chemin.exists():
             return []
-        sortie = []
+        par_clef: dict[str, dict] = {}
         for ligne in self.chemin.read_text(encoding="utf-8").splitlines():
             try:
-                sortie.append(json.loads(ligne))
+                objet = json.loads(ligne)
             except json.JSONDecodeError:
                 continue
-        return sortie
+            clef = objet.get("clef")
+            if clef:
+                par_clef[clef] = objet
+        return list(par_clef.values())
 
 
 # ════════════════════════════ les taches ════════════════════════════
@@ -573,8 +644,8 @@ def main() -> int:
                     tache.cancel()
                 try:
                     res = tache.result()
-                except Interdit:
-                    res = {"ok": False, "url": url, "raison": "robots.txt interdit", "liens": []}
+                except Interdit as refus:
+                    res = {"ok": False, "url": url, "raison": str(refus), "liens": []}
                 except Exception as erreur:  # noqa: BLE001
                     res = {"ok": False, "url": url, "raison": f"{type(erreur).__name__}", "liens": []}
                 journal.ajoute(f"liens:{url}", res)
@@ -629,8 +700,8 @@ def main() -> int:
                     tache.cancel()
                 try:
                     res = tache.result()
-                except Interdit:
-                    res = {"ok": False, "url": url, "raison": "robots.txt interdit"}
+                except Interdit as refus:
+                    res = {"ok": False, "url": url, "raison": str(refus)}
                 except Exception as erreur:  # noqa: BLE001
                     res = {"ok": False, "url": url, "raison": f"{type(erreur).__name__}: {erreur}"}
                 journal.ajoute(f"page:{url}", res)
