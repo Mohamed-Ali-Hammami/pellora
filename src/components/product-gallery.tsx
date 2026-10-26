@@ -21,7 +21,14 @@ export function ProductGallery({ images, locale, placeholderNotice }: Props) {
 
   return (
     <div>
-      <div className="relative overflow-hidden rounded-xl border border-line bg-sand">
+      {/*
+        * Le CADRE porte les proportions, le fond et la marge ; l'image s'y
+        * centre. Auparavant les proportions étaient sur l'image elle-même, ce
+        * qui l'obligeait à remplir le cadre quelle que soit sa résolution — et
+        * rendait impossible de ne pas l'agrandir. Un visuel de 470 px
+        * s'affiche maintenant net, à sa taille, au milieu du cadre.
+        */}
+      <div className="relative flex aspect-4/5 items-center justify-center overflow-hidden rounded-xl border border-line bg-sand p-8">
         <ProductImage
           image={active}
           locale={locale}
@@ -29,7 +36,7 @@ export function ProductGallery({ images, locale, placeholderNotice }: Props) {
           height={1250}
           priority
           sizes="(min-width: 1024px) 34rem, 92vw"
-          className="aspect-4/5 w-full object-contain p-8"
+          className="max-h-full w-auto max-w-full object-contain"
         />
       </div>
 
@@ -46,13 +53,15 @@ export function ProductGallery({ images, locale, placeholderNotice }: Props) {
                 position === index ? 'border-ink' : 'border-line hover:border-ink-soft'
               }`}
             >
-              <ProductImage
-                image={image}
-                locale={locale}
-                width={160}
-                height={160}
-                className="h-20 w-20 object-contain p-2"
-              />
+              <span className="flex h-20 w-20 items-center justify-center p-2">
+                <ProductImage
+                  image={image}
+                  locale={locale}
+                  width={160}
+                  height={160}
+                  className="max-h-full w-auto max-w-full object-contain"
+                />
+              </span>
             </button>
           ))}
         </div>

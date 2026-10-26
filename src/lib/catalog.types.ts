@@ -106,6 +106,19 @@ export interface ProductImage {
    * commerciale trompeuse.
    */
   placeholder: boolean;
+  /**
+   * Résolution réelle du fichier, mesurée par `npm run media:scan`.
+   *
+   * Sert à ne JAMAIS agrandir une image au-delà de sa résolution. Les visuels
+   * n'arrivent pas tous en 3 000 px : une vignette de 470 px étirée à 1 000 px
+   * est molle, alors que la même affichée à 470 px dans son cadre est nette.
+   * L'affichage s'adapte donc au fichier, et non l'inverse.
+   *
+   * `undefined` quand la question ne se pose pas : une illustration
+   * vectorielle n'a pas de résolution, et un visuel déclaré à la main dans le
+   * catalogue n'a pas été mesuré.
+   */
+  intrinsic?: { readonly width: number; readonly height: number };
 }
 
 export interface SpecRow {

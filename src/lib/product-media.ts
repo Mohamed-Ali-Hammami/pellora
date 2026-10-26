@@ -21,7 +21,7 @@
  * rétroactive d'une agence dépasse largement le prix d'un visuel acheté.
  */
 
-import { generatedMedia } from './product-media.generated';
+import { generatedMedia, type GeneratedImage } from './product-media.generated';
 import type { Product, ProductImage } from './catalog.types';
 import type { Locale } from './i18n/config';
 
@@ -35,8 +35,15 @@ export function resolveImages(product: Product): readonly ProductImage[] {
   // pour qui navigue au lecteur d'écran.
   const mainAlt = product.images[0]?.alt;
 
-  return real.map((src, index) => {
-    if (index === 0 && mainAlt) return { src, alt: mainAlt, placeholder: false };
+  /** La résolution n'est reportée que si elle est entièrement connue. */
+  const taille = (f: GeneratedImage) =>
+    f.width !== null && f.height !== null
+      ? { intrinsic: { width: f.width, height: f.height } }
+      : {};
+
+  return real.map((file, index) => {
+    const { src } = file;
+    if (index === 0 && mainAlt) return { src, alt: mainAlt, placeholder: false, ...taille(file) };
     const position = index + 1;
     return {
       src,
@@ -47,6 +54,7 @@ export function resolveImages(product: Product): readonly ProductImage[] {
         es: `${product.name} — vista ${position}`,
       },
       placeholder: false,
+      ...taille(file),
     };
   });
 }

@@ -59,11 +59,19 @@ visuel acheté, ou d'une photo faite soi-même.
 
 `.jpg`, `.jpeg`, `.png`, `.webp`, `.avif`, `.svg`.
 
-**Minimum : 600 px de côté. En dessous, `npm run media:scan` écarte le fichier
-et le signale** — une vignette de catalogue fournisseur (souvent 125 px)
-s'afficherait floue sur une fiche qui présente le visuel principal autour de
-1 000 px de large, et une photo pixelisée coûte plus de ventes qu'une
-illustration assumée.
+**Toutes les tailles sont acceptées.** `npm run media:scan` mesure chaque
+fichier et inscrit sa résolution dans `src/lib/product-media.generated.ts` ;
+l'affichage s'y adapte et **n'agrandit jamais** une image au-delà de sa
+résolution réelle :
+
+- plus grande que son cadre → elle le remplit ;
+- plus petite → elle s'affiche **à sa taille, nette, centrée** sur le fond du
+  cadre, plutôt qu'étirée et molle.
+
+En dessous de 600 px de côté, le script le **signale** sans rien écarter : une
+vignette de 470 px n'occupera qu'une partie du cadre, et une de 125 px presque
+rien. C'est une information, pas un refus — à vous de juger si le visuel vend
+le produit.
 
 Recommandé : **1600 × 1600 px**, fond clair uni, appareil centré. Les cartes
 produit affichent un carré, la fiche produit affiche le visuel en 4/5.

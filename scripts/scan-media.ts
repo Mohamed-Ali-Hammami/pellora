@@ -16,15 +16,22 @@ import { products } from '../src/lib/catalog';
 const ACCEPTED = /\.(jpe?g|png|webp|avif|svg)$/i;
 
 /**
- * Résolution minimale acceptée pour une photo produit.
+ * Résolution en dessous de laquelle on PRÉVIENT, sans rien refuser.
  *
- * La fiche produit affiche le visuel principal autour de 1 000 px de large.
- * En dessous de 600 px, l'image est visiblement floue, et une vignette de
- * catalogue fournisseur (souvent 125 px) ruine la page sans rien signaler.
- * Le script refuse donc de les référencer : mieux vaut une illustration
- * assumée qu'une photo pixelisée.
+ * Ce seuil écartait les fichiers trop petits. Il ne le fait plus : toutes les
+ * tailles sont acceptées, et c'est l'AFFICHAGE qui s'adapte.
+ *
+ * Ce qui a changé, et pourquoi c'est mieux : le script mesure désormais chaque
+ * fichier et inscrit sa résolution dans `product-media.generated.ts`. Le
+ * composant d'affichage borne la taille de rendu à cette résolution, donc une
+ * image de 470 px n'est plus étirée à 1 000 px — elle s'affiche nette, à sa
+ * taille, centrée dans son cadre. Refuser le fichier n'avait de sens que
+ * lorsque l'affichage l'agrandissait de force.
+ *
+ * Le seuil reste utile pour un avertissement : une vignette de 125 px occupera
+ * un huitième du cadre, ce qu'on préfère savoir avant de mettre en ligne.
  */
-const MIN_PIXELS = 600;
+const SMALL_PIXELS = 600;
 
 /**
  * Dimensions d'une image, lues dans son en-tête.
@@ -82,10 +89,16 @@ function imageSize(file: string): { width: number; height: number } | null {
 const ROOT = join(process.cwd(), 'public', 'img', 'products');
 const OUTPUT = join(process.cwd(), 'src', 'lib', 'product-media.generated.ts');
 
+interface Visuel {
+  src: string;
+  width: number | null;
+  height: number | null;
+}
+
 const knownIds = new Set(products.map((p) => p.id));
-const entries: Record<string, string[]> = {};
+const entries: Record<string, Visuel[]> = {};
 const unknownFolders: string[] = [];
-const tooSmall: string[] = [];
+const petites: string[] = [];
 
 if (existsSync(ROOT)) {
   for (const folder of readdirSync(ROOT, { withFileTypes: true })) {
@@ -106,14 +119,17 @@ if (existsSync(ROOT)) {
       .filter((file) => ACCEPTED.test(file) && !file.startsWith('_'))
       .sort((a, b) => a.localeCompare(b, 'en'));
 
-    const usable: string[] = [];
+    const usable: Visuel[] = [];
     for (const file of files) {
       const size = imageSize(join(ROOT, folder.name, file));
-      if (size && Math.min(size.width, size.height) < MIN_PIXELS) {
-        tooSmall.push(`${folder.name}/${file} (${size.width}×${size.height})`);
-        continue;
+      if (size && Math.min(size.width, size.height) < SMALL_PIXELS) {
+        petites.push(`${folder.name}/${file} (${size.width}×${size.height})`);
       }
-      usable.push(`/img/products/${folder.name}/${file}`);
+      usable.push({
+        src: `/img/products/${folder.name}/${file}`,
+        width: size?.width ?? null,
+        height: size?.height ?? null,
+      });
     }
 
     if (usable.length > 0) {
@@ -122,10 +138,17 @@ if (existsSync(ROOT)) {
   }
 }
 
+function ligne(v: Visuel): string {
+  const taille = v.width === null || v.height === null
+    ? 'width: null, height: null'
+    : `width: ${v.width}, height: ${v.height}`;
+  return `    { src: '${v.src}', ${taille} },`;
+}
+
 const body = Object.keys(entries).length === 0
   ? '{}'
   : `{\n${Object.entries(entries)
-      .map(([id, files]) => `  '${id}': [\n${files.map((f) => `    '${f}',`).join('\n')}\n  ],`)
+      .map(([id, files]) => `  '${id}': [\n${files.map(ligne).join('\n')}\n  ],`)
       .join('\n')}\n}`;
 
 writeFileSync(
@@ -137,9 +160,19 @@ writeFileSync(
  * dans \`public/img/products/<id-produit>/\`. Tant qu'un produit n'a pas de
  * dossier, le site affiche l'illustration de substitution déclarée dans le
  * catalogue.
+ *
+ * La résolution de chaque fichier est mesurée et inscrite ici : c'est elle qui
+ * borne la taille d'affichage, pour qu'une petite image reste nette au lieu
+ * d'être étirée. \`null\` pour un SVG, qui n'a pas de résolution.
  */
 
-export const generatedMedia: Record<string, readonly string[]> = ${body};
+export interface GeneratedImage {
+  readonly src: string;
+  readonly width: number | null;
+  readonly height: number | null;
+}
+
+export const generatedMedia: Record<string, readonly GeneratedImage[]> = ${body};
 `,
   'utf8',
 );
@@ -154,10 +187,11 @@ for (const folder of unknownFolders) {
     `[media] AVERTISSEMENT : le dossier « ${folder} » ne correspond à aucun id du catalogue — ses visuels ne seront jamais affichés.`,
   );
 }
-for (const file of tooSmall) {
+for (const file of petites) {
   console.warn(
-    `[media] ÉCARTÉ : ${file} — moins de ${MIN_PIXELS} px de côté. ` +
-      `Une vignette de catalogue fournisseur s'affiche floue sur la fiche : demandez le fichier d'origine.`,
+    `[media] PETITE : ${file} — moins de ${SMALL_PIXELS} px de côté. ` +
+      `Elle est référencée et s'affichera nette, mais à sa taille : elle n'occupera ` +
+      `qu'une partie du cadre. Le fichier d'origine du fournisseur remplirait la fiche.`,
   );
 }
 const missing = [...knownIds].filter((id) => !entries[id]);

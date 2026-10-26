@@ -23,7 +23,12 @@ export function ProductCard({ product, locale, dict, priority }: Props) {
 
   return (
     <article className="group card flex flex-col overflow-hidden transition-shadow hover:shadow-[0_8px_30px_-12px_rgb(23_18_15_/_0.18)]">
-      <a href={url} className="relative block aspect-square overflow-hidden bg-sand" tabIndex={-1} aria-hidden="true">
+      <a
+        href={url}
+        className="relative flex aspect-square items-center justify-center overflow-hidden bg-sand p-6"
+        tabIndex={-1}
+        aria-hidden="true"
+      >
         <ProductImage
           image={image}
           locale={locale}
@@ -31,7 +36,7 @@ export function ProductCard({ product, locale, dict, priority }: Props) {
           height={600}
           priority={priority}
           sizes="(min-width: 1024px) 24rem, (min-width: 640px) 45vw, 90vw"
-          className="h-full w-full object-contain p-6 transition-transform duration-300 group-hover:scale-[1.03]"
+          className="max-h-full w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
         />
 
         <div className="absolute left-3 top-3 flex flex-col items-start gap-1.5">
