@@ -11,7 +11,7 @@
     "avertissements": [
       "Les prix sont des PRIX DE VENTE TTC d'autres marchands : la marge du vendeur est dedans. Ce ne sont jamais des prix d'achat.",
       "Une page de liste ne contient AUCUNE description produit. Son absence ici est une constatation, pas un oubli.",
-      "Les URL d'images du CDN de ManoMano n'ont volontairement PAS été capturées : ces visuels appartiennent aux vendeurs de la place de marché et ne doivent pas être servis depuis notre site.",
+      "Le champ « imageSource » porte l'URL du visuel sur le CDN de ManoMano. Ce visuel appartient au vendeur de la place de marché, PAS à nous : l'URL est conservée pour pouvoir demander l'autorisation ou retrouver le produit, et ne doit en aucun cas être servie directement depuis notre site (hotlink), ni réhébergée sans accord écrit du titulaire des droits.",
       "Les notes et nombres d'avis sont ceux de ManoMano. Ils mesurent l'expérience d'achat chez un autre marchand, pas la nôtre : ils ne doivent pas être réaffichés sur nos fiches.",
       "Les noms ont été relevés dans l'attribut « alt » des images, et non dans le titre affiché : la page avait été passée à un traducteur automatique qui avait mutilé les titres — du portugais et du français sur une page espagnole.",
       "Les champs puissance et dimensions des fiches catalogue ont été lus dans le libellé de l'annonce. Ils valent ce que vaut une annonce de place de marché : à confronter à la fiche technique du fabricant avant de vendre."
@@ -26,7 +26,8 @@
       "note": null,
       "avis": null,
       "url": "https://www.manomano.es/p/homcom-chimenea-de-bioetanol-de-pie-con-tanque-de-09-l-apagallamas-de-acero-inoxidable-tiempo-de-combustion-33h-para-15-20-m-38x22x54-cm-negro-88179379",
-      "retenu_catalogue": "bio-homcom-floor"
+      "retenu_catalogue": "bio-homcom-floor",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/aa54340624653980c6f44d59f3a8880302f0294d.jpg"
     },
     {
       "nom": "Siena - Chimenea de bioetanol pared 90x12xH40 cm",
@@ -36,7 +37,8 @@
       "note": null,
       "avis": null,
       "url": "https://www.manomano.es/p/siena-chimenea-de-bioetanol-pared-90x12xh40-cm-85700571",
-      "retenu_catalogue": "bio-siena-wall"
+      "retenu_catalogue": "bio-siena-wall",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/f97b7c287fd6be06346f20de43133ee7d1a42679.jpg"
     },
     {
       "nom": "Augusto - Chimenea de bioetanol empotrada con 2 quemadores de 1,5 litros. Chimenea de bioetanol de acero inoxidable y vidrio templado. 110x54 cm color negro",
@@ -45,7 +47,8 @@
       "prixBarre": null,
       "note": 3.8,
       "avis": 5,
-      "url": "https://www.manomano.es/p/augusto-chimenea-de-bioetanol-empotrada-con-2-quemadores-de-15-litros-chimenea-de-bioetanol-de-acero-inoxidable-y-vidrio-templado-110x54-cm-color-negro-47579330"
+      "url": "https://www.manomano.es/p/augusto-chimenea-de-bioetanol-empotrada-con-2-quemadores-de-15-litros-chimenea-de-bioetanol-de-acero-inoxidable-y-vidrio-templado-110x54-cm-color-negro-47579330",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/9a5d694a1b1f369b2f5b1902ea1fa0c0bcf89051.jpg"
     },
     {
       "nom": "Chimenea metálica, autonomía de 3 horas, depósito de 0,9 L, cubre 25 m².",
@@ -54,7 +57,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-metalica-autonomia-de-3-horas-deposito-de-0-9-l-cubre-25-m-230760075"
+      "url": "https://www.manomano.es/p/chimenea-metalica-autonomia-de-3-horas-deposito-de-0-9-l-cubre-25-m-230760075",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/611ea304cf32bd95a87a2d2e354648e23017a901.jpg"
     },
     {
       "nom": "Dubai White Soil Biopath 2,5 kW – vert protecteur, bleu 2 L, structure en acier – Tecno Air System",
@@ -63,7 +67,8 @@
       "prixBarre": null,
       "note": 4.8,
       "avis": 4,
-      "url": "https://www.manomano.es/p/biocamino-rubis-modele-dubai-blanc-tecnoair-system-40479399"
+      "url": "https://www.manomano.es/p/biocamino-rubis-modele-dubai-blanc-tecnoair-system-40479399",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/347f00416cbd37fb5ba96a17ae74fcd101b69f18.jpg"
     },
     {
       "nom": "Bioéthanol intégré dans le mur biopath 120x40 Livourne 120 noir",
@@ -72,7 +77,8 @@
       "prixBarre": null,
       "note": 4.3,
       "avis": 4,
-      "url": "https://www.manomano.es/p/camino-a-bioetanolo-da-incasso-parete-biocamino-120x40-livorno-120-nero-85115491"
+      "url": "https://www.manomano.es/p/camino-a-bioetanolo-da-incasso-parete-biocamino-120x40-livorno-120-nero-85115491",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/3eed57208a5aa8474d3c9330d210c9b937140197.jpg"
     },
     {
       "nom": "Grande cheminée au sol en acier",
@@ -81,7 +87,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/danae-de-purline-chimenea-bioetanol-de-suelo-tipo-pared-de-separacion-calienta-de-inmediato-35-kw-1173829"
+      "url": "https://www.manomano.es/p/danae-de-purline-chimenea-bioetanol-de-suelo-tipo-pared-de-separacion-calienta-de-inmediato-35-kw-1173829",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/44ae3d25f9a42eabcd8587612c651d44964eeffd.jpg"
     },
     {
       "nom": "Lareira Bioéthanol Rond Syke",
@@ -90,7 +97,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/biochimenea-mural-de-techo-con-diseo-circular-y-doble-puerta-negro-51902251"
+      "url": "https://www.manomano.es/p/biochimenea-mural-de-techo-con-diseo-circular-y-doble-puerta-negro-51902251",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/265f17eea0207ace367ddd3e12315183e336ca11.jpg"
     },
     {
       "nom": "Enregistrement biologique indépendant avec pieds, hauteur de 100 cm - Tokyo Black",
@@ -99,7 +107,8 @@
       "prixBarre": null,
       "note": 3.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/chimenea-biologica-independiente-con-patas-100-cm-de-altura-tokio-black-222501023"
+      "url": "https://www.manomano.es/p/chimenea-biologica-independiente-con-patas-100-cm-de-altura-tokio-black-222501023",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/8884e62040150fb4fc4ce81f128ae1dd2eb7f513.jpg"
     },
     {
       "nom": "Matera White 2,0 kW Soil Biopath – dimensions compactes 70×70×30 cm, brûleur 1,0 L – Système d’air Tecno",
@@ -108,7 +117,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/chimenea-suelo-bioetanol-matera-blanca-ruby-43694675"
+      "url": "https://www.manomano.es/p/chimenea-suelo-bioetanol-matera-blanca-ruby-43694675",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/118ab61a80457c7d7082986b0957ef108cc5b83a.jpg"
     },
     {
       "nom": "Cheminée à bioéthanol Revello, capacité 1,25 lt, surface chauffée 30 m2, puissance (kW) 3, 120x15x40h cm Noir",
@@ -118,7 +128,8 @@
       "note": null,
       "avis": null,
       "url": "https://www.manomano.es/p/chimenea-de-bioetanol-revello-capacidad-125-l-superficie-calefactable-30-potencia-kw-3-120x15x40h-cm-negro-148-91705849",
-      "retenu_catalogue": "bio-revello"
+      "retenu_catalogue": "bio-revello",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/b90db47a45f69a6a6ca947dcff0243c366c7932a.jpg"
     },
     {
       "nom": "Mur biopathique 22 cm x 72 cm H. 63 cm",
@@ -127,7 +138,8 @@
       "prixBarre": null,
       "note": 4.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/biochimenea-de-diseo-de-pared-de-bioetanol-negro-72-x-22-x-h-63-cm-3358756"
+      "url": "https://www.manomano.es/p/biochimenea-de-diseo-de-pared-de-bioetanol-negro-72-x-22-x-h-63-cm-3358756",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/26745cda22b169820ad45a6eb62b45ec401c8598.jpg"
     },
     {
       "nom": "Giulio Cesare - Cheminée de sol à bioéthanol Ø40x80 cm Décoration intérieure en acier inoxydable sauge",
@@ -136,7 +148,8 @@
       "prixBarre": null,
       "note": 4.7,
       "avis": 3,
-      "url": "https://www.manomano.es/p/giulio-cesare-chimenea-de-suelo-de-bioetanol-40x80-cm-de-diseo-interior-en-acero-inoxidable-salvia-90174333"
+      "url": "https://www.manomano.es/p/giulio-cesare-chimenea-de-suelo-de-bioetanol-40x80-cm-de-diseo-interior-en-acero-inoxidable-salvia-90174333",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/c1717a7870c250e4fd1f2ccec795a8a4cc1b0334.jpg"
     },
     {
       "nom": "Cheminée à bioéthanol Cortina Black - 2500 W",
@@ -145,7 +158,8 @@
       "prixBarre": null,
       "note": 4.4,
       "avis": 66,
-      "url": "https://www.manomano.es/p/chimenea-suelo-bioetanol-cortina-blanca-ruby-2600855"
+      "url": "https://www.manomano.es/p/chimenea-suelo-bioetanol-cortina-blanca-ruby-2600855",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/45a8d18b46bf742f98b3f23270785544decc871a.jpg"
     },
     {
       "nom": "Biopathe des sols 25 cm x 78 cm H. 58 cm",
@@ -154,7 +168,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/piso-de-diseno-bio-chimenea-bioetanol-blanco-78-x-25-xh-58-cm-58957766"
+      "url": "https://www.manomano.es/p/piso-de-diseno-bio-chimenea-bioetanol-blanco-78-x-25-xh-58-cm-58957766",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/d32a521b6b34b071932e7ab55a5ad07a76e41a5e.jpg"
     },
     {
       "nom": "Aga Biokrb Giglio",
@@ -163,7 +178,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-sobremesa-bioetanol-giglio-negra-ruby-43619450"
+      "url": "https://www.manomano.es/p/chimenea-sobremesa-bioetanol-giglio-negra-ruby-43619450",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/21b4666790356cdcea31f01c382dcdd61b2399fa.jpg"
     },
     {
       "nom": "Camogli à bioéthanol Lareira",
@@ -172,7 +188,8 @@
       "prixBarre": null,
       "note": 3.8,
       "avis": 14,
-      "url": "https://www.manomano.es/p/tecno-air-system-bio-chimenea-desde-abajo-blanco-camino-un-bioetanol-25kw-calefaccion-4413395"
+      "url": "https://www.manomano.es/p/tecno-air-system-bio-chimenea-desde-abajo-blanco-camino-un-bioetanol-25kw-calefaccion-4413395",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/1577e645c4903e56417e432daa49145a27e29e0c.jpg"
     },
     {
       "nom": "Osaka Black 3 kW Floor Biopath – vitre avant, brûleur 2 L, effet scénique élevé – Tecno Air System",
@@ -181,7 +198,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-suelo-bioetanol-osaka-ruby-plus-14610768"
+      "url": "https://www.manomano.es/p/chimenea-suelo-bioetanol-osaka-ruby-plus-14610768",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/7ef85b61aa1783830787b49c084cd459f7ced124.jpg"
     },
     {
       "nom": "Cervinia Black 2 kW Bio-cheminée de plafond – installation plafond, brûleur 1,5 L, structure en acier – Tecno Air System",
@@ -190,7 +208,8 @@
       "prixBarre": null,
       "note": 3.3,
       "avis": 3,
-      "url": "https://www.manomano.es/p/tecno-air-system-bio-chimenea-chimenea-bioetanol-a-partir-de-techo-de-noir-design-calefaccion-8988202"
+      "url": "https://www.manomano.es/p/tecno-air-system-bio-chimenea-chimenea-bioetanol-a-partir-de-techo-de-noir-design-calefaccion-8988202",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/969865cde4e3268b19d739f21a4a1b04d33a7330.jpg"
     },
     {
       "nom": "Nouvelle cheminée de table [autonomie de 3 heures], petite et portable, idéale pour l’intérieur comme l’extérieur, avec flamme réglable et verre de sécurité, idéale pour décorer les tables.",
@@ -199,7 +218,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/nuevo-chimenea-de-sobremesa-3-horas-de-autonomia-pequena-y-portatil-ideal-para-interiores-y-exteriores-con-llama-ajustable-y-cristal-de-seguridad-ideal-para-decorar-mesas-89548279"
+      "url": "https://www.manomano.es/p/nuevo-chimenea-de-sobremesa-3-horas-de-autonomia-pequena-y-portatil-ideal-para-interiores-y-exteriores-con-llama-ajustable-y-cristal-de-seguridad-ideal-para-decorar-mesas-89548279",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/ddb9ae5fce9a2006aaa0c79f1d4253599178d7c9.jpg"
     },
     {
       "nom": "Cheminée à bioéthanol avec réservoir de 0,9 L, couvrant jusqu’à 20 m², 46,5 x 53 x 65 cm, couleur noire.",
@@ -208,7 +228,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-con-deposito-de-09-l-cobertura-de-hasta-20-m2-465-x-53-x-65-cm-color-negro-215779090"
+      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-con-deposito-de-09-l-cobertura-de-hasta-20-m2-465-x-53-x-65-cm-color-negro-215779090",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/c8a4ed662c461be344b71b648a6df1ddefc2e966.jpg"
     },
     {
       "nom": "Cheminée à bioéthanol avec brûleur de 0,9 L et étagère de rangement en verre trempé, 60 x 20 x 79 cm, acier noir et blanc.",
@@ -217,7 +238,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-con-quemador-de-09-l-y-estante-de-almacenamiento-de-vidrio-templado-60-x-20-x-79-cm-acero-blanco-y-negro-207908229"
+      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-con-quemador-de-09-l-y-estante-de-almacenamiento-de-vidrio-templado-60-x-20-x-79-cm-acero-blanco-y-negro-207908229",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/3312e537caa2a245de3eabf54430f28bfb75a305.jpg"
     },
     {
       "nom": "Cheminée métallique à bioéthanol avec 3 heures d’autonomie, réservoir de 0,9 L, couverture de 25 m², 41 x 25 x 54 cm, couleur noire.",
@@ -226,7 +248,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-metalica-de-bioetanol-con-3-horas-de-autonomia-deposito-de-09-l-cobertura-de-25-m2-41-x-25-x-54-cm-color-negro-215779233"
+      "url": "https://www.manomano.es/p/chimenea-metalica-de-bioetanol-con-3-horas-de-autonomia-deposito-de-09-l-cobertura-de-25-m2-41-x-25-x-54-cm-color-negro-215779233",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/611ea304cf32bd95a87a2d2e354648e23017a901.jpg"
     },
     {
       "nom": "Hécate bioéthanol de Lareira",
@@ -235,7 +258,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/biochimenea-de-pared-hecate-purline-31446559"
+      "url": "https://www.manomano.es/p/biochimenea-de-pared-hecate-purline-31446559",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/0d7a9ba470b9c31bf138a337bd2a9942b2a136d9.jpg"
     },
     {
       "nom": "Cheminée biologique à sol noir Nairobi 1,5 kW - hauteur 120 cm, structure en acier noir, verre protecteur - Système d’air Tecno",
@@ -244,7 +268,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/modele-biocamino-ruby-nairobi-tecnoair-system-57696884"
+      "url": "https://www.manomano.es/p/modele-biocamino-ruby-nairobi-tecnoair-system-57696884",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/875e6d22fc4b3b3c476727b31a93f6003bff34d0.jpg"
     },
     {
       "nom": "Biochimenea de Suelo Kekai Mauna Loa 40x40x145 cm con Quemador de Acero Inoxidable y Accesorio Apagallamas, Color Blanco",
@@ -254,7 +279,8 @@
       "note": 5.0,
       "avis": 3,
       "url": "https://www.manomano.es/p/biochimenea-de-suelo-kekai-mauna-loa-40x40x145-cm-con-quemador-de-acero-inoxidable-y-extintor-manual-color-blanco-76349090",
-      "retenu_catalogue": "bio-mauna-loa"
+      "retenu_catalogue": "bio-mauna-loa",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/29ffd3806652b9e9116e2a30774789b1fbacf91d.jpg"
     },
     {
       "nom": "Chimenea de bioetanol de acero inoxidable, con una autonomía de 2,5 horas gracias a un depósito de 1,5 L y una superficie de calefacción de 20 m², dimensiones: 90 x 16 x 40 cm, color plata.",
@@ -263,7 +289,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-de-acero-inoxidable-con-una-autonomia-de-2-5-horas-gracias-a-un-deposito-de-1-5-l-y-una-superficie-de-calefaccion-de-20-m-dimensiones-90-x-16-x-40-cm-color-plata-236063105"
+      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-de-acero-inoxidable-con-una-autonomia-de-2-5-horas-gracias-a-un-deposito-de-1-5-l-y-una-superficie-de-calefaccion-de-20-m-dimensiones-90-x-16-x-40-cm-color-plata-236063105",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/4f4887fa4904a433c5a2ca129773bf5045c0f2cf.jpg"
     },
     {
       "nom": "Dmora - Chimenea de bioetanol Dstacchin, Chimenea ecológica, Hogar sin humo, Calefactor de etanol, Made in Italy, 12x90 h40 cm, Negro",
@@ -272,7 +299,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/dmora-chimenea-de-bioetanol-dstacchin-chimenea-ecologica-hogar-sin-humo-calefactor-de-etanol-made-in-italy-12x90-h40-cm-negro-87904493"
+      "url": "https://www.manomano.es/p/dmora-chimenea-de-bioetanol-dstacchin-chimenea-ecologica-hogar-sin-humo-calefactor-de-etanol-made-in-italy-12x90-h40-cm-negro-87904493",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/9caa37cc2dc8cfb82b8092b8b3638f11f60d042c.jpg"
     },
     {
       "nom": "Camino de bioetanol Belluno Efecto Piedra – L105×P38×H100",
@@ -281,7 +309,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/camino-a-bioetanolo-da-terra-effetto-finta-pietra-l105xp38xh100-belluno-85622386"
+      "url": "https://www.manomano.es/p/camino-a-bioetanolo-da-terra-effetto-finta-pietra-l105xp38xh100-belluno-85622386",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/e9c832143c1a02febc0ad0cdf1314588904c2701.jpg"
     },
     {
       "nom": "Chimenea decorativa de etanol Qlima FFB4242",
@@ -291,7 +320,8 @@
       "note": 4.5,
       "avis": 2,
       "url": "https://www.manomano.es/p/qlima-chimenea-de-etanol-cuadrada-42x23x42-cm-ffb-4242-6193566",
-      "retenu_catalogue": "bio-qlima-ffb4242"
+      "retenu_catalogue": "bio-qlima-ffb4242",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/5911128da79997ee09797d3b21e38c389c23b439.jpg"
     },
     {
       "nom": "Camino de bioetanol Sasso – 1,5 litros – efecto piedra con inserto de acero",
@@ -300,7 +330,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 2,
-      "url": "https://www.manomano.es/p/camino-de-bioetanol-sasso-15-litros-efecto-piedra-con-inserto-de-acero-78633675"
+      "url": "https://www.manomano.es/p/camino-de-bioetanol-sasso-15-litros-efecto-piedra-con-inserto-de-acero-78633675",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/9199cb3939733ddad6aea0bc25cc8d9b49676f57.jpg"
     },
     {
       "nom": "Lareira Bioetanol Best Bio Cor Branco",
@@ -309,7 +340,8 @@
       "prixBarre": null,
       "note": 4.0,
       "avis": 11,
-      "url": "https://www.manomano.es/p/bestbio-negro-disfruta-de-las-llamas-de-fuego-reales-en-una-chimenea-ultra-moderna-341248"
+      "url": "https://www.manomano.es/p/bestbio-negro-disfruta-de-las-llamas-de-fuego-reales-en-una-chimenea-ultra-moderna-341248",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/0041505fbff460acf67b15f909e336e2053a94e7.jpg"
     },
     {
       "nom": "Traiano - Chimenea de bioetanol de empotrar en pared, 120xH40 cm",
@@ -318,7 +350,8 @@
       "prixBarre": null,
       "note": 3.0,
       "avis": 2,
-      "url": "https://www.manomano.es/p/traiano-chimenea-de-bioetanol-de-empotrar-en-pared-120xh40-cm-85284314"
+      "url": "https://www.manomano.es/p/traiano-chimenea-de-bioetanol-de-empotrar-en-pared-120xh40-cm-85284314",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/162790335c61fdfd9c9069d7bf322587a0ccfaf7.jpg"
     },
     {
       "nom": "Aga Biokrb Asolo Rojo",
@@ -327,7 +360,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/tecno-air-system-bio-chimenea-bioetanol-15kw-rojo-calefaccion-pared-design-asolo-r-4413542"
+      "url": "https://www.manomano.es/p/tecno-air-system-bio-chimenea-bioetanol-15kw-rojo-calefaccion-pared-design-asolo-r-4413542",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/70eabf4c3cbd6c6f8c1f8654f1c0d0d12ef5805e.jpg"
     },
     {
       "nom": "Biochimenea de Sobremesa Kekai Etna 35,5x18x20,5cm Quemador de Acero Inoxidable, Vidrio Templado y Accesorio Apagallamas",
@@ -337,7 +371,8 @@
       "note": 4.9,
       "avis": 7,
       "url": "https://www.manomano.es/p/biochimenea-de-sobremesa-kekai-etna-355x18x205cm-quemador-de-acero-inoxidable-proteccion-de-vidrio-templado-y-extintor-manual-76349104",
-      "retenu_catalogue": "bio-etna-table"
+      "retenu_catalogue": "bio-etna-table",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/7ade0bc7b44414972c3af3e07bb82d6a888c0742.jpg"
     },
     {
       "nom": "Lareira Bioetanol Etna",
@@ -346,7 +381,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/zeus-biochimenea-mural-panoramica-de-gran-anchura-2430172"
+      "url": "https://www.manomano.es/p/zeus-biochimenea-mural-panoramica-de-gran-anchura-2430172",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/772ae7d1a1f3c0c038998e2f32e5ec7b17a5b997.jpg"
     },
     {
       "nom": "Biochimenea mural de etanol en acero color negro",
@@ -355,7 +391,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/biochimenea-mural-de-etanol-en-acero-color-negro-89530486"
+      "url": "https://www.manomano.es/p/biochimenea-mural-de-etanol-en-acero-color-negro-89530486",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/ca8bdd6f3d204d1696f11cee4c62c2b2e48e910e.jpg"
     },
     {
       "nom": "Camino a bioetanolo da incasso Palmanova - 1,5kW",
@@ -364,7 +401,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/camino-a-bioetanolo-da-incasso-palmanova-15kw-58660381"
+      "url": "https://www.manomano.es/p/camino-a-bioetanolo-da-incasso-palmanova-15kw-58660381",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/91a24558b9e3402f205b2d6f0df7b4ec8d261234.jpg"
     },
     {
       "nom": "Lareira Bioetanol Tantalo",
@@ -373,7 +411,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/tantalo-de-purline-chimenea-de-bioetanol-de-suelo-estilo-y-la-eficiencia-1173906"
+      "url": "https://www.manomano.es/p/tantalo-de-purline-chimenea-de-bioetanol-de-suelo-estilo-y-la-eficiencia-1173906",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/e316588d4be845f6c25181ca08029283ec6d67ef.jpg"
     },
     {
       "nom": "Dmora - Chimenea de bioetanol Airuno, Chimenea, Hogar sin humo, Calefactor de etanol, Made in Italy, 65x12 h40 cm, Negro",
@@ -382,7 +421,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/dmora-chimenea-de-bioetanol-airuno-chimenea-ecologica-hogar-sin-humo-calefactor-de-etanol-made-in-italy-65x12-h40-cm-negro-87907466"
+      "url": "https://www.manomano.es/p/dmora-chimenea-de-bioetanol-airuno-chimenea-ecologica-hogar-sin-humo-calefactor-de-etanol-made-in-italy-65x12-h40-cm-negro-87907466",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/b7748a079be1448c7ae3e3245ac69a9b38f944b6.jpg"
     },
     {
       "nom": "Biochimenea de suelo Portofino Acero 1,8 kW – estructura inox, altura 180 cm, diseño alto – Tecno Air System",
@@ -391,7 +431,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-portofino-gris-metalizado-2kw-14519815"
+      "url": "https://www.manomano.es/p/chimenea-de-bioetanol-portofino-gris-metalizado-2kw-14519815",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/e02b22d0f89c9fa7be900e2217d1162b13ba5d69.jpg"
     },
     {
       "nom": "Planika – Wall and Floor Bubble, chimenea automática de bioetanol BEV de pared o de suelo, de diseño moderno y versátil para instalación en interiores.",
@@ -401,7 +442,8 @@
       "note": null,
       "avis": null,
       "url": "https://www.manomano.es/p/burbuja-de-pared-y-suelo-planika-chimenea-automatica-de-bioetanol-bev-de-pie-o-de-pared-65980666",
-      "sponsorise": true
+      "sponsorise": true,
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/6cac1778aeb4daca28e70450f37f3fc6a19e17fa.jpg"
     }
   ],
   "chimeneas_electricas": [
@@ -412,7 +454,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-1800w-con-efecto-de-llama-realista-de-3-brillos-termostato-temporizador-6-h-semanal-mando-a-distancia-natural-238295752"
+      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-1800w-con-efecto-de-llama-realista-de-3-brillos-termostato-temporizador-6-h-semanal-mando-a-distancia-natural-238295752",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/364062cd6e243342bcda5037c019d2bc1cf7ade1.jpg"
     },
     {
       "nom": "Cheminée électrique blanche 2000w - SALON MEDIUM BLANC - Chemin’arte -",
@@ -421,7 +464,8 @@
       "prixBarre": null,
       "note": 3.7,
       "avis": 3,
-      "url": "https://www.manomano.es/p/chimenea-electrica-efecto-llama-blanca-8715566"
+      "url": "https://www.manomano.es/p/chimenea-electrica-efecto-llama-blanca-8715566",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/7e3f0d467b11a7bd74bef81055737804924a0b7f.jpg"
     },
     {
       "nom": "Mémoire électrique avec support mural et télévision, commandes artificielles et en verre, alimentation 1800 W, couleur noire.",
@@ -430,7 +474,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-con-soporte-de-pared-y-mando-a-distancia-lenos-artificiales-y-cristales-1800-w-de-potencia-color-negro-208264193"
+      "url": "https://www.manomano.es/p/chimenea-electrica-con-soporte-de-pared-y-mando-a-distancia-lenos-artificiales-y-cristales-1800-w-de-potencia-color-negro-208264193",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/6c8aae142f4602930e8542f9e049fea152d1982b.jpg"
     },
     {
       "nom": "Randaco 50 pouces 750W/1500W – Lampe décorative – Effet de flamme 3D – Protection contre le sud",
@@ -439,7 +484,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/randaco-chimenea-electrica-de-50-pulgadas-750w1500w-chimenea-decorativa-efecto-llama-3d-proteccion-contra-sobrecalentamiento-90994683"
+      "url": "https://www.manomano.es/p/randaco-chimenea-electrica-de-50-pulgadas-750w1500w-chimenea-decorativa-efecto-llama-3d-proteccion-contra-sobrecalentamiento-90994683",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/5c43c3c6880e257bb5d6b41ef500afaaf226bd03.jpg"
     },
     {
       "nom": "Hauteur électrique 1800W-2000W avec température contrôlée, température inflammable réglable, hebdomadaire minime et protection contre le surchauffeur",
@@ -448,7 +494,8 @@
       "prixBarre": null,
       "note": 4.0,
       "avis": 4,
-      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-1800w-2000w-con-mando-a-distancia-llama-ajustable-termostato-temporizador-semanal-y-proteccion-contra-sobrecalentamiento-42511323"
+      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-1800w-2000w-con-mando-a-distancia-llama-ajustable-termostato-temporizador-semanal-y-proteccion-contra-sobrecalentamiento-42511323",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/0ea6806493174ac7ef8820d4d62b6421ed78dddc.jpg"
     },
     {
       "nom": "Chauffage de cuisinière électrique en céramique murale 900/1800W Télécommande 7 couleurs",
@@ -457,7 +504,8 @@
       "prixBarre": null,
       "note": 4.5,
       "avis": 38,
-      "url": "https://www.manomano.es/p/estufa-chimenea-electrica-calefaccion-65x114x52cm-llama-led-7-colores-nuevo-negro-2526656"
+      "url": "https://www.manomano.es/p/estufa-chimenea-electrica-calefaccion-65x114x52cm-llama-led-7-colores-nuevo-negro-2526656",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/02e7dcfb6ffa9c3faf6c7526d66835eaab9ecc9a.jpg"
     },
     {
       "nom": "Kekai Oregon 2000W intérieur mural céramique 127x16x48 cm avec simulation d’incendie 2 niveaux avec télécommande",
@@ -467,7 +515,8 @@
       "note": 4.1,
       "avis": 51,
       "url": "https://www.manomano.es/p/chimenea-elctrica-2000-w-kekai-oregon-127x16x48-cm-con-simulacin-de-fuego-para-pared-negra-42574204",
-      "retenu_catalogue": "elec-oregon"
+      "retenu_catalogue": "elec-oregon",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/daa3f508577ff8dd69b2ce451eb0ddf40fd276ad.jpg"
     },
     {
       "nom": "Chemise électrique solaire de 2 kW avec télévision",
@@ -476,7 +525,8 @@
       "prixBarre": null,
       "note": 4.3,
       "avis": 3,
-      "url": "https://www.manomano.es/p/chimena-electrica-de-suelo-purline-con-marco-de-mdf-24072610"
+      "url": "https://www.manomano.es/p/chimena-electrica-de-suelo-purline-con-marco-de-mdf-24072610",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/a8d313598c01b34195c238fc2a7001b814188ab2.jpg"
     },
     {
       "nom": "Skraut Home - siège électrique LED, couleur couleur, 102x45x35cm, 1 trou, 1 port, cheminée électrique, suspendue, suspendue, style moderne, chêne et noir",
@@ -485,7 +535,8 @@
       "prixBarre": null,
       "note": 4.3,
       "avis": 3,
-      "url": "https://www.manomano.es/p/skraut-home-chimenea-electrica-led-sin-calor-102x45x35cm-1-hueco-1-puerta-chimenea-electrica-colgado-suspendido-estilo-moderno-90941624"
+      "url": "https://www.manomano.es/p/skraut-home-chimenea-electrica-led-sin-calor-102x45x35cm-1-hueco-1-puerta-chimenea-electrica-colgado-suspendido-estilo-moderno-90941624",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/78824d7270a0c97cc6f3d26ef34ebc4534d339ca.jpg"
     },
     {
       "nom": "Cheminée électrique HOMAVO 36\", 1000/2000W, contrôle APP, 12 couleurs 3D flamboyantes, dimensions : 117 x 20 x 96 cm",
@@ -494,7 +545,8 @@
       "prixBarre": null,
       "note": 4.5,
       "avis": 6,
-      "url": "https://www.manomano.es/p/homavo-36-zoll-elektrokamin-mit-heizung-1000-2000w-stand-einbaukamin-3d-flammenfarben-led-timer-inklusive-schrank-90045508"
+      "url": "https://www.manomano.es/p/homavo-36-zoll-elektrokamin-mit-heizung-1000-2000w-stand-einbaukamin-3d-flammenfarben-led-timer-inklusive-schrank-90045508",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/34967171d59895b4552b85bc9d7187d8addfe5e9.jpg"
     },
     {
       "nom": "Skraut Home - LED veste électrique, tous produits, 107x38x25cm, salon - Chambre élégante, style élégant, nouvelle couleur",
@@ -503,7 +555,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/skraut-home-chimenea-electrica-led-sin-calor-107x38x25cm-salon-comedor-chimenea-electrica-estilo-moderno-negro-90941486"
+      "url": "https://www.manomano.es/p/skraut-home-chimenea-electrica-led-sin-calor-107x38x25cm-salon-comedor-chimenea-electrica-estilo-moderno-negro-90941486",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/9dd499c3e2056da55cbe48281eb81b507e309461.jpg"
     },
     {
       "nom": "Chimenea Eléctrica con Temporizador Termostato Luz de 5 Niveles 102x30x95 Blanco",
@@ -512,7 +565,8 @@
       "prixBarre": null,
       "note": 4.5,
       "avis": 8,
-      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-con-temporizador-termostato-luz-de-5-niveles-102x30x95-blanco-23207172"
+      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-con-temporizador-termostato-luz-de-5-niveles-102x30x95-blanco-23207172",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/a4ef181ead016a00afbfe31e749579db9b771dae.jpg"
     },
     {
       "nom": "Chimenea Eléctrica de Pared 1600W Kekai Minesota 84x26x53 cm con Simulación de Fuego Negra con Mando para Interior",
@@ -522,7 +576,8 @@
       "note": 4.8,
       "avis": 5,
       "url": "https://www.manomano.es/p/chimenea-elctrica-1600-w-kekai-minesota-84x26x53-cm-con-simulacin-de-fuego-para-paredmesa-negra-42574205",
-      "retenu_catalogue": "elec-minesota"
+      "retenu_catalogue": "elec-minesota",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/405cbde1a0f9b313e658f58731bc08b4318b250d.jpg"
     },
     {
       "nom": "Chimenea eléctrica 2000w con mando a distancia - VOLCANO 3XL - Chemin'arte -",
@@ -531,7 +586,8 @@
       "prixBarre": null,
       "note": 4.5,
       "avis": 2,
-      "url": "https://www.manomano.es/p/chimenea-de-pared-electrica-volcano-cm-150x11x55-cheminarte-ef-189-26354834"
+      "url": "https://www.manomano.es/p/chimenea-de-pared-electrica-volcano-cm-150x11x55-cheminarte-ef-189-26354834",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/179caa10f49fa7b958676ce85ab163441ca70c75.jpg"
     },
     {
       "nom": "Mueble con chimenea eléctrica para salón, lacado blanco, LED multicolor, 1000/2000W, control remoto, termostato, Alaska",
@@ -540,7 +596,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/mueble-con-chimenea-electrica-para-salon-lacado-blanco-led-multicolor-10002000w-control-remoto-termostato-alaska-90634083"
+      "url": "https://www.manomano.es/p/mueble-con-chimenea-electrica-para-salon-lacado-blanco-led-multicolor-10002000w-control-remoto-termostato-alaska-90634083",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/3ed9f4cf603b0f39dd29f7b771e9d94692a268d1.jpg"
     },
     {
       "nom": "Chimenea electrica 2000w - LOUNGE 3XL - Chemin'arte -",
@@ -549,7 +606,8 @@
       "prixBarre": null,
       "note": 4.7,
       "avis": 6,
-      "url": "https://www.manomano.es/p/chimenea-electrica-lounge-3xl-blanca-chemin-arte-efydis-205-14618880"
+      "url": "https://www.manomano.es/p/chimenea-electrica-lounge-3xl-blanca-chemin-arte-efydis-205-14618880",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/72b312e16e90eda525a952a0e855a0dca55c7721.jpg"
     },
     {
       "nom": "Chimenea Eléctrica de Pared Calefactor Estufa Eléctrica 1000/2000W Llama Mando",
@@ -559,7 +617,8 @@
       "note": 4.0,
       "avis": 18,
       "url": "https://www.manomano.es/p/homcom-chimenea-electrica-tipo-estufa-de-pared-1000w-2000w-885x135x56cm-negro-2937096",
-      "retenu_catalogue": "elec-homcom-wall"
+      "retenu_catalogue": "elec-homcom-wall",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/0d5f3860445a9f539b1f5e9665ef4c79472dddf2.jpg"
     },
     {
       "nom": "Chimenea Eléctrica de Pared Empotrable para Interior 1600W Kekai Alaska 128x26x61 cm con Simulación de Fuego 2 Niveles de Potencia con Mando",
@@ -568,7 +627,8 @@
       "prixBarre": null,
       "note": 4.1,
       "avis": 8,
-      "url": "https://www.manomano.es/p/chimenea-elctrica-1600-w-kekai-alaska-128x26x61-cm-con-simulacin-de-fuego-para-paredmesa-blanca-42574203"
+      "url": "https://www.manomano.es/p/chimenea-elctrica-1600-w-kekai-alaska-128x26x61-cm-con-simulacin-de-fuego-para-paredmesa-blanca-42574203",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/71021c61338bdf8a1aed8fc60df73727919cb0cd.jpg"
     },
     {
       "nom": "Chimenea eléctrica 2000W cristal templado negro con mando a distancia y llama ajustable",
@@ -577,7 +637,8 @@
       "prixBarre": null,
       "note": 3.8,
       "avis": 12,
-      "url": "https://www.manomano.es/p/chimenea-electrica-insertable-con-mando-a-distancia-che-620-15603119"
+      "url": "https://www.manomano.es/p/chimenea-electrica-insertable-con-mando-a-distancia-che-620-15603119",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/c9b292ffd46b724c6a743e635451a1f96caf30a3.jpg"
     },
     {
       "nom": "Chimenea eléctrica 1800W con efecto de llama mando a distancia temporizador protección contra sobrecalentamiento para sala 30 m² blanco",
@@ -586,7 +647,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-1800w-con-efecto-de-llama-mando-a-distancia-temporizador-proteccion-contra-sobrecalentamiento-para-sala-30-m-blanco-89523734"
+      "url": "https://www.manomano.es/p/chimenea-electrica-1800w-con-efecto-de-llama-mando-a-distancia-temporizador-proteccion-contra-sobrecalentamiento-para-sala-30-m-blanco-89523734",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/86373172db263e2ccfc56726e8360fcfa2c22278.jpg"
     },
     {
       "nom": "Chimenea eléctrica mural con mando a distancia, leños y cristales artificiales, 1800 W de potencia, color negro.",
@@ -595,7 +657,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-mural-con-mando-a-distancia-lenos-y-cristales-artificiales-1800-w-de-potencia-color-negro-230694202"
+      "url": "https://www.manomano.es/p/chimenea-electrica-mural-con-mando-a-distancia-lenos-y-cristales-artificiales-1800-w-de-potencia-color-negro-230694202",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/1e6985b0a572f4a06d50e24745d9ef89fcbdb7b4.jpg"
     },
     {
       "nom": "Chimenea eléctrica Lynea, Blanco, 100 cm con efecto de llama realista y calefactor de 1800 W, Vicco",
@@ -604,7 +667,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-lynea-negro-100-cm-con-efecto-de-llama-realista-y-calefactor-de-1800-w-vicco-86939569"
+      "url": "https://www.manomano.es/p/chimenea-electrica-lynea-negro-100-cm-con-efecto-de-llama-realista-y-calefactor-de-1800-w-vicco-86939569",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/a984c470900bcb8276ba90b1002abb4ea146f35b.jpg"
     },
     {
       "nom": "Chimenea eléctrica PARED 1800W",
@@ -614,7 +678,8 @@
       "note": 4.0,
       "avis": 2,
       "url": "https://www.manomano.es/p/chimenea-electrica-pared-1800w-600x158x520mm-9408180",
-      "retenu_catalogue": "elec-mercatools"
+      "retenu_catalogue": "elec-mercatools",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/5692e58daa30da06ca1e9265fbc9b8a3f613f702.jpg"
     },
     {
       "nom": "Chimenea eléctrica de 1800 W, chimenea decorativa de imitación, efecto de llama de 9 colores y 5 niveles de brillo, 62,5 x 20 x 72,5 cm, blanca.",
@@ -623,7 +688,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-de-1800-w-chimenea-decorativa-de-imitacion-efecto-de-llama-de-9-colores-y-5-niveles-de-brillo-62-5-x-20-x-72-5-cm-blanca-230692497"
+      "url": "https://www.manomano.es/p/chimenea-electrica-de-1800-w-chimenea-decorativa-de-imitacion-efecto-de-llama-de-9-colores-y-5-niveles-de-brillo-62-5-x-20-x-72-5-cm-blanca-230692497",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/7f1cec7dd2b33d291ab8d1f0eab940c6d5a1cdc0.jpg"
     },
     {
       "nom": "HOMCOM chimenea eléctrica pared y empotrable ultrafina con llama 3D ajustable y 12 colores, guijarros, 900/1800W, temporizador, termostato digital",
@@ -632,7 +698,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-pared-y-empotrable-ultrafina-con-llama-3d-ajustable-y-12-colores-guijarros-9001800w-temporizador-termostato-digital-92282633"
+      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-pared-y-empotrable-ultrafina-con-llama-3d-ajustable-y-12-colores-guijarros-9001800w-temporizador-termostato-digital-92282633",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/a85c5266410bf0299cba65f631cf002542147ec6.jpg"
     },
     {
       "nom": "Chimenea eléctrica Lynea, Blanco, 100 cm con efecto de llama realista y calefactor de 1800 W, Vicco",
@@ -641,7 +708,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/chimenea-electrica-lynea-blanco-100-cm-con-efecto-de-llama-realista-y-calefactor-de-1800-w-vicco-86939488"
+      "url": "https://www.manomano.es/p/chimenea-electrica-lynea-blanco-100-cm-con-efecto-de-llama-realista-y-calefactor-de-1800-w-vicco-86939488",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/78135c5f955472de66c70fb8ec73dedba4391bd4.jpg"
     },
     {
       "nom": "Chimenea Eléctrica Usini, Calefacción Hasta 30 m², Potencia (kW) 0.75/1.5, Interior, 101x20x44h cm Negro",
@@ -650,7 +718,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-usini-superficie-calentable-30-potencia-kw-07515-interior-101x20x44h-cm-negro-133-91705813"
+      "url": "https://www.manomano.es/p/chimenea-electrica-usini-superficie-calentable-30-potencia-kw-07515-interior-101x20x44h-cm-negro-133-91705813",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/817b360bbe1ed3c354313bd4f9913e118d7a5a99.jpg"
     },
     {
       "nom": "Chimenea eléctrica de diseño 2000w - LOUNGE - Chemin'arte -",
@@ -659,7 +728,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 4,
-      "url": "https://www.manomano.es/p/chimenea-electrica-efecto-fuego-y-calefactor-43956303"
+      "url": "https://www.manomano.es/p/chimenea-electrica-efecto-fuego-y-calefactor-43956303",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/06e2765f6e09019e371f4f75d2cc26733c55cec9.jpg"
     },
     {
       "nom": "Chimenea electrica decorativa de diseño CL-239",
@@ -668,7 +738,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 3,
-      "url": "https://www.manomano.es/p/239-cheminarte-80803426"
+      "url": "https://www.manomano.es/p/239-cheminarte-80803426",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/ee5d67c7b8162629fd1a645c0ca2d1c6ef2f5bae.jpg"
     },
     {
       "nom": "Chimenea eléctrica 1800W con efecto de llama mando a distancia temporizador semanal protección contra sobrecalentamiento para sala 30 m² blanco",
@@ -677,7 +748,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-1800w-con-efecto-de-llama-mando-a-distancia-temporizador-semanal-proteccion-contra-sobrecalentamiento-para-sala-30-m-blanco-89456181"
+      "url": "https://www.manomano.es/p/chimenea-electrica-1800w-con-efecto-de-llama-mando-a-distancia-temporizador-semanal-proteccion-contra-sobrecalentamiento-para-sala-30-m-blanco-89456181",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/99191ea2e245a7848260ffb6a1fdf1746a2bb2f5.jpg"
     },
     {
       "nom": "Dmora - Chimenea eléctrica Dtamburin, Estufa eléctrica, Hogar eléctrico de pared, Chimenea moderna, Made in Italy, 11x127 h50 cm, Negro",
@@ -686,7 +758,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/dmora-chimenea-electrica-dtamburin-estufa-electrica-hogar-electrico-de-pared-chimenea-moderna-made-in-italy-11x127-h50-cm-negro-87284392"
+      "url": "https://www.manomano.es/p/dmora-chimenea-electrica-dtamburin-estufa-electrica-hogar-electrico-de-pared-chimenea-moderna-made-in-italy-11x127-h50-cm-negro-87284392",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/9b08c3f283e49ed952143ff0cb96744bdfdb05b8.jpg"
     },
     {
       "nom": "Chimenea eléctrica mural 2kW panorámica en cristal templado negro con mando a distancia",
@@ -695,7 +768,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-mural-2kw-panoramica-en-cristal-templado-negro-con-mando-a-distancia-82318468"
+      "url": "https://www.manomano.es/p/chimenea-electrica-mural-2kw-panoramica-en-cristal-templado-negro-con-mando-a-distancia-82318468",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/f6efb67f3465e7a9d961f654d09a31f5b17fd644.jpg"
     },
     {
       "nom": "Chimenea Eléctrica Brasas Kit Marco Blanco y Calefactor Decorativo de Pared Kekai Bairon 90x30x75 cm 3 Niveles Control Remoto",
@@ -704,7 +778,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/chimenea-elctrica-kit-marco-blanco-calefactor-decorativo-pared-kekai-bairon-90x30x75-cm-efecto-brasas-3-niveles-control-remoto-57438343"
+      "url": "https://www.manomano.es/p/chimenea-elctrica-kit-marco-blanco-calefactor-decorativo-pared-kekai-bairon-90x30x75-cm-efecto-brasas-3-niveles-control-remoto-57438343",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/481d2f972fba104ac0aad9c5b23ec97e863d2430.jpg"
     },
     {
       "nom": "Chimenea Eléctrica Panorámica con luz LED ambiental y panel frontal MDF",
@@ -713,7 +788,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-panoramica-con-luz-led-ambiental-y-panel-frontal-mdf-78073304"
+      "url": "https://www.manomano.es/p/chimenea-electrica-panoramica-con-luz-led-ambiental-y-panel-frontal-mdf-78073304",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/dd6199893eae6dd3245a4148938ff2d91304ab94.jpg"
     },
     {
       "nom": "Sined Amiata Chimenea Chimenea electrica empotrable e independiente 180 cm con 1500 W de potencia Chimenea de interior negra Efecto llama 6 intensidades Mando a distancia Estructura de panel laminado",
@@ -722,7 +798,8 @@
       "prixBarre": null,
       "note": 4.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/chimenea-elctrica-empotrada-amiata-cm-507x20x180-sined-amiata-nero-57759839"
+      "url": "https://www.manomano.es/p/chimenea-elctrica-empotrada-amiata-cm-507x20x180-sined-amiata-nero-57759839",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/3a0f898ef4c3b381b9085654ecfe5ad884e87841.jpg"
     },
     {
       "nom": "Chimenea Eléctrica de Pared Estufa Calefactor 950W/1850W Piedrecitas Cristales Leño Simulados Brillo Ajustable con Mando 12 Colores de llama LED Temporizador 15-35°C (127x48x14.7cm,50 Pulgadas)",
@@ -731,7 +808,8 @@
       "prixBarre": null,
       "note": 3.4,
       "avis": 5,
-      "url": "https://www.manomano.es/p/chimenea-elctrica-de-pared-estufa-calefactor-950w1850w-piedrecitas-cristales-leo-simulados-brillo-ajustable-con-mando-12-colores-de-llama-led-temporizador-15-35c-127x48x147cm50-pulgadas-60784015"
+      "url": "https://www.manomano.es/p/chimenea-elctrica-de-pared-estufa-calefactor-950w1850w-piedrecitas-cristales-leo-simulados-brillo-ajustable-con-mando-12-colores-de-llama-led-temporizador-15-35c-127x48x147cm50-pulgadas-60784015",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/8b0776db00b2215ee76c2443f34670ed3b041af4.jpg"
     },
     {
       "nom": "Chimenea eléctrica Orbegozo CM 8000, efecto fuego real con funcionamiento independiente, mando a distancia, termostato digital regulable, panel de control táctil, 1800 W",
@@ -741,7 +819,8 @@
       "note": null,
       "avis": null,
       "url": "https://www.manomano.es/p/orbegozo-cm-8000-negro-estufa-electrica-1800w-efecto-fuego-41188108",
-      "retenu_catalogue": "elec-orbegozo-cm8000"
+      "retenu_catalogue": "elec-orbegozo-cm8000",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/98ddd65f90a670354b2a068828db8f4cf1b63524.jpg"
     },
     {
       "nom": "Chimenea eléctrica mural 2kW en cristal templado con efecto espejo",
@@ -750,7 +829,8 @@
       "prixBarre": null,
       "note": 5.0,
       "avis": 1,
-      "url": "https://www.manomano.es/p/chimenea-electrica-che-450-de-purline-341296"
+      "url": "https://www.manomano.es/p/chimenea-electrica-che-450-de-purline-341296",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/7c8831245a5bcf8835f9766f936b39d0976d4a1f.jpg"
     },
     {
       "nom": "Chimenea eléctrica de 1000W/2000W, chimenea decorativa de imitación de chimenea, efecto llama con 5 niveles de brillo ajustables, 121x25x77cm, blanca",
@@ -760,7 +840,8 @@
       "note": null,
       "avis": null,
       "url": "https://www.manomano.es/p/chimenea-electrica-de-1000w2000w-chimenea-decorativa-de-imitacion-de-chimenea-efecto-llama-con-5-niveles-de-brillo-ajustables-121x25x77cm-blanca-207910261",
-      "retenu_catalogue": "elec-pzcc-121"
+      "retenu_catalogue": "elec-pzcc-121",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/462a1ef3104d9bb8b3cca6fc08656afaff3c2a40.jpg"
     },
     {
       "nom": "Chimenea Eléctrica 2kW de cristal templado negro con mando a distancia",
@@ -769,7 +850,8 @@
       "prixBarre": null,
       "note": 4.1,
       "avis": 19,
-      "url": "https://www.manomano.es/p/chimenea-elactrica-con-pie-y-frontal-curvado-color-negro-che-340-15603120"
+      "url": "https://www.manomano.es/p/chimenea-elactrica-con-pie-y-frontal-curvado-color-negro-che-340-15603120",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/25e7fece024fe5160c4f6e65d3f7cbeaaea2a0d6.jpg"
     },
     {
       "nom": "Chimenea eléctrica con marco y llama 3D realista, 5 niveles de brillo, 2000 W, silenciosa, con termostato, calefacción ajustable, temporizador, mando a distancia, 30 m², blanca.",
@@ -778,7 +860,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-con-marco-y-llama-3d-realista-5-niveles-de-brillo-2000-w-silenciosa-con-termostato-calefaccion-ajustable-temporizador-mando-a-distancia-30-m2-blanca-208272676"
+      "url": "https://www.manomano.es/p/chimenea-electrica-con-marco-y-llama-3d-realista-5-niveles-de-brillo-2000-w-silenciosa-con-termostato-calefaccion-ajustable-temporizador-mando-a-distancia-30-m2-blanca-208272676",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/292b2958978a535729f3f73196d13412e95e78b3.jpg"
     },
     {
       "nom": "Chimenea Eléctrica de Pared Calefactor Estufa Eléctrica 900/1800W 65x11.4x52cm",
@@ -787,7 +870,8 @@
       "prixBarre": null,
       "note": 3.0,
       "avis": 3,
-      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-vidrio-hierro-negro-65x114x52cm-negro-2526653"
+      "url": "https://www.manomano.es/p/homcom-chimenea-electrica-vidrio-hierro-negro-65x114x52cm-negro-2526653",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/276563d376805f10795d91a540f4f1115cc2c608.jpg"
     },
     {
       "nom": "Chimenea eléctrica decorativa de 1800 W con efecto de llama, brillo y temperatura ajustables, 80 x 21,6 x 67,8 cm, marrón.",
@@ -796,7 +880,8 @@
       "prixBarre": null,
       "note": null,
       "avis": null,
-      "url": "https://www.manomano.es/p/chimenea-electrica-decorativa-de-1800-w-con-efecto-de-llama-brillo-y-temperatura-ajustables-80-x-216-x-678-cm-marron-207911837"
+      "url": "https://www.manomano.es/p/chimenea-electrica-decorativa-de-1800-w-con-efecto-de-llama-brillo-y-temperatura-ajustables-80-x-216-x-678-cm-marron-207911837",
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/54ad6abc71fc126c3c2d4f31253889ab440648ca.jpg"
     },
     {
       "nom": "HOMCOM chimenea eléctrica con efecto de llama de 5 niveles de brillo y 12 colores, temporizador, termostato, mando a distancia, blanco",
@@ -806,7 +891,8 @@
       "note": 4.3,
       "avis": 166,
       "url": "https://www.manomano.es/p/homcom-chimenea-electrica-empotrable-con-efecto-de-llama-de-5-niveles-de-brillo-y-12-colores-temporizador-termostato-mando-a-distancia-blanco-89914604",
-      "sponsorise": true
+      "sponsorise": true,
+      "imageSource": "https://cdn.manomano.com/pim-media/images/medium/87b1fcbe1d5feaa573f5f82811bbb51e7500d111.jpg"
     }
   ]
 }

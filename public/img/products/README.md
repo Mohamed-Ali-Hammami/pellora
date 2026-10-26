@@ -31,6 +31,29 @@ autre modification de code n'est nécessaire.
 | Air ventilé  | `aria-6`, `aria-9-canal`, `vela-8-slim`, `aria-12-duo`              |
 | Hydro        | `idro-12-compact`, `idro-15`, `idro-20-ecs`, `idro-24-plus`         |
 | Accessoires  | `kit-conduit-80`, `thermostat-wifi`, `aspirateur-cendres`, `granules-palette` |
+| Bioéthanol   | `bio-etna-table`, `bio-homcom-floor`, `bio-mauna-loa`, `bio-qlima-ffb4242`, `bio-siena-wall`, `bio-revello` |
+| Électriques  | `elec-minesota`, `elec-homcom-wall`, `elec-mercatools`, `elec-orbegozo-cm8000`, `elec-pzcc-121`, `elec-oregon` |
+
+Les poêles ETNA (`anna-12`, `vertigo-up`, `vulcano-silenzio-up`) ont déjà
+leurs visuels.
+
+## Récupérer les visuels d'un relevé
+
+Pour les deux familles de foyers décoratifs, les URL des visuels sont
+conservées dans `data/releves/*.json` (champ `imageSource`) :
+
+```bash
+npm run media:fetch          # les 12 fiches du catalogue
+npm run media:fetch -- --all # les 86 références du relevé
+npm run media:scan           # puis, pour les référencer
+```
+
+**Avertissement, et il n'est pas de forme.** Ces visuels appartiennent aux
+vendeurs de la place de marché où le relevé a été fait, pas à nous. Les
+télécharger pour travailler est une chose ; les publier sur la boutique
+demande l'accord écrit du titulaire des droits — fabricant ou vendeur. Sans
+cet accord, la facture rétroactive d'une agence dépasse largement le prix d'un
+visuel acheté, ou d'une photo faite soi-même.
 
 ## Formats et résolution
 

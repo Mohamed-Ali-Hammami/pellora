@@ -8,7 +8,7 @@ import {
   getStoves,
   getProductsByCategory,
 } from '@/lib/catalog';
-import { isAppliance, productCategories } from '@/lib/catalog.types';
+import { isAppliance, productCategories, type ProductCategory } from '@/lib/catalog.types';
 import { guides, getGuideBySlug } from '@/lib/guides';
 import { hasOnlyPlaceholders } from '@/lib/product-media';
 import { locales } from '@/lib/i18n/config';
@@ -212,8 +212,38 @@ describe('cohérence technique des poêles', () => {
      * de puissances inventées se lit comme une fiche complète. C'est cette
      * combinaison-là qu'on interdit.
      */
+    /*
+     * EXEMPTION — les deux familles de foyers décoratifs.
+     *
+     * La règle ci-dessus vise une combinaison précise : une photographie du
+     * vrai appareil posée à côté de puissances, de rendements et de classes
+     * énergétiques INVENTÉS. C'est ce mélange qui se lit comme une fiche
+     * complète alors qu'il n'en est pas une.
+     *
+     * Les foyers bioéthanol et électriques ne sont pas dans ce cas. Leur bloc
+     * `tech` est `null` — il n'y a donc rien à inventer : pas de rendement,
+     * pas de classe énergétique, pas de surface chauffée normalisée. Ce que
+     * leur fiche affiche vient du MÊME relevé marchand que la photo, et la
+     * mention « caractéristiques non vérifiées » reste visible puisque
+     * `dataVerified` demeure `false`.
+     *
+     * Leur appliquer la règle obligerait au contraire à passer `dataVerified`
+     * à `true` pour pouvoir afficher une photo — c'est-à-dire à retirer
+     * l'avertissement pour obtenir le droit de montrer le produit. Le
+     * garde-fou produirait exactement le mensonge qu'il doit empêcher.
+     *
+     * Il reste entier sur les huit familles d'appareils, là où des valeurs
+     * réglementées peuvent être inventées.
+     */
+    const SANS_VALEURS_REGLEMENTEES: readonly ProductCategory[] = ['bioethanol', 'electricfire'];
+
     for (const product of products) {
       if (hasOnlyPlaceholders(product)) continue;
+      if (SANS_VALEURS_REGLEMENTEES.includes(product.category)) {
+        // Cohérence de l'exemption : elle ne vaut que sans bloc technique.
+        expect(product.tech, `${product.id} exempté mais porte un bloc tech`).toBeNull();
+        continue;
+      }
       expect(
         product.dataVerified,
         `${product.id} : vraies photos mais caractéristiques encore fictives`,
