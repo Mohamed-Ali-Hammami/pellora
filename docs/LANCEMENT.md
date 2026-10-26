@@ -59,7 +59,10 @@ sanction ou à une perte d'argent s'ils sont ignorés.
 
 - [ ] **Bloquant — Configurer Redis** (`UPSTASH_REDIS_REST_URL` et `_TOKEN`).
       Sans persistance, une commande payée peut être perdue et le suivi ne
-      fonctionne pas.
+      fonctionne pas. Les deux valeurs se récupèrent sur `console.upstash.com`,
+      dans la base Redis, section « REST API ». Vérifier ensuite avec
+      `npm run redis:check` : le site démarre aussi sans Redis, donc une URL
+      mal recopiée ne provoque aucune erreur visible.
 - [ ] **Bloquant — Renseigner le RIB** (`BANK_HOLDER`, `BANK_IBAN`, et de
       préférence `BANK_BIC` et `BANK_NAME`). Sans titulaire ni IBAN, la page de
       commande refuse d'enregistrer une commande.

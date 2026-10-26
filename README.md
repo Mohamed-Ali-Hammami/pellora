@@ -210,7 +210,7 @@ un relevé.
 | ☐ | Désigner un médiateur de la consommation | `LEGAL_MEDIATOR` |
 | ☐ | Vérifier la grille de port auprès du transporteur | `src/lib/shipping.ts` |
 | ☐ | Faire relire les traductions par un locuteur natif | `dictionaries/` |
-| ☐ | Brancher Redis (sinon les commandes sont perdues au redémarrage) | `UPSTASH_*` |
+| ☐ | Brancher Redis (sinon les commandes sont perdues au redémarrage) | `UPSTASH_*`, puis `npm run redis:check` |
 | ☐ | Passer `NEXT_PUBLIC_DEMO_CATALOG` à `false` | `.env.local` |
 | ☐ | Passer `NEXT_PUBLIC_ALLOW_INDEXING` à `true` | `.env.local` |
 
