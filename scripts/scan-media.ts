@@ -51,7 +51,12 @@ function imageSize(file: string): { width: number; height: number } | null {
   }
 
   // WebP (VP8 simple, VP8L sans perte, VP8X étendu).
-  if (buffer.length > 30 && buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP') {
+  //
+  // `>= 30` et non `> 30` : l'en-tête VP8X fait EXACTEMENT 30 octets (RIFF 12,
+  // VP8X 8, drapeaux 4, largeur 3, hauteur 3). Aucun fichier réel ne s'arrête
+  // là, donc la borne n'a jamais rien cassé ici — mais le même calcul, repris
+  // dans `tools/images.py`, est couvert par un test qui a montré l'erreur.
+  if (buffer.length >= 30 && buffer.toString('ascii', 0, 4) === 'RIFF' && buffer.toString('ascii', 8, 12) === 'WEBP') {
     const kind = buffer.toString('ascii', 12, 16);
     if (kind === 'VP8 ') {
       return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };

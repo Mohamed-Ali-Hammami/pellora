@@ -50,3 +50,48 @@ python3 tools/tests/test_scrape.py
 Couvre 11 formats de montant et les 5 sources. Les cas présents sont ceux qui
 ont réellement cassé pendant l'écriture : `2490.00` lu `249` (erreur d'un
 facteur dix sur un prix), et `salePrice` ignoré faute de gérer le camelCase.
+
+## `images.py` — chercher des images par mot-clé
+
+```bash
+python3 tools/images.py "chimenea electrica HOMCOM 1800W" -n 20
+python3 tools/images.py --depuis-json scraped/produits.json --cle titre
+python3 tools/images.py "KEKAI Oregon" --moteur bing --min 800
+python3 tools/images.py "..." --sans-telechargement --json   # lister sans écrire
+```
+
+### Quatre moteurs, essayés dans l'ordre
+
+Aucun moteur d'images n'expose d'API publique stable, et chacun casse à son
+rythme. Le script en empile quatre, passe au suivant quand l'un ne rend rien,
+et **dit lequel a répondu** :
+
+| Moteur | Comment |
+| ------ | ------- |
+| `commons` | API Wikimedia Commons. Une vraie API JSON, sans clé. Peu de produits, mais ça marche toujours. |
+| `ddg` | DuckDuckGo. Jeton `vqd` sur la page de recherche, puis point d'entrée JSON. |
+| `bing` | Chaque vignette porte un attribut `m="{...}"` avec l'URL d'origine (`murl`). Stable depuis des années. |
+| `google` | Le plus fourni, le plus hostile : le HTML ne porte plus que des miniatures en base64. Trois formes tentées. |
+
+**Si Google ne rend rien, c'est attendu.** Les vraies URL vivent dans des blocs
+de script qui demandent un navigateur. Utilise `--moteur bing` ou `ddg`.
+
+### Au téléchargement
+
+- la **taille réelle** est lue dans l'en-tête du fichier, et `--min` écarte les
+  vignettes — une recherche d'images en rend beaucoup ;
+- les doublons sont détectés par **empreinte du contenu**, pas par URL : le même
+  visuel est souvent servi depuis cinq domaines ;
+- une page d'erreur HTML renvoyée en HTTP 200 est reconnue à ses octets
+  d'en-tête et jetée.
+
+### Test
+
+```bash
+python3 tools/tests/test_images.py
+```
+
+22 vérifications : dimensions sur les quatre formats (fichiers fabriqués
+octet par octet), parseurs des quatre moteurs sur réponses enregistrées, et
+l'enchaînement automatique. A trouvé un bug : l'en-tête WebP VP8X fait
+exactement 30 octets, et la borne était `> 30`.
