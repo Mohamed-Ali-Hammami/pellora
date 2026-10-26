@@ -1,7 +1,7 @@
 /**
- * Page d'une famille de produits, partagée par les huit sections.
+ * Page d'une famille de produits, partagée par toutes les sections.
  *
- * Pourquoi une fabrique plutôt que huit fichiers : le gabarit est identique à
+ * Pourquoi une fabrique plutôt qu'un fichier par famille : le gabarit est identique à
  * la famille près. Le recopier huit fois garantirait qu'une correction sur
  * l'une oublie les sept autres.
  *

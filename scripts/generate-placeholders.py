@@ -197,6 +197,115 @@ def stove(
     (OUT / f"{name}.svg").write_text("\n".join(parts) + "\n", encoding="utf-8")
 
 
+def fireplace(
+    name: str,
+    *,
+    width: int = 400,
+    height: int = 500,
+    frame_w: int = 300,
+    frame_h: int = 150,
+    mount: str = "wall",
+    burners: int = 1,
+) -> None:
+    """Un foyer decoratif vu de face : bandeau de flamme dans un cadre, et
+    AUCUN conduit de fumees.
+
+    C'est la difference qui doit se voir sur une vignette. Un bioethanol et un
+    foyer electrique ne se raccordent pas : c'est leur argument de vente, et
+    c'est aussi la limite qu'il faut qu'un acheteur percoive avant de cliquer,
+    plutot qu'une silhouette de poele qui lui promettrait un vrai chauffage.
+
+    `mount` distingue les trois poses du marche : murale (le cadre flotte),
+    posable (socle bas, format reduit) et sur pied (colonne). `burners` dessine
+    les deux bruleurs des modeles encastrables larges.
+    """
+    uid = "".join(ch for ch in name if ch.isalnum())
+    cx = width / 2
+    frame_x = cx - frame_w / 2
+    frame_y = (height - frame_h) / 2 - (46 if mount == "wall" else 70)
+
+    glass_w = frame_w - 48
+    glass_h = frame_h - 48
+    glass_x = cx - glass_w / 2
+    glass_y = frame_y + 24
+
+    parts = [
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" '
+        f'width="{width}" height="{height}" role="img" aria-hidden="true">',
+        defs(uid, glass_cy="62%"),
+    ]
+
+    # Lueur : au sol pour un modele pose, sur le mur pour un modele mural.
+    if mount == "wall":
+        parts.append(
+            f'  <ellipse cx="{cx}" cy="{frame_y + frame_h + 54:.0f}" '
+            f'rx="{frame_w * 0.62:.0f}" ry="40" fill="url(#halo{uid})"/>'
+        )
+    else:
+        parts.append(
+            f'  <ellipse cx="{cx}" cy="{height - 44}" rx="{frame_w * 0.62:.0f}" '
+            f'ry="24" fill="url(#halo{uid})"/>'
+        )
+
+    # Colonne ou socle, selon la pose.
+    if mount == "floor":
+        parts.append(
+            f'  <rect x="{cx - frame_w * 0.34:.0f}" y="{frame_y + frame_h - 6:.0f}" '
+            f'width="{frame_w * 0.68:.0f}" height="{height - frame_y - frame_h - 40:.0f}" '
+            f'rx="12" fill="url(#body{uid})"/>'
+            f'<rect x="{cx - frame_w * 0.34:.0f}" y="{frame_y + frame_h - 6:.0f}" '
+            f'width="{frame_w * 0.68:.0f}" height="{height - frame_y - frame_h - 40:.0f}" '
+            f'rx="12" fill="url(#sheen{uid})"/>'
+        )
+    elif mount == "table":
+        parts.append(
+            f'  <rect x="{cx - frame_w * 0.56:.0f}" y="{frame_y + frame_h - 4:.0f}" '
+            f'width="{frame_w * 1.12:.0f}" height="20" rx="8" fill="{STEEL}"/>'
+        )
+
+    # Cadre.
+    parts.append(
+        f'  <rect x="{frame_x:.0f}" y="{frame_y:.0f}" width="{frame_w}" height="{frame_h}" '
+        f'rx="14" fill="url(#body{uid})"/>'
+        f'<rect x="{frame_x:.0f}" y="{frame_y:.0f}" width="{frame_w}" height="{frame_h}" '
+        f'rx="14" fill="url(#sheen{uid})"/>'
+    )
+
+    # Foyer vitre.
+    parts.append(
+        f'  <rect x="{glass_x:.0f}" y="{glass_y:.0f}" width="{glass_w}" height="{glass_h}" '
+        f'rx="8" fill="url(#glass{uid})"/>'
+        f'<rect x="{glass_x:.0f}" y="{glass_y:.0f}" width="{glass_w}" height="{glass_h}" '
+        f'rx="8" fill="none" stroke="{INK}" stroke-width="3" opacity="0.5"/>'
+    )
+
+    # Flamme(s) : un bruleur centre, deux repartis sur un foyer large.
+    for i in range(burners):
+        bx = cx if burners == 1 else cx + (i * 2 - 1) * glass_w * 0.24
+        parts.append(flame(bx, glass_y + glass_h * 0.74, glass_h / 95, uid))
+
+    # Ligne de bruleur / lit de galets, au bas du foyer.
+    parts.append(
+        f'  <rect x="{glass_x + 12:.0f}" y="{glass_y + glass_h - 14:.0f}" '
+        f'width="{glass_w - 24}" height="9" rx="4" fill="{INK}" opacity="0.7"/>'
+    )
+    for i in range(7):
+        gx = glass_x + 22 + i * (glass_w - 44) / 6
+        parts.append(
+            f'  <circle cx="{gx:.0f}" cy="{glass_y + glass_h - 10:.0f}" r="4" '
+            f'fill="{BRASS}" opacity="0.35"/>'
+        )
+
+    # Filet laiton sur le cadre : la seule finition du dessin.
+    parts.append(
+        f'  <rect x="{frame_x + 12:.0f}" y="{frame_y + frame_h - 12:.0f}" '
+        f'width="{frame_w - 24}" height="2" rx="1" fill="{BRASS}" opacity="0.45"/>'
+    )
+
+    parts.append("</svg>")
+    (OUT / f"{name}.svg").write_text("\n".join(parts) + "\n", encoding="utf-8")
+
+
 def hero() -> None:
     """Visuel du bandeau d'accueil : même poêle, mis en scène sur fond sombre."""
     w, h, uid = 520, 620, "hero"
@@ -347,6 +456,15 @@ def main() -> None:
     stove("stove-hydro-large", hydro=True, body_w=235, body_h=350)
     stove("stove-hydro-dhw", hydro=True, dhw=True, body_w=240, body_h=360)
     stove("stove-hydro-xl", hydro=True, dhw=True, body_w=255, body_h=375)
+
+    # Foyers decoratifs : bioethanol et electrique. Pas de conduit.
+    fireplace("bioethanol-table", mount="table", frame_w=230, frame_h=120)
+    fireplace("bioethanol-floor", mount="floor", frame_w=250, frame_h=130)
+    fireplace("bioethanol-wall", mount="wall", frame_w=330, frame_h=130)
+    fireplace("bioethanol-wall-wide", mount="wall", frame_w=352, frame_h=112, burners=2)
+    fireplace("electric-wall", mount="wall", frame_w=330, frame_h=150)
+    fireplace("electric-wall-wide", mount="wall", frame_w=356, frame_h=128)
+    fireplace("electric-floor", mount="floor", frame_w=260, frame_h=150)
 
     # Accessoires.
     accessory("flue-kit", "flue")

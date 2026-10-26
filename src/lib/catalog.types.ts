@@ -16,19 +16,30 @@ export type ProductCategory =
   | 'cookstove'
   | 'boiler'
   | 'insert'
-  | 'flue'
   | 'heatpump'
+  | 'bioethanol'
+  | 'electricfire'
+  | 'flue'
   | 'accessory';
 
-/** Ordre d'affichage : des appareils les plus demandés vers le périphérique. */
+/**
+ * Ordre d'affichage : des appareils les plus demandés vers le périphérique.
+ *
+ * `bioethanol` et `electricfire` ferment la liste des foyers, juste avant le
+ * conduit et les accessoires : ce sont des objets DÉCORATIFS, qu'on ne vend
+ * pas comme un moyen de chauffer une maison. Les placer en tête les ferait
+ * passer pour l'équivalent d'un poêle, ce qu'ils ne sont pas.
+ */
 export const productCategories = [
   'pellet',
   'wood',
   'cookstove',
   'boiler',
   'insert',
-  'flue',
   'heatpump',
+  'bioethanol',
+  'electricfire',
+  'flue',
   'accessory',
 ] as const;
 
@@ -49,6 +60,18 @@ export type HeatDistribution = 'air' | 'hydro';
 /**
  * Familles qui désignent un APPAREIL de chauffage — par opposition au conduit
  * et aux accessoires, qui n'ont ni puissance ni mode de diffusion.
+ *
+ * `bioethanol` et `electricfire` n'y figurent PAS, et c'est délibéré.
+ *
+ * Un foyer décoratif n'a ni rendement, ni classe énergétique, ni surface
+ * chauffée établie par un essai normalisé : les règlements UE 2015/1185 et
+ * 2015/1186, qui encadrent les appareils à combustible solide, ne s'y
+ * appliquent pas. Les ranger parmi les appareils obligerait à remplir un bloc
+ * `tech` — donc à INVENTER un rendement et une classe pour tenir le modèle,
+ * et à les faire apparaître dans le calculateur de puissance comme s'ils
+ * pouvaient chauffer un logement. Leurs caractéristiques réelles (puissance
+ * électrique, capacité du brûleur, autonomie, dimensions) vivent donc dans
+ * `specs`, en texte libre, exactement telles que le fabricant les annonce.
  */
 export const applianceCategories = [
   'pellet',

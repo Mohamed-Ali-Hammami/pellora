@@ -174,7 +174,7 @@ function TrustBar({ locale }: { locale: Locale }) {
 }
 
 /**
- * Les huit sections, en grille.
+ * Toutes les sections, en grille.
  *
  * L'accueil n'arbitre plus entre deux familles : il oriente vers l'appareil
  * que le visiteur est venu chercher. Le choix fin — air ventilé ou hydro —

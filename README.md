@@ -1,8 +1,9 @@
 # Pellora — boutique dropshipping poêles à granulés, en quatre langues
 
 Boutique e-commerce en **français, anglais, néerlandais et espagnol**, pour
-huit familles de chauffage — granulés, bois, cuisinières, chaudières, inserts,
-conduits, pompes à chaleur, accessoires. Paiement par **virement bancaire**,
+dix rayons de chauffage — granulés, bois, cuisinières, chaudières, inserts,
+pompes à chaleur, conduits, accessoires, et deux rayons de foyers décoratifs
+(bioéthanol, électriques) assumés comme tels. Paiement par **virement bancaire**,
 confirmé à la main dans un back-office : c'est vous qui vendez, et c'est vous
 qui faites avancer chaque commande.
 

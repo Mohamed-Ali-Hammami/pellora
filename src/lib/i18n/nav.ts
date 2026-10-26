@@ -1,9 +1,12 @@
 /**
- * Les huit sections de la boutique, dans l'ordre d'affichage.
+ * Les sections de la boutique, dans l'ordre d'affichage.
  *
  * Source unique : l'en-tête, le pied de page, la page boutique et le fil
- * d'Ariane la lisent. Ajouter une famille se fait ici, dans `routes.ts` et
- * dans les quatre dictionnaires — nulle part ailleurs.
+ * d'Ariane la lisent. Ajouter une famille se fait en quatre endroits, et
+ * TypeScript refuse de compiler tant qu'il en manque un : `productCategories`
+ * dans `catalog.types.ts`, la route dans `routes.ts`, les trois clés dans
+ * chacun des quatre dictionnaires, et un dossier sous
+ * `src/app/[locale]/shop/` qui appelle `categoryPage`.
  */
 
 import { productCategories, type ProductCategory } from '@/lib/catalog.types';
@@ -33,8 +36,8 @@ export function categoryLinks(locale: Locale, dict: Dictionary): readonly Catego
 }
 
 /**
- * Sous-ensemble affiché dans la barre du haut. Huit entrées n'y tiennent pas
- * à côté du logo, du sélecteur de langue et du panier ; les cinq autres
+ * Sous-ensemble affiché dans la barre du haut. Dix entrées n'y tiennent pas
+ * à côté du logo, du sélecteur de langue et du panier ; les sept autres
  * restent à un clic, par « tout le chauffage » et par le menu mobile, qui lui
  * les porte toutes.
  */

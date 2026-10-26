@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bodyelectricfloor" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#302825"/>
+      <stop offset="1" stop-color="#1b1512"/>
+    </linearGradient>
+    <linearGradient id="sheenelectricfloor" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="0.35" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glasselectricfloor" cx="50%" cy="62%" r="68%">
+      <stop offset="0" stop-color="#ffc879"/>
+      <stop offset="0.34" stop-color="#e9762a"/>
+      <stop offset="0.68" stop-color="#bc4213"/>
+      <stop offset="1" stop-color="#3a1d0d"/>
+    </radialGradient>
+    <radialGradient id="haloelectricfloor" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#e9762a" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#e9762a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="200.0" cy="456" rx="161" ry="24" fill="url(#haloelectricfloor)"/>
+  <rect x="112" y="249" width="177" height="205" rx="12" fill="url(#bodyelectricfloor)"/><rect x="112" y="249" width="177" height="205" rx="12" fill="url(#sheenelectricfloor)"/>
+  <rect x="70" y="105" width="260" height="150" rx="14" fill="url(#bodyelectricfloor)"/><rect x="70" y="105" width="260" height="150" rx="14" fill="url(#sheenelectricfloor)"/>
+  <rect x="94" y="129" width="212" height="102" rx="8" fill="url(#glasselectricfloor)"/><rect x="94" y="129" width="212" height="102" rx="8" fill="none" stroke="#17120f" stroke-width="3" opacity="0.5"/>
+  <g transform="translate(200.0 204.48000000000002) scale(1.0736842105263158)">
+    <path d="M0 26 C -14 26 -19 17 -19 7 C -19 -4 -11 -12 -6 -32
+             C -2 -24 3 -21 5 -14 C 9 -20 16 -14 17 -2
+             C 18 14 11 26 0 26 Z"
+          fill="#ffc879" opacity="0.94"/>
+    <path d="M0 19 C -8 19 -11 13 -11 6 C -11 -2 -5 -8 -1 -18
+             C 2 -10 10 -4 10 5 C 10 13 6 19 0 19 Z"
+          fill="#fff6e0" opacity="0.88"/>
+  </g>
+
+  <rect x="106" y="217" width="188" height="9" rx="4" fill="#17120f" opacity="0.7"/>
+  <circle cx="116" cy="221" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="144" cy="221" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="172" cy="221" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="200" cy="221" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="228" cy="221" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="256" cy="221" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="284" cy="221" r="4" fill="#a9844f" opacity="0.35"/>
+  <rect x="82" y="243" width="236" height="2" rx="1" fill="#a9844f" opacity="0.45"/>
+</svg>

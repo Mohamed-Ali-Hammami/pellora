@@ -29,7 +29,7 @@ export function Header({ locale, dict }: Props) {
     { href: href('guides', locale), label: dict.nav.guides },
   ];
 
-  // Menu mobile : les huit familles, sans arbitrage de place.
+  // Menu mobile : toutes les familles, sans arbitrage de place.
   const mobile: readonly NavLink[] = [
     ...sections.map((s) => ({ href: s.href, label: s.label })),
     { href: href('sizing', locale), label: dict.nav.sizing },

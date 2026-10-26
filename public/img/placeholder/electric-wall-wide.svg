@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" width="400" height="500" role="img" aria-hidden="true">
+  <defs>
+    <linearGradient id="bodyelectricwallwide" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#302825"/>
+      <stop offset="1" stop-color="#1b1512"/>
+    </linearGradient>
+    <linearGradient id="sheenelectricwallwide" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="0.35" stop-color="#ffffff" stop-opacity="0.02"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="glasselectricwallwide" cx="50%" cy="62%" r="68%">
+      <stop offset="0" stop-color="#ffc879"/>
+      <stop offset="0.34" stop-color="#e9762a"/>
+      <stop offset="0.68" stop-color="#bc4213"/>
+      <stop offset="1" stop-color="#3a1d0d"/>
+    </radialGradient>
+    <radialGradient id="haloelectricwallwide" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#e9762a" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#e9762a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <ellipse cx="200.0" cy="322" rx="221" ry="40" fill="url(#haloelectricwallwide)"/>
+  <rect x="22" y="140" width="356" height="128" rx="14" fill="url(#bodyelectricwallwide)"/><rect x="22" y="140" width="356" height="128" rx="14" fill="url(#sheenelectricwallwide)"/>
+  <rect x="46" y="164" width="308" height="80" rx="8" fill="url(#glasselectricwallwide)"/><rect x="46" y="164" width="308" height="80" rx="8" fill="none" stroke="#17120f" stroke-width="3" opacity="0.5"/>
+  <g transform="translate(200.0 223.2) scale(0.8421052631578947)">
+    <path d="M0 26 C -14 26 -19 17 -19 7 C -19 -4 -11 -12 -6 -32
+             C -2 -24 3 -21 5 -14 C 9 -20 16 -14 17 -2
+             C 18 14 11 26 0 26 Z"
+          fill="#ffc879" opacity="0.94"/>
+    <path d="M0 19 C -8 19 -11 13 -11 6 C -11 -2 -5 -8 -1 -18
+             C 2 -10 10 -4 10 5 C 10 13 6 19 0 19 Z"
+          fill="#fff6e0" opacity="0.88"/>
+  </g>
+
+  <rect x="58" y="230" width="284" height="9" rx="4" fill="#17120f" opacity="0.7"/>
+  <circle cx="68" cy="234" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="112" cy="234" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="156" cy="234" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="200" cy="234" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="244" cy="234" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="288" cy="234" r="4" fill="#a9844f" opacity="0.35"/>
+  <circle cx="332" cy="234" r="4" fill="#a9844f" opacity="0.35"/>
+  <rect x="34" y="256" width="332" height="2" rx="1" fill="#a9844f" opacity="0.45"/>
+</svg>

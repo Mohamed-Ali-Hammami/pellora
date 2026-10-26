@@ -68,6 +68,51 @@ export const sourcing: Record<string, SourcingLine> = {
   'thermostat-wifi': { supplierSku: 'CN-THW-210', costNet: euros(52), leadTimeDays: 1, inboundShipping: euros(4) },
   'aspirateur-cendres': { supplierSku: 'PL-ASH-20L', costNet: euros(34), leadTimeDays: 1, inboundShipping: euros(7) },
   'granules-palette': { supplierSku: 'FR-PEL-DIN1T', costNet: euros(286), leadTimeDays: 3, inboundShipping: euros(42) },
+
+  // ─────────────────── FOYERS DÉCORATIFS — COÛTS CALCULÉS ───────────────────
+  //
+  // AUCUN de ces douze coûts n'est négocié. Ils sont CALCULÉS À L'ENVERS,
+  // depuis le prix de vente, pour que le coût de revient complet (marchandise
+  // + transport amont) laisse 45 % de marge brute sur le prix hors taxe —
+  // l'ordre de grandeur usuel sur un objet décoratif importé, et la raison
+  // pour laquelle ce rayon existe à côté des appareils.
+  //
+  // Les conséquences, à lire avant de s'appuyer sur un chiffre d'ici :
+  //   — `npm run economics` renverra 45 % sur chacune des douze fiches. C'est
+  //     une tautologie, pas un résultat : la marge a été posée, pas mesurée.
+  //   — les `supplierSku` sont des codes de notre invention. Aucun grossiste
+  //     ne les reconnaîtra sur un bon de commande.
+  //   — un seul vrai tarif fournisseur remplace tout ce bloc, et c'est la
+  //     première chose à faire avant de vendre un de ces articles.
+  //
+  // Le transport amont est estimé au poids et au volume. Il est posé d'abord,
+  // et le coût marchandise s'en déduit : sur un panneau de 1,27 m, c'est le
+  // port qui commande le prix de revient, pas la marchandise.
+
+  // 39,90 € TTC → 33,25 € HT ; revient 18,30 € ; marge 45,0 %.
+  'bio-etna-table': { supplierSku: 'BIO-KEK-ETNA', costNet: euros(14.8), leadTimeDays: 1, inboundShipping: euros(3.5) },
+  // 44,90 € TTC → 37,42 € HT ; revient 20,60 € ; marge 44,9 %.
+  'bio-homcom-floor': { supplierSku: 'BIO-HOM-820333', costNet: euros(16.1), leadTimeDays: 1, inboundShipping: euros(4.5) },
+  // 69,90 € TTC → 58,25 € HT ; revient 32,00 € ; marge 45,1 %.
+  'bio-mauna-loa': { supplierSku: 'BIO-KEK-MAUNA', costNet: euros(25.0), leadTimeDays: 2, inboundShipping: euros(7.0) },
+  // 189,90 € TTC → 158,25 € HT ; revient 87,00 € ; marge 45,0 %.
+  'bio-qlima-ffb4242': { supplierSku: 'BIO-QLI-FFB4242', costNet: euros(78.0), leadTimeDays: 3, inboundShipping: euros(9.0) },
+  // 249,90 € TTC → 208,25 € HT ; revient 114,50 € ; marge 45,0 %.
+  'bio-siena-wall': { supplierSku: 'BIO-FRK-SIENA90', costNet: euros(102.5), leadTimeDays: 3, inboundShipping: euros(12.0) },
+  // 679,90 € TTC → 566,58 € HT ; revient 311,60 € ; marge 45,0 %.
+  'bio-revello': { supplierSku: 'BIO-DMO-REVELLO', costNet: euros(289.6), leadTimeDays: 4, inboundShipping: euros(22.0) },
+  // 129,90 € TTC → 108,25 € HT ; revient 59,50 € ; marge 45,0 %.
+  'elec-minesota': { supplierSku: 'ELE-KEK-MINE84', costNet: euros(52.0), leadTimeDays: 1, inboundShipping: euros(7.5) },
+  // 169,90 € TTC → 141,58 € HT ; revient 77,90 € ; marge 45,0 %.
+  'elec-homcom-wall': { supplierSku: 'ELE-HOM-820234', costNet: euros(69.4), leadTimeDays: 1, inboundShipping: euros(8.5) },
+  // 184,90 € TTC → 154,08 € HT ; revient 84,70 € ; marge 45,0 %.
+  'elec-mercatools': { supplierSku: 'ELE-MCT-MT1800', costNet: euros(76.7), leadTimeDays: 2, inboundShipping: euros(8.0) },
+  // 199,90 € TTC → 166,58 € HT ; revient 91,60 € ; marge 45,0 %.
+  'elec-orbegozo-cm8000': { supplierSku: 'ELE-ORB-CM8000', costNet: euros(84.6), leadTimeDays: 2, inboundShipping: euros(7.0) },
+  // 339,90 € TTC → 283,25 € HT ; revient 155,80 € ; marge 45,0 %.
+  'elec-pzcc-121': { supplierSku: 'ELE-PZC-121INS', costNet: euros(136.8), leadTimeDays: 4, inboundShipping: euros(19.0) },
+  // 409,90 € TTC → 341,58 € HT ; revient 187,90 € ; marge 45,0 %.
+  'elec-oregon': { supplierSku: 'ELE-KEK-OREG127', costNet: euros(172.9), leadTimeDays: 3, inboundShipping: euros(15.0) },
 };
 
 /** Coût d'achat marchandise d'un produit, HT, transport amont exclu. */
