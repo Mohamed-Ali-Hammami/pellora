@@ -1,0 +1,32 @@
+# Pages de LISTE, a moissonner avec --liens pour en extraire les URL produit.
+# Ce ne sont pas des fiches : les passer directement a collect.py ne donnerait rien.
+#
+#   python3 tools/collect.py --urls urls/manomano-categories.txt \
+#       --liens '/p/[a-z0-9-]+-[0-9]+$' --sortie-liens urls/moissonnees.txt --rps 1
+
+# bioethanol : 9 pages
+https://www.manomano.es/chimeneas-de-bioetanol-3096
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=2
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=3
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=4
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=5
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=6
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=7
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=8
+https://www.manomano.es/chimeneas-de-bioetanol-3096?page=9
+# electriques : 15 pages
+https://www.manomano.es/chimeneas-electricas-3082
+https://www.manomano.es/chimeneas-electricas-3082?page=2
+https://www.manomano.es/chimeneas-electricas-3082?page=3
+https://www.manomano.es/chimeneas-electricas-3082?page=4
+https://www.manomano.es/chimeneas-electricas-3082?page=5
+https://www.manomano.es/chimeneas-electricas-3082?page=6
+https://www.manomano.es/chimeneas-electricas-3082?page=7
+https://www.manomano.es/chimeneas-electricas-3082?page=8
+https://www.manomano.es/chimeneas-electricas-3082?page=9
+https://www.manomano.es/chimeneas-electricas-3082?page=10
+https://www.manomano.es/chimeneas-electricas-3082?page=11
+https://www.manomano.es/chimeneas-electricas-3082?page=12
+https://www.manomano.es/chimeneas-electricas-3082?page=13
+https://www.manomano.es/chimeneas-electricas-3082?page=14
+https://www.manomano.es/chimeneas-electricas-3082?page=15

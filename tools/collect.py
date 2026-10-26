@@ -129,10 +129,17 @@ class Regulateur:
     # ─────────────────────────── robots.txt ───────────────────────────
 
     def _charge_robots(self, h: Hote, schema: str, nom: str) -> None:
-        """Lu une seule fois par hote, et hors de toute limite de debit.
+        """Lu une seule fois par hote.
 
-        Un robots.txt n'est pas une page a collecter : le faire passer par le
-        seau a jetons retarderait la premiere requete utile sans raison.
+        La lecture consomme un jeton comme n'importe quelle requete :
+        `RobotFileParser.read()` appelle `urlopen`, donc la greffe. C'est
+        voulu — robots.txt est une requete vers l'hote, elle a sa place dans
+        son budget.
+
+        `robots_lus` est mis a True AVANT la lecture, et ce n'est pas un
+        detail : sans cela, la requete vers robots.txt repasserait par
+        `autorise()`, qui rappellerait cette methode, qui relirait robots.txt.
+        Recursion infinie des la premiere URL.
         """
         if h.robots_lus or not self.respecte_robots:
             h.robots_lus = True
@@ -222,24 +229,31 @@ class Regulateur:
         h.refus_consecutifs = 0
 
     def rapport(self) -> list[str]:
-        """Debit moyen par hote, mesure sur SA fenetre d'activite.
+        """Pour chaque hote : ce qui a ete envoye, et ce qui etait autorise.
 
-        Le mesurer depuis le demarrage du programme donnait un chiffre
-        trompeur : il incluait le temps passe sur d'autres hotes, et la rafale
-        initiale faisait apparaitre une moyenne superieure au plafond. Le
-        rapport doit permettre de verifier la limite, pas la faire douter.
+        Deux versions precedentes affichaient un debit moyen, et toutes deux
+        donnaient un chiffre superieur au plafond sans qu'aucune limite ait
+        ete franchie — d'abord parce que la fenetre incluait les autres
+        hotes, ensuite parce qu'une rafale de 3 sur une demi-seconde fait
+        forcement une moyenne de 8/s. Une moyenne ne peut pas decrire un seau
+        a jetons : elle lisse justement ce que le seau autorise.
+
+        Le rapport annonce donc ce qui est verifiable : le nombre de requetes
+        envoyees, et le nombre que le seau permettait sur la meme duree, soit
+        `rafale + debit x duree`. La ligne se lit alors sans interpretation —
+        « 5 sur 5 autorisees » dit tout, et un depassement sauterait aux yeux.
         """
         lignes = []
         for nom, h in sorted(self._hotes.items(), key=lambda kv: -kv[1].requetes):
             if h.requetes == 0 or h.premiere is None:
                 continue
-            fenetre = max(h.derniere - h.premiere, 0.001)
-            # Sur la fenetre, la premiere requete est « gratuite » : n
-            # requetes s'espacent de n-1 intervalles.
-            debit = (h.requetes - 1) / fenetre if h.requetes > 1 else 0.0
+            fenetre = max(h.derniere - h.premiere, 0.0)
+            autorise = int(h.burst + h.rps * fenetre)
+            verdict = "conforme" if h.requetes <= autorise else "DÉPASSEMENT"
             lignes.append(
-                f"  {nom[:38]:38} {h.requetes:5} req  {debit:5.2f}/s  "
-                f"plafond {h.rps:5.2f}/s  {h.refus} refus  sur {fenetre:5.1f} s"
+                f"  {nom[:34]:34} {h.requetes:4} req en {fenetre:5.1f} s  "
+                f"({autorise} autorisées : rafale {h.burst:.0f} + {h.rps:.2f}/s)  "
+                f"{h.refus} refus  {verdict}"
             )
         return lignes
 
@@ -333,6 +347,29 @@ def lis_lignes(chemin: str) -> list[str]:
     ]
 
 
+def moissonne(scrape, url: str, motif: re.Pattern[str]) -> dict:
+    """Releve les liens d'une page de liste, sans rien en extraire d'autre.
+
+    Une page de categorie ne decrit aucun produit : l'y faire passer par
+    l'extracteur ne rendrait qu'un titre de rubrique. Ce qu'elle contient
+    d'utile, ce sont les liens vers les fiches — et la pagination se traite en
+    mettant simplement les pages ?page=1..N dans le fichier d'URL.
+    """
+    page, raison = scrape.recupere(url, essais=2)
+    if page is None:
+        return {"ok": False, "url": url, "raison": raison or "inconnu", "liens": []}
+
+    base = url
+    trouves, vus = [], set()
+    for href in re.findall(r'href="([^"]+)"', page):
+        complet = urllib.parse.urljoin(base, href.strip())
+        if complet in vus or not motif.search(complet):
+            continue
+        vus.add(complet)
+        trouves.append(complet)
+    return {"ok": True, "url": url, "liens": trouves}
+
+
 def une_page(scrape, url: str, dossier_images: Path | None, max_images: int) -> dict:
     """Une page : extraction, puis visuels si demandes."""
     page, raison = scrape.recupere(url, essais=2)
@@ -384,6 +421,12 @@ def main() -> int:
     quoi = p.add_argument_group("ce qu'il faut collecter")
     quoi.add_argument("--urls", help="fichier d'URL, une par ligne")
     quoi.add_argument("--requetes", help="fichier de mots-clés, un par ligne (recherche d'images)")
+    quoi.add_argument("--liens", metavar="MOTIF",
+                      help="MOISSON : relever dans chaque page les liens correspondant à cette "
+                           "expression régulière, au lieu d'en extraire un produit. "
+                           r"Exemple pour ManoMano : --liens '/p/[a-z0-9-]+-\d+$'")
+    quoi.add_argument("--sortie-liens", default="collect/liens.txt",
+                      help="fichier où écrire les liens moissonnés (défaut collect/liens.txt)")
     quoi.add_argument("--images-manquantes", action="store_true",
                       help="après les pages, chercher des visuels pour celles qui n'en ont pas")
     quoi.add_argument("--sans-images", action="store_true", help="ne rien télécharger comme visuel")
@@ -438,6 +481,66 @@ def main() -> int:
     print(f"  robots.txt   {'ignoré' if args.ignore_robots else 'respecté'}")
     print(f"  journal      {journal.chemin}" + (f" ({len(journal.deja)} déjà fait)" if journal.deja else ""))
     print()
+
+    # ─── moisson de liens ───
+    #
+    # Place AVANT la collecte de pages : moissonner puis collecter dans la
+    # meme commande n'aurait pas de sens, puisque le fichier d'URL a relire
+    # vient d'etre ecrit. Les deux etapes sont donc deux commandes.
+    if args.liens:
+        if not args.urls:
+            print("--liens demande --urls (le fichier des pages de liste à moissonner).")
+            return 1
+        motif = re.compile(args.liens)
+        pages_liste = lis_lignes(args.urls)
+        print(f"{len(pages_liste)} page(s) de liste à moissonner, motif « {args.liens} »")
+
+        tous: list[str] = []
+        vus: set[str] = set()
+        faits = 0
+        with ThreadPoolExecutor(max_workers=args.concurrence) as pool:
+            taches = {pool.submit(moissonne, scrape, u, motif): u for u in pages_liste}
+            for tache in as_completed(taches):
+                url = taches[tache]
+                if ARRET.is_set():
+                    tache.cancel()
+                try:
+                    res = tache.result()
+                except Interdit:
+                    res = {"ok": False, "url": url, "raison": "robots.txt interdit", "liens": []}
+                except Exception as erreur:  # noqa: BLE001
+                    res = {"ok": False, "url": url, "raison": f"{type(erreur).__name__}", "liens": []}
+                journal.ajoute(f"liens:{url}", res)
+                nouveaux = 0
+                for lien in res.get("liens") or []:
+                    if lien not in vus:
+                        vus.add(lien)
+                        tous.append(lien)
+                        nouveaux += 1
+                faits += 1
+                etat = "✓" if res.get("ok") else "✗"
+                print(f"  [{faits}/{len(pages_liste)}] {etat} {url[-56:]:56} "
+                      f"+{nouveaux:3} ({len(tous)} au total)")
+
+        cible = Path(args.sortie_liens)
+        cible.parent.mkdir(parents=True, exist_ok=True)
+        # Les liens deja presents sont conserves : moissonner une deuxieme
+        # categorie ne doit pas effacer la premiere.
+        anciens = set(lis_lignes(str(cible))) if cible.exists() else set()
+        fusion = sorted(anciens | vus)
+        cible.write_text("\n".join(fusion) + "\n", encoding="utf-8")
+
+        print()
+        print(f"  {len(vus)} lien(s) relevé(s), {len(fusion)} au total dans le fichier")
+        print(f"  → {cible}")
+        print()
+        print("  Étape suivante :")
+        print(f"    python3 tools/collect.py --urls {cible} --rps {args.rps}")
+        print()
+        print("  DÉBIT TENU")
+        for ligne in regulateur.rapport():
+            print(ligne)
+        return 0
 
     # ─── les pages ───
     resultats_pages: list[dict] = []

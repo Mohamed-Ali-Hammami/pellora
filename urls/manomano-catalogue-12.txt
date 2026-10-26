@@ -1,0 +1,17 @@
+# Les 12 fiches deja au catalogue du site.
+# A collecter en premier : leurs visuels iront dans public/img/products/
+# via le dossier indique par --dossier, et leurs POIDS REELS remplaceront
+# les estimations de src/lib/sourcing.ts.
+
+https://www.manomano.es/p/homcom-chimenea-de-bioetanol-de-pie-con-tanque-de-09-l-apagallamas-de-acero-inoxidable-tiempo-de-combustion-33h-para-15-20-m-38x22x54-cm-negro-88179379
+https://www.manomano.es/p/siena-chimenea-de-bioetanol-pared-90x12xh40-cm-85700571
+https://www.manomano.es/p/chimenea-de-bioetanol-revello-capacidad-125-l-superficie-calefactable-30-potencia-kw-3-120x15x40h-cm-negro-148-91705849
+https://www.manomano.es/p/biochimenea-de-suelo-kekai-mauna-loa-40x40x145-cm-con-quemador-de-acero-inoxidable-y-extintor-manual-color-blanco-76349090
+https://www.manomano.es/p/qlima-chimenea-de-etanol-cuadrada-42x23x42-cm-ffb-4242-6193566
+https://www.manomano.es/p/biochimenea-de-sobremesa-kekai-etna-355x18x205cm-quemador-de-acero-inoxidable-proteccion-de-vidrio-templado-y-extintor-manual-76349104
+https://www.manomano.es/p/chimenea-elctrica-2000-w-kekai-oregon-127x16x48-cm-con-simulacin-de-fuego-para-pared-negra-42574204
+https://www.manomano.es/p/chimenea-elctrica-1600-w-kekai-minesota-84x26x53-cm-con-simulacin-de-fuego-para-paredmesa-negra-42574205
+https://www.manomano.es/p/homcom-chimenea-electrica-tipo-estufa-de-pared-1000w-2000w-885x135x56cm-negro-2937096
+https://www.manomano.es/p/chimenea-electrica-pared-1800w-600x158x520mm-9408180
+https://www.manomano.es/p/orbegozo-cm-8000-negro-estufa-electrica-1800w-efecto-fuego-41188108
+https://www.manomano.es/p/chimenea-electrica-de-1000w2000w-chimenea-decorativa-de-imitacion-de-chimenea-efecto-llama-con-5-niveles-de-brillo-ajustables-121x25x77cm-blanca-207910261

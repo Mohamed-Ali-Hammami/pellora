@@ -1,0 +1,17 @@
+# Mots-cles pour tools/images.py : les noms des 12 produits du catalogue.
+# Sert a completer les visuels manquants depuis les moteurs de recherche.
+#
+#   python3 tools/collect.py --requetes urls/requetes-catalogue-12.txt --rps 0.5
+
+KEKAI Etna chimenea
+HOMCOM 820-333V70 chimenea
+KEKAI Mauna Loa chimenea
+QLIMA FFB 4242 chimenea
+FRANKYSTAR Siena chimenea
+DMORA Revello chimenea
+KEKAI Minesota chimenea
+HOMCOM 820-234V90 chimenea
+MERCATOOLS MT 1800 chimenea
+ORBEGOZO CM 8000 chimenea
+PZCC 121 Blanca chimenea
+KEKAI Oregon chimenea
